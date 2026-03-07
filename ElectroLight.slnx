@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="ElectroLight.Application/ElectroLight.Application.csproj" />
+  <Project Path="ElectroLight.Domain/ElectroLight.Domain.csproj" />
+  <Project Path="ElectroLight.Infrastructure/ElectroLight.Infrastructure.csproj" />
   <Project Path="ElectroLight/ElectroLight.csproj" />
 </Solution>
