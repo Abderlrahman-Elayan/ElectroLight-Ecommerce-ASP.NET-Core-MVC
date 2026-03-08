@@ -20,6 +20,7 @@ namespace ElectroLight.Domain.Entities
 
         [Required]
         [Range(0.01, 100000)]
+        //[Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
         [StringLength(500, MinimumLength = 3)]

@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ElectroLight.Domain\ElectroLight.Domain.csproj" />
+    <ProjectReference Include="..\ElectroLight.Application\ElectroLight.Application.csproj" />
   </ItemGroup>
 
 </Project>

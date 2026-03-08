@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ElectroLight.Domain\ElectroLight.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
