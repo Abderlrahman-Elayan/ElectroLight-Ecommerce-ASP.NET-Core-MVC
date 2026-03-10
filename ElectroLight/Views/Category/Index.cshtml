@@ -2,19 +2,18 @@
 
 <div class="card">
     <div class="card-header bg-primary bg-gradient text-center p-2">
-        <h2>Categories</h2>
+        <h2 class="text-light">Categories</h2>
     </div>
     <div class="card-body">
-        <div class="row">
-            <a asp-controller="Category" asp-action="Create" class="btn btn-success mb-3 ms-auto col-2">
-            <i class="bi bi-plus"></i> Add New Category</a>
-        </div>
+        <div class="row p-3">
+            <a asp-controller="Category" asp-action="Create" class="btn btn-warning mb-3 ms-auto col-2 p-2">
+            <i class="bi bi-plus-circle"></i> Add New Category</a>
         <table class="table border table-striped table-bordered">
             <thead>
-                <tr >
-                    <th >Name</th>
-                    <th >Description</th>
-                    <th ></th>
+                <tr class="bg-black">
+                    <th class="text-center" text-light>Name</th>
+                    <th class="text-center" text-light>Description</th>
+                    <th class="text-center" text-light></th>
                 </tr>
             </thead>
             <tbody>
@@ -24,11 +23,11 @@
                         <td class="col-3">@category.Name</td>
                         <td>@category.Description</td>
                         <td class="text-center col-3">
-                            <a asp-controller="Category" asp-action="Create" asp-route-CategoryId="@category.Id"
+                                <a asp-controller="Category" asp-action="Update" asp-route-categoryId="@category.Id"
                                class="btn btn-success mx-2">
                                 <i class="bi bi-pencil"></i> Edit
                             </a>
-                            <a asp-controller="Category" asp-action="Delete" asp-route-CategoryId="@category.Id"
+                                <a asp-controller="Category" asp-action="Delete" asp-route-categoryId="@category.Id"
                                class="btn btn-danger mx-2">
                                 <i class="bi bi-pencil"></i> Delete
                             </a>
@@ -37,5 +36,6 @@
                 }
             </tbody>
         </table>
+        </div>
     </div>
 </div>

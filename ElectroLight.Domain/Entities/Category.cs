@@ -14,7 +14,7 @@ namespace ElectroLight.Domain.Entities
         [Required]
         public string Name{ get; set; } =string.Empty;
 
-        [StringLength(100,MinimumLength =3)]
+        [MaxLength(100)]
         public string? Description { get; set; }
 
         //public List<Product> products { get; set; }

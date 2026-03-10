@@ -49,7 +49,6 @@ namespace ElectroLight.Infrastructure.Repository
                 query = query.Include(includeProp);
             }
 
-
             return await query.FirstOrDefaultAsync(Filter);
         }
 
