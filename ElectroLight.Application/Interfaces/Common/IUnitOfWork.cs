@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Text;
 
-namespace ElectroLight.Application.Common.Interfaces
+namespace ElectroLight.Application.Interfaces.Common
 {
     public interface IUnitOfWork : IDisposable
     {

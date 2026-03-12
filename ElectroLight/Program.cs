@@ -1,4 +1,6 @@
-using ElectroLight.Application.Common.Interfaces;
+using ElectroLight.Application.Interfaces.Common;
+using ElectroLight.Application.Interfaces.IServices;
+using ElectroLight.Application.Services;
 using ElectroLight.Infrastructure.Data;
 using ElectroLight.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 

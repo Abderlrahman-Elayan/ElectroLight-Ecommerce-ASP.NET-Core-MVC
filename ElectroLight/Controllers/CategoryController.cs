@@ -1,4 +1,5 @@
-﻿using ElectroLight.Application.Common.Interfaces;
+﻿using ElectroLight.Application.Interfaces;
+using ElectroLight.Application.Interfaces.IServices;
 using ElectroLight.Domain.Entities;
 using ElectroLight.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -7,16 +8,16 @@ namespace ElectroLight.Controllers
 {
     public class CategoryController : Controller
     {
-        private IUnitOfWork _UnitOfWork;
+        private ICategoryService _service;
 
-        public CategoryController(IUnitOfWork unitOfWork)
+        public CategoryController(ICategoryService service)
         {
-            _UnitOfWork = unitOfWork;
+            _service = service;
         }
 
         public async Task<IActionResult> Index()
         {
-            var categories = await _UnitOfWork.Categories.GetAllAsync();
+            var categories = await _service.GetAllAsync();
             return View(categories);
         }
         public IActionResult Create()
@@ -31,20 +32,15 @@ namespace ElectroLight.Controllers
         {
             if (!ModelState.IsValid) return View(category);
 
-            await _UnitOfWork.Categories.AddAsync(category);
-            await _UnitOfWork.SaveChangesAsync();
+            await _service.AddAsync(category);
 
             return RedirectToAction(nameof(Index));
         }
         public async Task<IActionResult> Update(int categoryId)
         {
 
-            var obj = await _UnitOfWork.Categories.GetAsync(c => c.Id == categoryId);
-
+            var obj = await _service.GetAsync(c => c.Id == categoryId);
             if (obj == null) return NotFound();
-
-
-
             return View(obj);
         }
 
@@ -54,19 +50,17 @@ namespace ElectroLight.Controllers
         {
             if (!ModelState.IsValid) return View(category);
 
-
-            _UnitOfWork.Categories.Update(category);
-            await _UnitOfWork.SaveChangesAsync();
+            await _service.UpdateAsync(category);
 
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int categoryId)
         {
+            var obj = await _service.GetAsync(c => c.Id == categoryId);
 
-            var obj = await _UnitOfWork.Categories.GetAsync(c => c.Id == categoryId);
-
-            if (obj == null) return NotFound();
+            if (obj == null)
+                return NotFound();
 
             return View(obj);
         }
@@ -75,8 +69,7 @@ namespace ElectroLight.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Category category)
         {
-            _UnitOfWork.Categories.Remove(category);
-            await _UnitOfWork.SaveChangesAsync();
+            await _service.DeleteAsync(category);
             return RedirectToAction(nameof(Index));
         }
     }

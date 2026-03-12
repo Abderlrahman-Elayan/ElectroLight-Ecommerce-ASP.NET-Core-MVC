@@ -1,4 +1,4 @@
-﻿using ElectroLight.Application.Common.Interfaces;
+﻿using ElectroLight.Application.Interfaces.Common;
 using ElectroLight.Domain.Entities;
 using ElectroLight.Infrastructure.Data;
 using System;

@@ -1,4 +1,4 @@
-﻿using ElectroLight.Application.Common.Interfaces;
+﻿using ElectroLight.Application.Interfaces.Common;
 using ElectroLight.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,7 +23,9 @@ namespace ElectroLight.Infrastructure.Repository
         }
 
 
-        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? Filter = null, params Expression<Func<T, object>>[] Includes)
+        public async Task<IEnumerable<T>> GetAllAsync(
+            Expression<Func<T, bool>>? Filter = null,
+            params Expression<Func<T, object>>[] Includes)
         {
             IQueryable<T> query = _dbSet;
 
@@ -40,7 +42,9 @@ namespace ElectroLight.Infrastructure.Repository
 
 
 
-        public async Task<T> GetAsync(Expression<Func<T, bool>> Filter, params Expression<Func<T, object>>[] Includes)
+        public async Task<T?> GetAsync(
+            Expression<Func<T, bool>> Filter,
+            params Expression<Func<T, object>>[] Includes)
         {
             IQueryable<T> query = _dbSet;
 
