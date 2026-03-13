@@ -1,4 +1,40 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿// Theme Toggle Script
 
-// Write your JavaScript code.
+document.addEventListener("DOMContentLoaded", function () {
+
+    const toggleBtn = document.getElementById("themeToggle");
+
+    // function to apply theme
+    function setTheme(theme) {
+        document.documentElement.setAttribute("data-bs-theme", theme);
+        localStorage.setItem("theme", theme);
+
+        // change icon
+        if (toggleBtn) {
+            toggleBtn.innerHTML =
+                theme === "dark"
+                    ? '<i class="bi bi-sun-fill"></i>'
+                    : '<i class="bi bi-moon-fill"></i>';
+        }
+    }
+
+    // load saved theme
+    let savedTheme = localStorage.getItem("theme") || "dark";
+    setTheme(savedTheme);
+
+    // toggle on button click
+    if (toggleBtn) {
+        toggleBtn.addEventListener("click", function () {
+
+            let currentTheme = document.documentElement.getAttribute("data-bs-theme");
+
+            if (currentTheme === "dark") {
+                setTheme("light");
+            } else {
+                setTheme("dark");
+            }
+
+        });
+    }
+
+});

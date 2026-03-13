@@ -20,15 +20,15 @@ namespace ElectroLight.Controllers
             var categories = await _service.GetAllAsync();
             return View(categories);
         }
-     
-           public async Task<IActionResult> Upsert(int? categoryId)
+
+        public async Task<IActionResult> Upsert(int? id)
         {
-            if (categoryId == null || categoryId == 0)
+            if (id == null || id == 0)
             {
                 return View(new Category());
             }
 
-            var obj = await _service.GetAsync(c => c.Id == categoryId);
+            var obj = await _service.GetAsync(c => c.Id == id);
 
             if (obj == null)
                 return RedirectToAction("Error", "Home");
@@ -60,33 +60,36 @@ namespace ElectroLight.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+       
 
-        public async Task<IActionResult> Delete(int categoryId)
+        #region API CALLS
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var obj = await _service.GetAsync(c => c.Id == categoryId);
-
-            if (obj == null)
-                return RedirectToAction("Error", "Home");
-
-            return View(obj);
+            List<Category> CategoryList = (await _service.GetAllAsync()).ToList();
+            return Json(new { data = CategoryList });
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Category category)
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int? id)
         {
-            var result = await _service.DeleteAsync(category);
-            if (result)
+            var Category = await _service.GetAsync(c => c.Id == id);
+            if (Category == null)
             {
-                TempData["success"] = "The Category has been Deleted successfully.";
-                return RedirectToAction(nameof(Index));
+                TempData["error"] = "cant delete Category";
+                return Json(new { success = false, message = "Error while deleting" });
+
             }
-            else
-            {
-                TempData["error"] = "Cant Delete this Category";
-                return View(category);
-            }
+
+            await _service.DeleteAsync(Category);
+            TempData["success"] = "The Category has been Deleted successfully.";
+
+            return Json(new { success = true, message = "Category has been Deleted Successfuly" });
         }
+
+        #endregion
 
 
 
