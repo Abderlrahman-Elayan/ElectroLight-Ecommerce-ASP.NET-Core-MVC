@@ -18,7 +18,11 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    font-family: "Luxurious Roman", serif;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 0.02rem;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -29,3 +33,107 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* container spacing */
+#toast-container > div {
+    padding: 18px 20px;
+    border-radius: 14px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    font-size: 15px;
+    font-weight: 500;
+    opacity: 1 !important;
+}
+
+/*toaster style*/
+/*************************************************/
+/*************************************************/
+/* success style */
+.toast-success {
+    background: linear-gradient(135deg,#16a34a,#22c55e);
+    border-left: 6px solid #0f7a33;
+}
+
+/* error style */
+.toast-error {
+    background: linear-gradient(135deg,#dc2626,#ef4444);
+    border-left: 6px solid #991b1b;
+}
+
+/* warning */
+.toast-warning {
+    background: linear-gradient(135deg,#f59e0b,#fbbf24);
+    border-left: 6px solid #b45309;
+}
+
+/* info */
+.toast-info {
+    background: linear-gradient(135deg,#2563eb,#3b82f6);
+    border-left: 6px solid #1d4ed8;
+}
+
+/* progress bar */
+.toast-progress {
+    background: rgba(255,255,255,0.7);
+}
+
+/* nicer close button */
+.toast-close-button {
+    opacity: 0.8;
+    font-size: 18px;
+}
+
+/* spacing from top */
+.toast-top-right {
+    top: 90px;
+    right: 20px;
+}
+/*************************************************/
+/*************************************************/
+
+/*bootsrap style*/
+:root {
+    /* Primary (modern blue) */
+    --bs-primary: #2563eb;
+    --bs-primary-rgb: 37, 99, 235;
+    /* Secondary (neutral gray) */
+    --bs-secondary: #64748b;
+    --bs-secondary-rgb: 100, 116, 139;
+    /* Success (modern green) */
+    --bs-success: #16a34a;
+    --bs-success-rgb: 22, 163, 74;
+    /* Danger (modern red) */
+    --bs-danger: #dc2626;
+    --bs-danger-rgb: 220, 38, 38;
+    /* Warning (warm amber) */
+    --bs-warning: #f59e0b;
+    --bs-warning-rgb: 245, 158, 11;
+    /* Info (soft professional cyan) */
+    --bs-info: #0891b2;
+    --bs-info-rgb: 8, 145, 178;
+    /* Light */
+    --bs-light: #f8fafc;
+    /* Dark */
+    --bs-dark: #0f172a;
+}
+.btn {
+    border-radius: 10px;
+    font-weight: 500;
+    padding: 8px 18px;
+    transition: all 0.25s ease;
+}
+
+    .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    }
+
+.card {
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.alert {
+    border-radius: 10px;
+}
+

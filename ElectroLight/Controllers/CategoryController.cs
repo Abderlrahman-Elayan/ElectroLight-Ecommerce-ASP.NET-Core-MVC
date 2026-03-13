@@ -1,5 +1,5 @@
 ﻿using ElectroLight.Application.Interfaces;
-using ElectroLight.Application.Interfaces.IServices;
+using ElectroLight.Application.Services.IServices;
 using ElectroLight.Domain.Entities;
 using ElectroLight.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -20,47 +20,53 @@ namespace ElectroLight.Controllers
             var categories = await _service.GetAllAsync();
             return View(categories);
         }
-        public IActionResult Create()
+     
+           public async Task<IActionResult> Upsert(int? categoryId)
         {
-            var obj = new Category();
-            return View(obj);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Category category)
-        {
-            if (!ModelState.IsValid) return View(category);
-
-            await _service.AddAsync(category);
-
-            return RedirectToAction(nameof(Index));
-        }
-        public async Task<IActionResult> Update(int categoryId)
-        {
+            if (categoryId == null || categoryId == 0)
+            {
+                return View(new Category());
+            }
 
             var obj = await _service.GetAsync(c => c.Id == categoryId);
-            if (obj == null) return NotFound();
+
+            if (obj == null)
+                return RedirectToAction("Error", "Home");
+
             return View(obj);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(Category category)
+        public async Task<IActionResult> Upsert(Category category)
         {
-            if (!ModelState.IsValid) return View(category);
+            if (category.Name == category.Description)
+                ModelState.AddModelError("description", "The description cannot exactly match the Name.");
 
-            await _service.UpdateAsync(category);
+            if (!ModelState.IsValid)
+                return View(category);
+
+            if (category.Id == 0)
+            {
+                await _service.AddAsync(category);
+                TempData["success"] = "The Category has been Created successfully.";
+            }
+            else
+            {
+                await _service.UpdateAsync(category);
+                TempData["success"] = "The Category has been Updated successfully.";
+            }
 
             return RedirectToAction(nameof(Index));
         }
+
 
         public async Task<IActionResult> Delete(int categoryId)
         {
             var obj = await _service.GetAsync(c => c.Id == categoryId);
 
             if (obj == null)
-                return NotFound();
+                return RedirectToAction("Error", "Home");
 
             return View(obj);
         }
@@ -69,8 +75,20 @@ namespace ElectroLight.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Category category)
         {
-            await _service.DeleteAsync(category);
-            return RedirectToAction(nameof(Index));
+            var result = await _service.DeleteAsync(category);
+            if (result)
+            {
+                TempData["success"] = "The Category has been Deleted successfully.";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                TempData["error"] = "Cant Delete this Category";
+                return View(category);
+            }
         }
+
+
+
     }
 }

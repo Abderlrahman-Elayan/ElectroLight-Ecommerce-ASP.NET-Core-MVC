@@ -1,5 +1,5 @@
 ﻿using ElectroLight.Application.Interfaces.Common;
-using ElectroLight.Application.Interfaces.IServices;
+using ElectroLight.Application.Services.IServices;
 using ElectroLight.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ElectroLight.Application.Services
+namespace ElectroLight.Application.Services.Implementation
 {
     public class CategoryService : ICategoryService
     {
@@ -25,8 +25,9 @@ namespace ElectroLight.Application.Services
             return await _uow.Categories.GetAllAsync(filter, includes);
         }
 
-        public async Task<Category?> GetAsync(Expression<Func<Category,bool>> filter)
+        public async Task<Category?> GetAsync(Expression<Func<Category, bool>> filter)
         {
+
             return await _uow.Categories.GetAsync(filter);
         }
 
@@ -44,11 +45,18 @@ namespace ElectroLight.Application.Services
             await _uow.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Category category)
+        public async Task<bool> DeleteAsync(Category category)
         {
-           
-            _uow.Categories.Remove(category);
-            await _uow.SaveChangesAsync();
+            try
+            {
+                _uow.Categories.Remove(category);
+                await _uow.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
 

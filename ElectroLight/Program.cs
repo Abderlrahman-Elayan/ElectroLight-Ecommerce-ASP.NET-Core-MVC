@@ -1,6 +1,6 @@
 using ElectroLight.Application.Interfaces.Common;
-using ElectroLight.Application.Interfaces.IServices;
-using ElectroLight.Application.Services;
+using ElectroLight.Application.Services.Implementation;
+using ElectroLight.Application.Services.IServices;
 using ElectroLight.Infrastructure.Data;
 using ElectroLight.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;

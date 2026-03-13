@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace ElectroLight.Application.Interfaces.IServices
+namespace ElectroLight.Application.Services.IServices
 {
     public interface ICategoryService
     {
@@ -12,6 +12,6 @@ namespace ElectroLight.Application.Interfaces.IServices
         Task<Category?> GetAsync(Expression<Func<Category,bool>> filter);
         Task<Category> AddAsync(Category category);
         Task UpdateAsync(Category category);
-        Task DeleteAsync(Category category);
+        Task<bool> DeleteAsync(Category category);
     }
 }
