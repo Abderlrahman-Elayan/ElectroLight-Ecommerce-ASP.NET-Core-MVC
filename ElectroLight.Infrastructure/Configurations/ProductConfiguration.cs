@@ -14,7 +14,12 @@ namespace ElectroLight.Infrastructure.Configurations
             builder.HasOne(p => p.Category)
                    .WithMany(c => c.Products)
                    .HasForeignKey(p => p.CategoryId);
-                   //.OnDelete(DeleteBehavior.Restrict);
+            //.OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(p => p.Price).HasPrecision(18, 2);
+
+            builder.Property(p => p.CreatedAt)
+            .HasDefaultValueSql("GETUTCDATE()");
 
             builder.HasData(
                new Product
@@ -24,7 +29,6 @@ namespace ElectroLight.Infrastructure.Configurations
                    Description = "A high-end smartphone with a sleek design and powerful features.",
                    Price = 699.99m,
                    StockQuantity = 50,
-                   CreatedAt = DateTime.UtcNow,
                    CategoryId = 1
                },
                 new Product
@@ -34,7 +38,6 @@ namespace ElectroLight.Infrastructure.Configurations
                     Description = "A lightweight laptop with a long battery life, perfect for work and entertainment.",
                     Price = 999.99m,
                     StockQuantity = 30,
-                    CreatedAt = DateTime.UtcNow,
                     CategoryId = 1
                 },
                 new Product
@@ -44,7 +47,6 @@ namespace ElectroLight.Infrastructure.Configurations
                     Description = "Noise-cancelling headphones with superior sound quality and comfort.",
                     Price = 199.99m,
                     StockQuantity = 100,
-                    CreatedAt = DateTime.UtcNow,
                     CategoryId = 2
                 });
         }

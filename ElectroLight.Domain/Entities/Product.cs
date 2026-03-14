@@ -26,14 +26,14 @@ namespace ElectroLight.Domain.Entities
         [Range(0, 10000)]
         public int StockQuantity { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; }
 
         [Required]
         public int CategoryId { get; set; }
         
         [ForeignKey("CategoryId")]
         [ValidateNever]
-        public Category Category { get; set; } = new();
+        public Category Category { get; set; } = null!;
 
         [MaxLength(500)]
         public string? ImageUrl { get; set; } = "/img/placeholder.jpg";
