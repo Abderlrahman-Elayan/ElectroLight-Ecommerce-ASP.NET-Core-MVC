@@ -11,12 +11,15 @@ namespace ElectroLight.Infrastructure.Repository
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         public IRepository<Category> Categories { get; private set; }
+        public IRepository<Product> Products{ get; private set; }
 
         private ApplicationDbContext _db;
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
             Categories = new Repository<Category>(_db);
+
+            Products = new Repository<Product>(_db);
         }
 
         public void Dispose()

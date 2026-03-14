@@ -1,6 +1,6 @@
 ﻿var dataTable;
 
-$(document).ready(function () {
+$(document).ready(function() {
     loadDataTable();
 });
 
@@ -8,11 +8,11 @@ function loadDataTable() {
     dataTable = $('#tbldata').DataTable({
         "ajax": { url: '/category/getall' },
         "columns": [
-            { data: 'name', "width": "30%" },
+            { data: 'name', "width": "25%" },
             { data: 'description', "width": "45%" },
             {
                 data: 'id',
-                "render": function (data) {
+                "render": function(data) {
                     return `<div class="text-center">
                     <div class="w-75 btn-group" role="group ">
                      <a href="/category/upsert?id=${data}" class="btn btn-success mx-2" p-2> <i class="bi bi-pencil-square"></i> Edit</a>               
@@ -40,11 +40,11 @@ function Delete(url) {
             $.ajax({
                 url: url,
                 type: 'DELETE',
-                success: function (data) {
+                success: function(data) {
                     dataTable.ajax.reload();
                     toastr.success(data.message);
                 }
             })
         }
     })
-}
+} 

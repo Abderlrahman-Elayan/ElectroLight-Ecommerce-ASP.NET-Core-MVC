@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace ElectroLight.Domain.Entities
@@ -14,9 +16,11 @@ namespace ElectroLight.Domain.Entities
         [Required]
         public string Name{ get; set; } =string.Empty;
 
+
         [MaxLength(100)]
         public string? Description { get; set; }
 
-        //public List<Product> products { get; set; }
+        [ValidateNever]
+        public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,20 +16,29 @@ namespace ElectroLight.Domain.Entities
         [StringLength(100, MinimumLength = 3)]
         public string Name { get; set; } = string.Empty;
 
-        [StringLength(500, MinimumLength = 3)]
+        [MaxLength(500)]
         public string? Description { get; set; }
 
         [Required]
         [Range(0.01, 100000)]
-        //[Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
-        [StringLength(500, MinimumLength = 3)]
-        public string? ImageUrl { get; set; }
+        [Range(0, 10000)]
+        public int StockQuantity { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [Required]
         public int CategoryId { get; set; }
+        
         [ForeignKey("CategoryId")]
-        public Category Category { get; set; } 
+        [ValidateNever]
+        public Category Category { get; set; } = new();
+
+        [MaxLength(500)]
+        public string? ImageUrl { get; set; } = "/img/placeholder.jpg";
+
+
+        //public ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();
     }
 }

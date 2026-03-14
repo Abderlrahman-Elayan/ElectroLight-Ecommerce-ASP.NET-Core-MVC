@@ -8,7 +8,7 @@ namespace ElectroLight.Controllers
 {
     public class CategoryController : Controller
     {
-        private ICategoryService _service;
+        private readonly ICategoryService _service;
 
         public CategoryController(ICategoryService service)
         {

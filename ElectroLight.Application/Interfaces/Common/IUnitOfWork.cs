@@ -9,7 +9,7 @@ namespace ElectroLight.Application.Interfaces.Common
     public interface IUnitOfWork : IDisposable
     {
         IRepository<Category> Categories{ get; }
-
+        IRepository<Product> Products { get; }
         Task SaveChangesAsync();
 
     }
