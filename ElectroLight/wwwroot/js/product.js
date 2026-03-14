@@ -6,17 +6,19 @@ $(document).ready(function() {
 
 function loadDataTable() {
     dataTable = $('#tbldata').DataTable({
-        "ajax": { url: '/category/getall' },
+        "ajax": { url: '/product/getall' },
         "columns": [
-            { data: 'name', "width": "25%" },
-            { data: 'description', "width": "45%" },
+            { data: 'name', "width": "15%" },
+            { data: 'description', "width": "30%" }, 
+            { data: 'price', "width": "15%" },
+            { data: 'stockQuantity', "width": "15%" },
             {
                 data: 'id',
                 "render": function(data) {
                     return `<div class="text-center">
                     <div class="w-75 btn-group" role="group ">
-                     <a href="/category/upsert?id=${data}" class="btn btn-success mx-2" p-2> <i class="bi bi-pencil-square"></i> Edit</a>               
-                     <a onClick=Delete('/category/delete/${data}') class="btn btn-danger mx-2 p-2"> <i class="bi bi-trash-fill"></i> Delete</a>
+                     <a href="/product/Upsert?id=${data}" class="btn btn-success mx-2" p-2> <i class="bi bi-pencil-square"></i> Edit</a>               
+                     <a onClick=Delete('/product/delete/${data}') class="btn btn-danger mx-2 p-2"> <i class="bi bi-trash-fill"></i> Delete</a>
                     </div>
                      </div>`
                 },

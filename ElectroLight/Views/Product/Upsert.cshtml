@@ -1,0 +1,74 @@
+﻿@model Product
+
+<div class="card shadow-lg">
+    @if (Model.Id == 0)
+    {
+        <div class="card-header bg-warning bg-gradient text-center text-light"><h2 class="text-dark fw-bold">Create Product</h2></div>
+    }
+    else
+    {
+        <div class="card-header bg-success bg-gradient text-center"><h2 class="text-dark fw-bold">Edit Product</h2></div>
+    }
+    <div class="card-body">
+        <div class="row">
+            <form asp-action="Upsert">
+                <input hidden asp-for="Id" />
+                <div class="row">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-floating   col-6 py-1 mb-3">
+                        <input asp-for="Name" class="form-control" />
+                        <label asp-for="Name" class="control-label ms-2"></label>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating   col-6  py-1 mb-3">
+                        <input asp-for="Description" class="form-control" />
+                        <label asp-for="Description" class="control-label ms-2"></label>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                     <div class="form-floating   col-6  py-1 mb-3">
+                        <input asp-for="Price" class="form-control" type="number"/>
+                        <label asp-for="Price" class="control-label ms-2"></label>
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating   col-6  py-1 mb-3">
+                        <input asp-for="StockQuantity" class="form-control" />
+                        <label asp-for="StockQuantity" class="control-label ms-2"></label>
+                        <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating  col-6  py-1 mb-3">
+                        <input asp-for="ImageUrl" class="form-control" />
+                        <label asp-for="ImageUrl" class="control-label ms-2"></label>
+                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating  col-6  py-1 mb-3">
+                        <input asp-for="CategoryId" class="form-control" />
+                        <label asp-for="CategoryId" class="control-label ms-2"></label>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group mt-3">
+                    @if (Model.Id == 0)
+                    {
+                        <input type="submit" value="Create" class="btn btn-warning text-dark fw-bold " />
+                    }
+                    else
+                    {
+                        <input type="submit" value="Edit" class="btn btn-success text-dark fw-bold " />
+
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

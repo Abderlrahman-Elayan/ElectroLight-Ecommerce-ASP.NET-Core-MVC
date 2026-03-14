@@ -9,7 +9,7 @@ function loadDataTable() {
         "ajax": { url: '/category/getall' },
         "columns": [
             { data: 'name', "width": "30%" },
-            { data: 'description', "width": "45%" },
+            { data: 'description', "width": "40%" },
             {
                 data: 'id',
                 "render": function (data) {
@@ -20,7 +20,7 @@ function loadDataTable() {
                     </div>
                      </div>`
                 },
-                "width": "25%"
+                "width": "30%"
             }
         ]
     });
