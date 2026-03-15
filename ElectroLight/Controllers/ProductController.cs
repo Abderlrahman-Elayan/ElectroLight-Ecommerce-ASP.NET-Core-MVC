@@ -1,57 +1,72 @@
 ﻿using ElectroLight.Application.Services.IServices;
 using ElectroLight.Domain.Entities;
+using ElectroLight.ViewsModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ElectroLight.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly IProductService _service;
+        private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
 
-        public ProductController(IProductService service)
+        private  async Task<IEnumerable<SelectListItem>> getCategoriesListItemsAsync()
         {
-            _service = service;
+            return (await _categoryService.GetAllAsync()).Select(c =>
+                 new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
+
+        }
+
+        public ProductController(IProductService productService,
+                           ICategoryService categoryService)
+        {
+            _productService = productService;
+            _categoryService = categoryService;
         }
 
         public async Task<IActionResult> Index()
+
         {
-            var products = await _service.GetAllAsync();
+            var products = await _productService.GetAllAsync(includes: p=>p.Category);
             return View(products);
         }
 
         public async Task<IActionResult> Upsert(int? id)
         {
-            if (id == null || id == 0)
+
+            ProductVM productVM = new ProductVM()
             {
-                return View(new Product());
-            }
+                Product = await _productService.GetAsync(p => p.Id == id) ?? new Product(),
 
-            var obj = await _service.GetAsync(c => c.Id == id);
+                CategoriesList = await getCategoriesListItemsAsync()
+            };
 
-            if (obj == null)
-                return RedirectToAction("Error", "Home");
-
-            return View(obj);
+            return View(productVM);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Upsert(Product product)
+        public async Task<IActionResult> Upsert(ProductVM productvm)
         {
-            if (product.Name == product.Description)
+            if (productvm.Product.Name == productvm.Product.Description)
                 ModelState.AddModelError("description", "The description cannot exactly match the Name.");
 
             if (!ModelState.IsValid)
-                return View(product);
-
-            if (product.Id == 0)
             {
-                await _service.AddAsync(product);
+                productvm.CategoriesList = await getCategoriesListItemsAsync();
+
+                return View(productvm);
+            }
+
+            if (productvm.Product.Id == 0)
+            {
+                await _productService.AddAsync(productvm.Product);
                 TempData["success"] = "The Product has been Created successfully.";
             }
             else
             {
-                await _service.UpdateAsync(product);
+                await _productService.UpdateAsync(productvm.Product);
                 TempData["success"] = "The Product has been Updated successfully.";
             }
 
@@ -65,7 +80,7 @@ namespace ElectroLight.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            List<Product> ProductList = (await _service.GetAllAsync()).ToList();
+            List<Product> ProductList = (await _productService.GetAllAsync()).ToList();
             return Json(new { data = ProductList });
         }
 
@@ -73,7 +88,7 @@ namespace ElectroLight.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int? id)
         {
-            var Product = await _service.GetAsync(c => c.Id == id);
+            var Product = await _productService.GetAsync(c => c.Id == id);
             if (Product == null)
             {
                 TempData["error"] = "cant delete Product";
@@ -81,7 +96,7 @@ namespace ElectroLight.Controllers
 
             }
 
-            await _service.DeleteAsync(Product);
+            await _productService.DeleteAsync(Product);
             TempData["success"] = "The Product has been Deleted successfully.";
 
             return Json(new { success = true, message = "Product has been Deleted Successfuly" });
