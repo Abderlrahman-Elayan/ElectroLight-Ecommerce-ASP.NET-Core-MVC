@@ -11,14 +11,14 @@
     }
     <div class="card-body">
         <div class="row">
-            <div class="col-2 mx-auto shadow border border-warning border-opacity-75 rounded-3 p-0 overflow-hidden ratio-1x1">
+            <div style="width:180px;height:180px" class="col-2 mx-auto shadow border  border-opacity-75 rounded-3 p-0 overflow-hidden ratio-1x1">
                 <img src="@Model.Product.ImageUrl"
                      alt="@Model.Product.Description"
                      class="w-100 h-100 object-fit-cover">
             </div>
         </div>
         <div class="row">
-            <form asp-action="Upsert">
+            <form asp-action="Upsert" enctype="multipart/form-data">
                 <input hidden asp-for="Product.Id" />
                 <div class="row">
                     <div asp-validation-summary="All" class="text-danger"></div>
@@ -32,7 +32,7 @@
                         <label asp-for="Product.Description" class="control-label ms-2"></label>
                         <span asp-validation-for="Product.Description" class="text-danger"></span>
                     </div>
-                     <div class="form-floating   col-6  py-1 mb-3">
+                    <div class="form-floating   col-6  py-1 mb-3">
                         <input asp-for="Product.Price" class="form-control" type="number" step="0.01" />
                         <label asp-for="Product.Price" class="control-label ms-2"></label>
                         <span asp-validation-for="Product.Price" class="text-danger"></span>
@@ -43,8 +43,9 @@
                         <span asp-validation-for="Product.StockQuantity" class="text-danger"></span>
                     </div>
                     <div class="form-floating  col-6  py-1 mb-3">
-                        <input asp-for="Product.ImageUrl" class="form-control" />
-                        <label asp-for="Product.ImageUrl" class="control-label ms-2"></label>
+                        <input asp-for="Product.ImageUrl" class="form-control" hidden />
+                        <input asp-for="Product.Image" class="form-control" />
+                        <label asp-for="Product.Image" class="control-label ms-2"></label>
                         <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
                     </div>
                     <div class="form-floating  col-6  py-1 mb-3">
@@ -80,4 +81,21 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        const imageInput = document.getElementById("Product_Image"); 
+        const imagePreview = document.querySelector(".col-2 img"); 
+
+        imageInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result; 
+                };
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.src = "@Model.Product.ImageUrl";
+            }
+        });
+    </script>
 }

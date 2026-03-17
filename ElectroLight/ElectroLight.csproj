@@ -19,4 +19,8 @@
     <ProjectReference Include="..\ElectroLight.Infrastructure\ElectroLight.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\ProductImages\" />
+  </ItemGroup>
+
 </Project>

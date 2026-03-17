@@ -10,19 +10,15 @@ namespace ElectroLight.Controllers
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
-
-        private  async Task<IEnumerable<SelectListItem>> getCategoriesListItemsAsync()
-        {
-            return (await _categoryService.GetAllAsync()).Select(c =>
-                 new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
-
-        }
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public ProductController(IProductService productService,
-                           ICategoryService categoryService)
+                           ICategoryService categoryService,
+                           IWebHostEnvironment webHostEnvironment)
         {
             _productService = productService;
             _categoryService = categoryService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index()
@@ -59,6 +55,46 @@ namespace ElectroLight.Controllers
                 return View(productvm);
             }
 
+            //NOTE:
+            //image validation should send to the service later
+            //////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////
+            if (productvm.Product.Image != null)
+            {
+                var ext = Path.GetExtension(productvm.Product.Image.FileName).ToLower();
+                string[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".webp", ".gif" };
+                if (!allowedExtensions.Contains(ext))
+                {
+                    ModelState.AddModelError("Product.Image", "Only image files are allowed.");
+                    productvm.CategoriesList = await getCategoriesListItemsAsync();
+                    return View(productvm);
+                }
+
+                string fileName = $"{Guid.NewGuid()}{ext}";
+
+                string folderPath = Path.Combine(_webHostEnvironment.WebRootPath, "img", "ProductImages");
+
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                string fullPath = Path.Combine(folderPath, fileName);
+
+                using (var fileStream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await productvm.Product.Image.CopyToAsync(fileStream);
+                }
+
+                productvm.Product.ImageUrl = $"/img/ProductImages/{fileName}";
+            }
+            else
+            {
+                productvm.Product.ImageUrl = "/img/placeholder.jpg";
+            }
+            //////////////////////////////////////////////////////
+            //////////////////////////////////////////////////////
+
             if (productvm.Product.Id == 0)
             {
                 await _productService.AddAsync(productvm.Product);
@@ -72,7 +108,6 @@ namespace ElectroLight.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
 
 
         #region API CALLS
@@ -104,6 +139,12 @@ namespace ElectroLight.Controllers
 
         #endregion
 
+
+        private async Task<IEnumerable<SelectListItem>> getCategoriesListItemsAsync()
+        {
+            return (await _categoryService.GetAllAsync()).Select(c =>
+                 new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
+        }
 
     }
 }
