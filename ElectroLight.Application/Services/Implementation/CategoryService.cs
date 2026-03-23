@@ -20,15 +20,16 @@ namespace ElectroLight.Application.Services.Implementation
 
         public async Task<IEnumerable<Category>> GetAllAsync(
             Expression<Func<Category, bool>>? filter = null,
+            bool AsTracking = true,
             params Expression<Func<Category, object>>[] includes)
         {
-            return await _uow.Categories.GetAllAsync(filter, includes);
+            return await _uow.Categories.GetAllAsync(filter, AsTracking, includes);
         }
 
-        public async Task<Category?> GetAsync(Expression<Func<Category, bool>> filter)
+        public async Task<Category?> GetAsync(Expression<Func<Category, bool>> filter, bool AsTracking = true, params Expression<Func<Category, object>>[] includes)
         {
 
-            return await _uow.Categories.GetAsync(filter);
+            return await _uow.Categories.GetAsync(filter, AsTracking, includes);
         }
 
         public async Task<Category> AddAsync(Category category)

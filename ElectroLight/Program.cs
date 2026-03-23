@@ -3,6 +3,7 @@ using ElectroLight.Application.Services.Implementation;
 using ElectroLight.Application.Services.IServices;
 using ElectroLight.Infrastructure.Data;
 using ElectroLight.Infrastructure.Repository;
+using ElectroLight.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 var app = builder.Build();
 

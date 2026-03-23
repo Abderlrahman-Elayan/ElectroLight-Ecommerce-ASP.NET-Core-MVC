@@ -3,22 +3,21 @@ using ElectroLight.Domain.Entities;
 using ElectroLight.ViewsModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
 namespace ElectroLight.Controllers
 {
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IImageService _imageService;
 
         public ProductController(IProductService productService,
-                           ICategoryService categoryService,
-                           IWebHostEnvironment webHostEnvironment)
+                           ICategoryService categoryService,IImageService imageService
+                          )
         {
             _productService = productService;
             _categoryService = categoryService;
-            _webHostEnvironment = webHostEnvironment;
+            _imageService = imageService;
         }
 
         public async Task<IActionResult> Index()
@@ -30,14 +29,21 @@ namespace ElectroLight.Controllers
 
         public async Task<IActionResult> Upsert(int? id)
         {
+            Product product = await _productService.GetAsync(p => p.Id == id,AsTracking:false,includes: p=>p.Category)??new();
+           
+            string ImagePath = _imageService.GetImageFullPath(product.ImageUrl);
+
+            if (!System.IO.File.Exists(ImagePath))
+            {
+                product.ImageUrl = "/img/placeholder.jpg";
+            }
 
             ProductVM productVM = new ProductVM()
             {
-                Product = await _productService.GetAsync(p => p.Id == id) ?? new Product(),
-
+                Product = product,
                 CategoriesList = await getCategoriesListItemsAsync()
             };
-
+                
             return View(productVM);
         }
 
@@ -48,52 +54,32 @@ namespace ElectroLight.Controllers
             if (productvm.Product.Name == productvm.Product.Description)
                 ModelState.AddModelError("description", "The description cannot exactly match the Name.");
 
+            productvm.CategoriesList = await getCategoriesListItemsAsync();
+
+
             if (!ModelState.IsValid)
             {
-                productvm.CategoriesList = await getCategoriesListItemsAsync();
-
                 return View(productvm);
             }
 
-            //NOTE:
-            //image validation should send to the service later
-            //////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////
             if (productvm.Product.Image != null)
             {
-                var ext = Path.GetExtension(productvm.Product.Image.FileName).ToLower();
-                string[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".webp", ".gif" };
-                if (!allowedExtensions.Contains(ext))
+                try{
+                productvm.Product.ImageUrl = await _imageService.UploadImageAsync(productvm.Product.Image, productvm.Product.ImageUrl);
+                }
+                catch(Exception ex)
                 {
-                    ModelState.AddModelError("Product.Image", "Only image files are allowed.");
-                    productvm.CategoriesList = await getCategoriesListItemsAsync();
+                    ModelState.AddModelError("Product.Image", "An error occurred while uploading the image. Please try again.");
                     return View(productvm);
                 }
-
-                string fileName = $"{Guid.NewGuid()}{ext}";
-
-                string folderPath = Path.Combine(_webHostEnvironment.WebRootPath, "img", "ProductImages");
-
-                if (!Directory.Exists(folderPath))
-                {
-                    Directory.CreateDirectory(folderPath);
-                }
-
-                string fullPath = Path.Combine(folderPath, fileName);
-
-                using (var fileStream = new FileStream(fullPath, FileMode.Create))
-                {
-                    await productvm.Product.Image.CopyToAsync(fileStream);
-                }
-
-                productvm.Product.ImageUrl = $"/img/ProductImages/{fileName}";
             }
-            else
+            else 
             {
+                string ImagePath = _imageService.GetImageFullPath(productvm.Product.ImageUrl);
+                
+                if(!System.IO.File.Exists(ImagePath))
                 productvm.Product.ImageUrl = "/img/placeholder.jpg";
             }
-            //////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////
 
             if (productvm.Product.Id == 0)
             {
@@ -131,6 +117,8 @@ namespace ElectroLight.Controllers
 
             }
 
+           _imageService.DeleteImage(Product.ImageUrl);
+
             await _productService.DeleteAsync(Product);
             TempData["success"] = "The Product has been Deleted successfully.";
 
@@ -139,12 +127,12 @@ namespace ElectroLight.Controllers
 
         #endregion
 
-
         private async Task<IEnumerable<SelectListItem>> getCategoriesListItemsAsync()
         {
             return (await _categoryService.GetAllAsync()).Select(c =>
                  new SelectListItem { Text = c.Name, Value = c.Id.ToString() });
         }
+
 
     }
 }

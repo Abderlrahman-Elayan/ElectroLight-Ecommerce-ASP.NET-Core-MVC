@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ElectroLight.Application\ElectroLight.Application.csproj" />
     <ProjectReference Include="..\ElectroLight.Infrastructure\ElectroLight.Infrastructure.csproj" />
   </ItemGroup>
 

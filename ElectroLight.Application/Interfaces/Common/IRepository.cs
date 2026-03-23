@@ -7,8 +7,12 @@ namespace ElectroLight.Application.Interfaces.Common
 {
     public interface IRepository<T> where T : class
     {
-        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? Filter = null,  params Expression<Func<T, object>>[] Includes);
-        Task<T?> GetAsync(Expression<Func<T, bool>> Filter, params Expression<Func<T, object>>[] Includes);
+        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? Filter = null,
+            bool AsTracking = true,
+            params Expression<Func<T, object>>[] Includes);
+        Task<T?> GetAsync(Expression<Func<T, bool>> Filter, 
+            bool AsTracking = true,
+            params Expression<Func<T, object>>[] Includes);
         Task AddAsync(T entity);
         void Update(T entity);
         void Remove(T entity);

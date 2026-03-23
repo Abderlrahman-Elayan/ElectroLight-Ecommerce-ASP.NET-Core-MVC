@@ -17,15 +17,16 @@ namespace ElectroLight.Application.Services.Implementation
         }
          public async Task<IEnumerable<Product>> GetAllAsync(
             Expression<Func<Product, bool>>? filter = null,
+            bool AsTracking = true,
             params Expression<Func<Product, object>>[] includes)
         {
-            return await _uow.Products.GetAllAsync(filter, includes);
+            return await _uow.Products.GetAllAsync(filter, AsTracking, Includes: includes);
         }
 
-        public async Task<Product?> GetAsync(Expression<Func<Product, bool>> filter)
+        public async Task<Product?> GetAsync(Expression<Func<Product, bool>> filter,bool AsTracking = true, params Expression<Func<Product, object>>[] includes)
         {
 
-            return await _uow.Products.GetAsync(filter);
+            return await _uow.Products.GetAsync(filter, AsTracking, includes);
         }
 
         public async Task<Product> AddAsync(Product Product)

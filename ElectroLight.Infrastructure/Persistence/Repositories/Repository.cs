@@ -25,9 +25,15 @@ namespace ElectroLight.Infrastructure.Repository
 
         public async Task<IEnumerable<T>> GetAllAsync(
             Expression<Func<T, bool>>? Filter = null,
+                      bool AsTracking = true,
             params Expression<Func<T, object>>[] Includes)
         {
             IQueryable<T> query = _dbSet;
+
+            if(!AsTracking)
+            {
+                query = query.AsNoTracking();
+            }
 
             foreach (var includeProp in Includes)
             {
@@ -44,9 +50,15 @@ namespace ElectroLight.Infrastructure.Repository
 
         public async Task<T?> GetAsync(
             Expression<Func<T, bool>> Filter,
+                      bool AsTracking = true,
             params Expression<Func<T, object>>[] Includes)
         {
             IQueryable<T> query = _dbSet;
+
+            if (!AsTracking)
+            {
+                query = query.AsNoTracking();
+            }
 
             foreach (var includeProp in Includes)
             {
