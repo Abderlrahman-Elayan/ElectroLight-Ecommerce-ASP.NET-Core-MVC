@@ -1,39 +1,50 @@
 html {
-  font-size: 14px;
+    font-size: 62.5%;
+    /*    overflow-x: hidden;*/
+    /*    scroll-behavior: smooth;*/
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
 
 body {
     margin-bottom: 60px;
-    font-family: "Luxurious Roman", serif;
+    font-family: "Rubik", sans-serif;
     font-weight: 400;
+    color: #555;
     font-style: normal;
     letter-spacing: 0.02rem;
+    line-height: 1;
+}
+.title-card-header{
+    font-size:2.4rem !important;
+}
+.custom-view {
+    font-size: 14px;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+ .custom-view * {
+        font-size: inherit;
+ }
+
+/*.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    text-align: start;
 }
+*/
 
+
+/*toaster style*/
+/*************************************************/
+/*************************************************/
 /* container spacing */
 #toast-container > div {
     padding: 18px 20px;
@@ -44,11 +55,9 @@ body {
     font-weight: 500;
     opacity: 1 !important;
 }
-
-/*toaster style*/
-/*************************************************/
-/*************************************************/
 /* success style */
+
+
 .toast-success {
     background: linear-gradient(135deg,#16a34a,#22c55e);
     border-left: 6px solid #0f7a33;
@@ -116,22 +125,6 @@ body {
     /* Dark */
     --bs-dark: #0f172a;
 }
-.btn {
-    border-radius: 10px;
-    font-weight: 500;
-    padding: 8px 18px;
-    transition: all 0.25s ease;
-}
-
-    .btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 14px rgba(0,0,0,0.15);
-    }
-
-.card {
-    border-radius: 14px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-}
 
 .alert {
     border-radius: 10px;
@@ -139,6 +132,122 @@ body {
 
 
 /*table style*/
-.dt-input{
-    margin-right:1rem;
+.dt-input {
+    margin-right: 1rem;
 }
+
+
+/*Header*/
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 9.6rem;
+    padding: 0 4.8rem;
+    position: relative;
+    background-color: #effbfd;
+}
+
+.logo {
+    height: 6.6rem;
+}
+.nav-list{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:2.4rem;
+}
+.nav-item {
+    list-style: none;
+}
+/*Hero Section*/
+.hero-section {
+    background-color: #effbfd;
+    padding: 4.8rem 0 9.6rem 0;
+}
+
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 9.6rem;
+    margin: 0 auto;
+}
+
+.hero-text-box{
+    align-self:center;
+}
+
+.hero-img {
+    object-fit: cover;  
+    width: 100%;
+}
+
+
+.shop-text {
+    color: #569afe;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+}
+
+.hero-description {
+    font-size: 1.8rem;
+    margin-bottom: 4.8rem;
+    line-height: 1.5;
+}
+
+.button-primary {
+    font-size: 1.8rem;
+    font-weight: 600;
+    background-color: #4a92fe;
+    padding: 1.6rem 3.2rem;
+    border-top-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    color: #fff;
+}
+
+.button-primary:hover, .button-primary:active {
+    background-color: #257dfd;
+}
+
+.button-hero-login {
+    font-size: 1.8rem;
+    font-weight: 600;
+    padding: 1.6rem 3.2rem;
+    border-radius: 12px;
+    color: #444;
+    background-color: #fff;
+}
+
+.nav-item *, .dropdown {
+    font-size: 1.8rem;
+    color:#333;
+}
+
+.dropdown-toggle {
+    background-color: #4a92fe;
+    font-weight: 600;
+    color:#fff;
+    border: 0;
+    padding: 1.2rem 2.4rem;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+    .dropdown-toggle:hover {
+        scale: 1.02;
+        background-color: #257dfd;
+    }
+
+.dropdown-menu{
+    font-size:1.8rem;
+}
+
+.dropdown-item{
+    padding:1.2rem;
+    font-weight:600;    
+}
+    .dropdown-item:hover {
+        background-color: #4a92fe;
+
+        color:#fff;
+    }

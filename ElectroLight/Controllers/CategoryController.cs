@@ -17,8 +17,9 @@ namespace ElectroLight.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var categories = await _service.GetAllAsync();
-            return View(categories);
+            //var categories = await _service.GetAllAsync();
+            //return View(categories);
+            return View();
         }
 
         public async Task<IActionResult> Upsert(int? id)

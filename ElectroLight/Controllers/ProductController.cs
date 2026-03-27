@@ -21,10 +21,11 @@ namespace ElectroLight.Controllers
         }
 
         public async Task<IActionResult> Index()
-
+                
         {
-            var products = await _productService.GetAllAsync(includes: p=>p.Category);
-            return View(products);
+            //var products = await _productService.GetAllAsync(includes: p=>p.Category);
+            //return View(products);
+            return View();
         }
 
         public async Task<IActionResult> Upsert(int? id)
@@ -69,7 +70,7 @@ namespace ElectroLight.Controllers
                 }
                 catch(Exception ex)
                 {
-                    ModelState.AddModelError("Product.Image", "An error occurred while uploading the image. Please try again.");
+                    ModelState.AddModelError("Product.Image", "An error occurred while uploading the image. Please make sure you uploaded imgae file like: .jpg,.jpeg,.png,.webp,.gif");
                     return View(productvm);
                 }
             }

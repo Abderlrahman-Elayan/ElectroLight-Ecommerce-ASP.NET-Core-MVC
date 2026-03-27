@@ -1,13 +1,13 @@
 ﻿@model Category
-
+<div class="container custom-view mt-3">
 <div class="card shadow-lg">
     @if (Model.Id == 0)
     {
-        <div class="card-header bg-warning bg-gradient text-center text-light"><h2 class="text-dark fw-bold">Create Category</h2></div>
+        <div class="card-header bg-warning bg-gradient text-center text-light"><h1 class="text-dark fw-bold title-card-header">Create Category</h1></div>
     }
     else
     {
-        <div class="card-header bg-success bg-gradient text-center"><h2 class="text-dark fw-bold">Edit Category</h2></div>
+        <div class="card-header bg-success bg-gradient text-center"><h1 class="text-dark fw-bold title-card-header">Edit Category</h1></div>
     }
     <div class="card-body">
         <div class="row">
@@ -46,7 +46,7 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
+</div>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

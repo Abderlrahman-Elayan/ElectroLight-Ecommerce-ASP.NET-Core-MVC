@@ -44,6 +44,7 @@ namespace ElectroLight.Infrastructure.Services
                 await Image.CopyToAsync(fileStream);
             }
 
+
             return $"/img/ProductImages/{fileName}";
         }
 

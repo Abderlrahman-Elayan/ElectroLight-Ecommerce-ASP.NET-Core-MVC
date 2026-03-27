@@ -37,7 +37,7 @@ namespace ElectroLight.Domain.Entities
         [ValidateNever]
         public Category Category { get; set; } = null!;
 
-        [MaxLength(500)]
+        [MaxLength(500)]  
         public string? ImageUrl { get; set; } = "/img/placeholder.jpg";
 
         [NotMapped]
