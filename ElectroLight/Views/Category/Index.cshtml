@@ -1,4 +1,7 @@
-﻿@model IEnumerable<Category>
+﻿@{
+    ViewData["PageType"] = "admin-page";
+}
+@model IEnumerable<Category>
 <div class="container custom-view mt-3">
 <div class="card shadow-lg">
     <div class="card-header bg-primary  bg-gradient text-center p-2">
@@ -6,6 +9,7 @@
     </div>
     <div class="card-body">
         <div class="row p-3">
+              
             <a asp-controller="Category" asp-action="Upsert"
                class="btn btn-warning mb-3 ms-auto col-3 p-2 text-dark fw-bold">
                 <i class="bi bi-plus-circle"></i> Add New Category

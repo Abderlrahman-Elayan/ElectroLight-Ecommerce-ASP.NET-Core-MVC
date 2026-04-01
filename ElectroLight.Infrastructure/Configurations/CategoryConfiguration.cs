@@ -12,9 +12,10 @@ namespace ElectroLight.Infrastructure.Configurations
         public void Configure(EntityTypeBuilder<Category> builder)
         {
 
+
             builder.HasData(
                 new Category { Id = 1, Name = "Electronics", Description = "Electronic devices and gadgets" },
-                new Category { Id = 2, Name = "Laptops", Description = "some text" },
+                new Category { Id = 2, Name = "Laptops", Description = "some text"},
                 new Category { Id = 3, Name = "Screens", Description = "test test test" }
         );
         }

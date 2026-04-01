@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,9 +14,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Luxurious+Roman&display=swap" rel="stylesheet">
     <link href="//cdn.datatables.net/2.3.7/css/dataTables.dataTables.min.css" rel="stylesheet">
-    @* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" /> *@
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 </head>
-<body>
+<body class="@(ViewData["PageType"])">
     @* <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow ">
             <div class="container-fluid">
@@ -39,7 +39,7 @@
                         <li class="nav-item">
                             <a class="nav-link " asp-area="" asp-controller="Product" asp-action="Index">Products</a>
                         </li>
-                        <li class="ms-auto">
+                        <li class="">
                             <button id="themeToggle" class="btn btn-outline-secondary">
                                 <i class="bi bi-moon-fill"></i>
                             </button>
@@ -49,38 +49,26 @@
             </div>
         </nav>
     </header> *@
-   
-    <header class="header">
-        <a class="home-link" asp-controller="home" asp-action="index">
+
+    
+    @if (ViewData["PageType"] as string == "admin-page")
+    {
+        <a class="home-link ps-4" asp-controller="home" asp-action="index" >
+          
             <img src="~/img/logo.png" class="logo" alt="RlectroLight logo" />
         </a>
-        <nav>
-            <ul class="nav-list">
-                <div class ="dropdown">
-                    <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Content Mangement
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" asp-controller="category" asp-action="index">Categories</a></li>
-                        <li><a class="dropdown-item" asp-controller="product" asp-action="index">Products</a></li>
-                    </ul>
-                </div>
-                <li class="nav-item">
-                    <a class="button">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="button">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="button">Login</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
 
+        <button id="themeToggle"
+                class="btn btn-outline-secondary"
+                style="position:fixed; top:20px; right:20px; z-index:999;">
+            <i class="bi bi-moon-fill"></i>
+        </button>
+    }
+    
     <div>
         <main role="main">
             <partial name="_Notification" />
+
             @RenderBody()
         </main>
     </div>
@@ -97,7 +85,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @* <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script> *@
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -29,7 +29,8 @@ namespace ElectroLight.Infrastructure.Configurations
                    Description = "A high-end smartphone with a sleek design and powerful features.",
                    Price = 699.99m,
                    StockQuantity = 50,
-                   CategoryId = 1
+                   CategoryId = 1,
+                   CreatedAt = new DateTime(2026, 03, 29, 0, 0, 0, DateTimeKind.Utc)
                },
                 new Product
                 {
@@ -38,7 +39,8 @@ namespace ElectroLight.Infrastructure.Configurations
                     Description = "A lightweight laptop with a long battery life, perfect for work and entertainment.",
                     Price = 999.99m,
                     StockQuantity = 30,
-                    CategoryId = 1
+                    CategoryId = 1,
+                    CreatedAt = new DateTime(2026, 03, 29, 0, 0, 0, DateTimeKind.Utc)
                 },
                 new Product
                 {
@@ -47,7 +49,8 @@ namespace ElectroLight.Infrastructure.Configurations
                     Description = "Noise-cancelling headphones with superior sound quality and comfort.",
                     Price = 199.99m,
                     StockQuantity = 100,
-                    CategoryId = 2
+                    CategoryId = 2,
+                    CreatedAt = new DateTime(2026, 03, 29, 0, 0, 0, DateTimeKind.Utc)
                 });
         }
     }

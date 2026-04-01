@@ -1,0 +1,21 @@
+﻿
+@model IEnumerable<Product> 
+
+<section class="categories-section" >
+    <div class="container justify-content-center">
+        <span class="tag mx-auto">Categories</span>
+        <div class="categories-grid">
+            @foreach (var product in Model)
+            {
+                <div class="category-card button">
+                    <img class="category-image" src="@product.ImageUrl" alt="@product.Description" />
+                    <div class="category-card-body align-content-center text-center">
+                        <p class="product-name">@product.Name</p>
+                        <p class="product-price">@product.Price</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+</section>

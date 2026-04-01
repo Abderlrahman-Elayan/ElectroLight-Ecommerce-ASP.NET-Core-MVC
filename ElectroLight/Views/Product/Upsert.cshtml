@@ -1,4 +1,7 @@
-﻿@model ProductVM
+﻿@{
+    ViewData["PageType"] = "admin-page";
+}
+@model ProductVM
 <div class="container custom-view mt-3">
 <div class="card shadow-lg">
     @if (Model.Product.Id == 0)
@@ -49,7 +52,7 @@
                         <label asp-for="Product.Image" class="control-label ms-2"></label>
                         <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
                     </div>
-                    <div class="form-floating  col-6  py-1 mb-3">
+                    <div class="form-floating  col-6  pb-1 mb-3">
                         <select asp-for="Product.CategoryId" asp-items="@Model.CategoriesList" class="form-select border shadow">
                             <option disabled selected>-- Select Category --</option>
                         </select>

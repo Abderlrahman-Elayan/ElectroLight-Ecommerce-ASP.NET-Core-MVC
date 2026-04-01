@@ -1,4 +1,5 @@
-﻿using ElectroLight.Application.Services.IServices;
+﻿using ElectroLight.Application.Services.Implementation;
+using ElectroLight.Application.Services.IServices;
 using ElectroLight.Domain.Entities;
 using ElectroLight.ViewsModels;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ namespace ElectroLight.Controllers
         private readonly IImageService _imageService;
 
         public ProductController(IProductService productService,
-                           ICategoryService categoryService,IImageService imageService
+                           ICategoryService categoryService, IImageService imageService
                           )
         {
             _productService = productService;
@@ -21,7 +22,6 @@ namespace ElectroLight.Controllers
         }
 
         public async Task<IActionResult> Index()
-                
         {
             //var products = await _productService.GetAllAsync(includes: p=>p.Category);
             //return View(products);
@@ -30,8 +30,8 @@ namespace ElectroLight.Controllers
 
         public async Task<IActionResult> Upsert(int? id)
         {
-            Product product = await _productService.GetAsync(p => p.Id == id,AsTracking:false,includes: p=>p.Category)??new();
-           
+            Product product = await _productService.GetAsync(p => p.Id == id, AsTracking: false, includes: p => p.Category) ?? new();
+
             string ImagePath = _imageService.GetImageFullPath(product.ImageUrl);
 
             if (!System.IO.File.Exists(ImagePath))
@@ -44,7 +44,7 @@ namespace ElectroLight.Controllers
                 Product = product,
                 CategoriesList = await getCategoriesListItemsAsync()
             };
-                
+
             return View(productVM);
         }
 
@@ -65,21 +65,22 @@ namespace ElectroLight.Controllers
 
             if (productvm.Product.Image != null)
             {
-                try{
-                productvm.Product.ImageUrl = await _imageService.UploadImageAsync(productvm.Product.Image, productvm.Product.ImageUrl);
+                try
+                {
+                    productvm.Product.ImageUrl = await _imageService.UploadAndNormalizeImageAsync(productvm.Product.Image, productvm.Product.ImageUrl,"ProductImages");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     ModelState.AddModelError("Product.Image", "An error occurred while uploading the image. Please make sure you uploaded imgae file like: .jpg,.jpeg,.png,.webp,.gif");
                     return View(productvm);
                 }
             }
-            else 
+            else
             {
                 string ImagePath = _imageService.GetImageFullPath(productvm.Product.ImageUrl);
-                
-                if(!System.IO.File.Exists(ImagePath))
-                productvm.Product.ImageUrl = "/img/placeholder.jpg";
+
+                if (!System.IO.File.Exists(ImagePath))
+                    productvm.Product.ImageUrl = "/img/placeholder.jpg";
             }
 
             if (productvm.Product.Id == 0)
@@ -96,6 +97,12 @@ namespace ElectroLight.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> ProductsList(int? categoryId)
+        {
+
+            var products = await _productService.GetAllAsync(p => p.CategoryId == categoryId);
+            return View(products);
+        }
 
         #region API CALLS
 
@@ -118,7 +125,7 @@ namespace ElectroLight.Controllers
 
             }
 
-           _imageService.DeleteImage(Product.ImageUrl);
+            _imageService.DeleteImage(Product.ImageUrl);
 
             await _productService.DeleteAsync(Product);
             TempData["success"] = "The Product has been Deleted successfully.";

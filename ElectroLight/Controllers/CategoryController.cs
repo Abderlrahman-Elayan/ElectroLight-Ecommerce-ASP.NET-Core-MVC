@@ -1,18 +1,23 @@
-﻿using ElectroLight.Application.Interfaces;
+﻿    using ElectroLight.Application.Interfaces;
+using ElectroLight.Application.Services.Implementation;
 using ElectroLight.Application.Services.IServices;
 using ElectroLight.Domain.Entities;
 using ElectroLight.Infrastructure.Data;
+using ElectroLight.Infrastructure.Services;
+using ElectroLight.ViewsModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElectroLight.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ICategoryService _service;
+        private readonly ICategoryService _CategoryService;
+        private readonly IImageService _imageService;
 
-        public CategoryController(ICategoryService service)
+        public CategoryController(ICategoryService service, IImageService imageService)
         {
-            _service = service;
+            _CategoryService = service;
+            _imageService = imageService;
         }
 
         public async Task<IActionResult> Index()
@@ -24,17 +29,17 @@ namespace ElectroLight.Controllers
 
         public async Task<IActionResult> Upsert(int? id)
         {
-            if (id == null || id == 0)
+
+            Category category = await _CategoryService.GetAsync(p => p.Id == id, AsTracking: false) ?? new();
+
+            string ImagePath = _imageService.GetImageFullPath(category.ImageUrl);
+
+            if (!System.IO.File.Exists(ImagePath))
             {
-                return View(new Category());
+                category.ImageUrl = "/img/placeholder.jpg";
             }
 
-            var obj = await _service.GetAsync(c => c.Id == id);
-
-            if (obj == null)
-                return RedirectToAction("Error", "Home");
-
-            return View(obj);
+            return View(category);
         }
 
         [HttpPost]
@@ -47,16 +52,37 @@ namespace ElectroLight.Controllers
             if (!ModelState.IsValid)
                 return View(category);
 
+            if (category.Image != null)
+            {
+                try
+                {
+                    category.ImageUrl = await _imageService.UploadAndNormalizeImageAsync(category.Image, category.ImageUrl,"CategoryImages");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Product.Image", "An error occurred while uploading the image. Please make sure you uploaded imgae file like: .jpg,.jpeg,.png,.webp,.gif");
+                    return View(category);
+                }
+            }
+            else
+            {
+                string ImagePath = _imageService.GetImageFullPath(category.ImageUrl);
+
+                if (!System.IO.File.Exists(ImagePath))
+                    category.ImageUrl = "/img/placeholder.jpg";
+            }
+
+
             if (category.Id == 0)
             {
-                await _service.AddAsync(category);
+                await _CategoryService.AddAsync(category);
                 TempData["success"] = "The Category has been Created successfully.";
             }
             else
             {
-                await _service.UpdateAsync(category);
+                await _CategoryService.UpdateAsync(category);
                 TempData["success"] = "The Category has been Updated successfully.";
-            }
+            }   
 
             return RedirectToAction(nameof(Index));
         }
@@ -68,7 +94,7 @@ namespace ElectroLight.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            List<Category> CategoryList = (await _service.GetAllAsync()).ToList();
+            List<Category> CategoryList = (await _CategoryService.GetAllAsync()).ToList();
             return Json(new { data = CategoryList });
         }
 
@@ -76,7 +102,7 @@ namespace ElectroLight.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int? id)
         {
-            var Category = await _service.GetAsync(c => c.Id == id);
+            var Category = await _CategoryService.GetAsync(c => c.Id == id);
             if (Category == null)
             {
                 TempData["error"] = "cant delete Category";
@@ -84,7 +110,9 @@ namespace ElectroLight.Controllers
 
             }
 
-            await _service.DeleteAsync(Category);
+            _imageService.DeleteImage(Category.ImageUrl);
+
+            await _CategoryService.DeleteAsync(Category);
             TempData["success"] = "The Category has been Deleted successfully.";
 
             return Json(new { success = true, message = "Category has been Deleted Successfuly" });

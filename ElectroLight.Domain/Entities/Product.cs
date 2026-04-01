@@ -28,7 +28,7 @@ namespace ElectroLight.Domain.Entities
         [Range(0, 10000)]
         public int StockQuantity { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
 
         [Required]
         public int CategoryId { get; set; }

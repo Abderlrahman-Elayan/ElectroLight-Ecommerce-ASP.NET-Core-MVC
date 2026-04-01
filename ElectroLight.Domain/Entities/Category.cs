@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -20,7 +22,15 @@ namespace ElectroLight.Domain.Entities
         [MaxLength(100)]
         public string? Description { get; set; }
 
+        [MaxLength(500)]
+        public string? ImageUrl { get; set; } = "/img/placeholder.jpg";
+
+        [NotMapped]
+        public IFormFile? Image { get; set; }
+
+
         [ValidateNever]
         public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }
+    

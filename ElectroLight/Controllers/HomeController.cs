@@ -1,5 +1,6 @@
 using ElectroLight.Application.Services.IServices;
 using ElectroLight.Models;
+using ElectroLight.ViewsModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,16 +8,19 @@ namespace ElectroLight.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IProductService productService;
+        private readonly ICategoryService categoryService;
 
-        public HomeController(IProductService productService)
+        public HomeController(ICategoryService categoryService)
         {
-            this.productService = productService;
+            this.categoryService = categoryService;
         }
         public async Task<IActionResult> Index()
         {
-            var products = await productService.GetAllAsync(includes: p => p.Category);
-            return View(products);
+            HomeVM homeVM = new()
+            {
+                categoriesList = await categoryService.GetAllAsync(),
+            };
+            return View(homeVM);
         }
 
         public IActionResult Privacy()
@@ -30,3 +34,4 @@ namespace ElectroLight.Controllers
         }
     }
 }
+

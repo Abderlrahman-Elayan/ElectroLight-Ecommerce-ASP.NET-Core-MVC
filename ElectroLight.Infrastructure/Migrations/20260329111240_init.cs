@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ElectroLight.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,8 @@ namespace ElectroLight.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    ImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -54,22 +55,22 @@ namespace ElectroLight.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Categories",
-                columns: new[] { "Id", "Description", "Name" },
+                columns: new[] { "Id", "Description", "ImageUrl", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Electronic devices and gadgets", "Electronics" },
-                    { 2, "some text", "Laptops" },
-                    { 3, "test test test", "Screens" }
+                    { 1, "Electronic devices and gadgets", "/img/placeholder.jpg", "Electronics" },
+                    { 2, "some text", "/img/placeholder.jpg", "Laptops" },
+                    { 3, "test test test", "/img/placeholder.jpg", "Screens" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CategoryId", "Description", "ImageUrl", "Name", "Price", "StockQuantity" },
+                columns: new[] { "Id", "CategoryId", "CreatedAt", "Description", "ImageUrl", "Name", "Price", "StockQuantity" },
                 values: new object[,]
                 {
-                    { 1, 1, "A high-end smartphone with a sleek design and powerful features.", "/img/placeholder.jpg", "Smartphone", 699.99m, 50 },
-                    { 2, 1, "A lightweight laptop with a long battery life, perfect for work and entertainment.", "/img/placeholder.jpg", "Laptop", 999.99m, 30 },
-                    { 3, 2, "Noise-cancelling headphones with superior sound quality and comfort.", "/img/placeholder.jpg", "Headphones", 199.99m, 100 }
+                    { 1, 1, new DateTime(2026, 3, 29, 0, 0, 0, 0, DateTimeKind.Utc), "A high-end smartphone with a sleek design and powerful features.", "/img/placeholder.jpg", "Smartphone", 699.99m, 50 },
+                    { 2, 1, new DateTime(2026, 3, 29, 0, 0, 0, 0, DateTimeKind.Utc), "A lightweight laptop with a long battery life, perfect for work and entertainment.", "/img/placeholder.jpg", "Laptop", 999.99m, 30 },
+                    { 3, 2, new DateTime(2026, 3, 29, 0, 0, 0, 0, DateTimeKind.Utc), "Noise-cancelling headphones with superior sound quality and comfort.", "/img/placeholder.jpg", "Headphones", 199.99m, 100 }
                 });
 
             migrationBuilder.CreateIndex(

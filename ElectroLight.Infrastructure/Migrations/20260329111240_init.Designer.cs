@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElectroLight.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260314211153_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260329111240_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,10 @@ namespace ElectroLight.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -51,18 +55,21 @@ namespace ElectroLight.Infrastructure.Migrations
                         {
                             Id = 1,
                             Description = "Electronic devices and gadgets",
+                            ImageUrl = "/img/placeholder.jpg",
                             Name = "Electronics"
                         },
                         new
                         {
                             Id = 2,
                             Description = "some text",
+                            ImageUrl = "/img/placeholder.jpg",
                             Name = "Laptops"
                         },
                         new
                         {
                             Id = 3,
                             Description = "test test test",
+                            ImageUrl = "/img/placeholder.jpg",
                             Name = "Screens"
                         });
                 });
@@ -114,7 +121,7 @@ namespace ElectroLight.Infrastructure.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 3, 29, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "A high-end smartphone with a sleek design and powerful features.",
                             ImageUrl = "/img/placeholder.jpg",
                             Name = "Smartphone",
@@ -125,7 +132,7 @@ namespace ElectroLight.Infrastructure.Migrations
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 3, 29, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "A lightweight laptop with a long battery life, perfect for work and entertainment.",
                             ImageUrl = "/img/placeholder.jpg",
                             Name = "Laptop",
@@ -136,7 +143,7 @@ namespace ElectroLight.Infrastructure.Migrations
                         {
                             Id = 3,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(2026, 3, 29, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Noise-cancelling headphones with superior sound quality and comfort.",
                             ImageUrl = "/img/placeholder.jpg",
                             Name = "Headphones",

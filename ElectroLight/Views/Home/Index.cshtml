@@ -1,4 +1,34 @@
-﻿@model IEnumerable<Product>
+﻿@model HomeVM
+<header class="header">
+    <a class="home-link" asp-controller="home" asp-action="index">
+        <img src="~/img/logo.png" class="logo" alt="RlectroLight logo" />
+    </a>
+    <nav>
+        <ul class="nav-list">
+            <li class="dropdown nav-item">
+                <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Content Mangement
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" asp-controller="category" asp-action="index">Categories</a></li>
+                    <li><a class="dropdown-item" asp-controller="product" asp-action="index">Products</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#categroies" class="button">Categroies</a>
+            </li>
+            <li class="nav-item">
+                <a class="button">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="button">Login</a>
+            </li>
+         
+        </ul>
+    </nav>
+</header>
+
+@* Hero Section *@
 <section class="hero-section">
     <div class="container">
         <div class="hero">
@@ -19,29 +49,31 @@
         </div>
     </div>
 </section>
+@* About Section *@
 <section class="about-section text-center">
     <h2 class="about-title">ElectroLight: Illuminate Your World with Style </h2>
     <p class="about-text">Explore a wide range of lighting and electrical products crafted to bring comfort, brightness, and modern design into your life. At ElectroLight, we combine quality, innovation, and affordability to power your everyday needs. </p>
 </section>
-@* <section class="products-section">
-<div class="container-fluid mx-auto">
-    <div class="row  justify-content-center">
-        @foreach (var product in Model)
-        {
-            <div class="card p-0  mx-1 mb-2 border-2 shadow-lg rounded" style="width:16rem ">
-                <div class="image-wrapper w-100" style="height:14rem; overflow:hidden">
-                    <img class="card-img-top object-fit-cover w-100 h-100" style="object-fit:cover"
-                src="@product.ImageUrl" 
-                alt="@product.ImageUrl" 
-                     onerror="this.onerror=null;this.src='/img/placeholder.jpg';">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">@product.Name</h5>
-                    <p class="card-text">Price: @product.Price</p>
-                    <a href="#" class="btn btn-primary">Details</a>
-                </div>
-            </div>
-        }
+@* Categroies Section *@
+<section class="categories-section" id="categroies">
+    <div class="container ">
+        <span class="tag">Categories</span>
+        <div class="categories-grid">
+            @foreach (var category in Model.categoriesList)
+            {
+                <a class="category-card button" asp-controller="product" asp-action="ProductsList" asp-route-categoryId="@category.Id">
+                        <img class="category-image" src="@category.ImageUrl" alt="@category.Description" />
+                    <div class="category-card-body align-content-center text-center">
+                        <p class="category-name">@category.Name</p>
+                    </div>
+                </a>
+            }
+        </div>
     </div>
-</div>
-</section> *@
+
+</section>
+
+
+@section Scripts {
+  
+}
