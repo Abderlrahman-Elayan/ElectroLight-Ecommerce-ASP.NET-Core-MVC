@@ -10,5 +10,8 @@ namespace ElectroLight.ViewsModels
 
         [ValidateNever]
         public IEnumerable<SelectListItem> CategoriesList { get; set; } = null!;
+
+      
+
     }
 }

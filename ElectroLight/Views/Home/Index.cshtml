@@ -58,12 +58,12 @@
 <section class="categories-section" id="categroies">
     <div class="container ">
         <span class="tag">Categories</span>
-        <div class="categories-grid">
+        <div class="grid-col-6">
             @foreach (var category in Model.categoriesList)
             {
-                <a class="category-card button" asp-controller="product" asp-action="ProductsList" asp-route-categoryId="@category.Id">
-                        <img class="category-image" src="@category.ImageUrl" alt="@category.Description" />
-                    <div class="category-card-body align-content-center text-center">
+                <a class="show-card button" asp-controller="product" asp-action="ProductsShow" asp-route-categoryId="@category.Id">
+                        <img class="show-image" src="@category.ImageUrl" alt="@category.Description" />
+                    <div class="show-card-body align-content-center text-center">
                         <p class="category-name">@category.Name</p>
                     </div>
                 </a>

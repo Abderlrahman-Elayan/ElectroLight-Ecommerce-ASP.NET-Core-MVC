@@ -1,0 +1,25 @@
+﻿@model ProductShowVM
+
+<div class="text-url-history-span text-url-history"><a class="text-url-history" asp-controller="Home" asp-action="Index">Home</a>  <i class="bi bi-chevron-right"></i> @Model.CategoryName</div>
+<div class="scroll-x category-tag-container container">
+    @foreach(var category in Model.CategoriesList)
+    {
+        <a class="category-tag button" asp-action="ProductsShow" asp-route-categoryId="@category.Id">@category.Name</a>
+        <a class="category-tag button" asp-action="ProductsShow" asp-route-categoryId="@category.Id">@category.Name</a>
+    }
+    </div>      
+<div class="container justify-content-center">
+        <div class="grid-col-6">
+            @foreach (var product in Model.ProductsList)
+            {
+                <div class="show-card button">
+                    <img class="show-image" src="@product.ImageUrl" alt="@product.Description" />
+                    <div class="show-card-body align-content-center text-center">
+                        <p class="product-name">@product.Name</p>
+                        <p class="product-price">@product.Price</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+

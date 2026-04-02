@@ -13,14 +13,14 @@
 }
 
 .tag {
-    font-size: 1.8rem;
+    font-size: 2.4rem;
     margin-bottom: 1.8rem;
-    padding: 1.2rem 3.2rem;
-    background-color: #4a92fe;
     display: inline-block;
-    border-radius: 20px;
+    border-radius: 6px;
     color:#222;
-    font-weight:600;
+    font-weight:800;
+    padding-bottom:3px;
+    border-bottom: 3px solid ;
 }
 
 
@@ -33,5 +33,33 @@
 }
 
 .button:hover, button:active{
+}
+
+
+
+.show-card {
+    border: 2px solid transparent;
+    box-shadow: 0px 1px 5px 2px rgba(0, 0, 0, 0.18);
+    transition: all 0.3s ease;
+}
+
+    .show-card:hover {
+        scale: 1.02;
+    }
+
+.show-card-body {
+    padding: 1.2rem;
+    font-size: 1.8rem;
+    color: #000;
+    font-weight: 600;
+    text-transform: capitalize;
+    background: #fff;
+}
+
+.scroll-x {
+    overflow-x: auto;
+    scrollbar-width: thin; 
+    scrollbar-color: #888 #eee;
+    padding-bottom:0.6rem;
 }
 
