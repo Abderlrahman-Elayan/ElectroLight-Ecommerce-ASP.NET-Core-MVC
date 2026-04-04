@@ -57,5 +57,24 @@ namespace ElectroLight.Application.Services.Implementation
             }
         }
 
+
+        public async Task<IEnumerable<Product>> GetFeaturedProductsAsync(int? count= null)
+        {
+            var featuredProducts = await _uow.Products.GetAllAsync(p => p.isFeatured == true);
+            if(count.HasValue)
+            {
+                return featuredProducts.Take(count.Value);
+            }
+            else
+            {
+                return featuredProducts;
+            }
+        }
+
+        public async Task<IEnumerable<Product>> GetNewestProductsAsync(int count)
+        {
+            return  (await _uow.Products.GetAllAsync()).OrderByDescending(p => p.CreatedAt).Take(count);
+        }
+
     }
 }

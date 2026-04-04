@@ -13,5 +13,9 @@ namespace ElectroLight.Application.Services.IServices
         Task<Product> AddAsync(Product Product);
         Task UpdateAsync(Product Product);
         Task<bool> DeleteAsync(Product product);
+        public Task<IEnumerable<Product>> GetFeaturedProductsAsync(int? count =null );
+        public  Task<IEnumerable<Product>> GetNewestProductsAsync(int count);
+
+       
     }
 }

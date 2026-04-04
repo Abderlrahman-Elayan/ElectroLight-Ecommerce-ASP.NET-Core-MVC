@@ -43,6 +43,9 @@ namespace ElectroLight.Domain.Entities
         [NotMapped]
         public IFormFile? Image { get; set; }
 
+        [Display(Name="Featured Product")]
+        public bool isFeatured { get; set; } = false;
+
         //public ICollection<ProductImage> Images { get; set; } = new List<ProductImage>();
     }
 }
