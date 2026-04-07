@@ -5,14 +5,36 @@
     color: #333;
     letter-spacing: -0.5px;
 }
-p{
-    margin:0;
+
+p {
+    margin: 0;
 }
+
 .heading-primary {
     font-size: 5.2rem;
     line-height: 1.05;
     margin-bottom: 3.2rem;
 }
+
+.nav-item {
+    font-weight: 600;
+}
+
+    .nav-item a:hover {
+        color: #4a92fe;
+    }
+.grid {
+    display: grid;
+    gap: 1.6rem;
+}
+.grid-col-4 {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.grid-col-6 {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
 
 
 .grid-col-6 {
@@ -22,16 +44,15 @@ p{
 }
 
 
-
 .tag {
     font-size: 2.4rem;
     margin-bottom: 1.8rem;
     display: inline-block;
     border-radius: 6px;
-    color:#222;
-    font-weight:800;
-    padding-bottom:3px;
-    border-bottom: 3px solid ;
+    color: #222;
+    font-weight: 800;
+    padding-bottom: 3px;
+    border-bottom: 3px solid;
 }
 
 
@@ -43,8 +64,8 @@ p{
     cursor: pointer;
 }
 
-.button:hover, button:active{
-}
+    .button:hover, button:active {
+    }
 
 
 
@@ -54,7 +75,8 @@ p{
     transition: all 0.3s ease;
     min-width: 0;
     border-radius: 8px;
-    overflow:hidden;
+    overflow: hidden;
+    position:relative;
 }
 
     .show-card:hover {
@@ -76,15 +98,15 @@ p{
     font-size: 1.2rem;
     white-space: nowrap;
     overflow: hidden;
-    margin-bottom:0.6rem;
-    height:1.8rem;
+    margin-bottom: 0.6rem;
+    height: 1.8rem;
 }
 
 .scroll-x {
     overflow-x: auto;
-    scrollbar-width: thin; 
+    scrollbar-width: thin;
     scrollbar-color: #888 #eee;
-    padding-bottom:0.6rem;
+    padding-bottom: 0.6rem;
 }
 
 
@@ -92,6 +114,6 @@ p{
     color: #162c4c;
 }
 
-.form-check{
-    display:inline-block;
+.form-check {
+    display: inline-block;
 }

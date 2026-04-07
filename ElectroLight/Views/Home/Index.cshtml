@@ -18,11 +18,12 @@
                 <a href="#categroies" class="button">Categroies</a>
             </li>
             <li class="nav-item">
-                <a class="button">Login</a>
+                <a class="button" href="#newest-section">New</a>
             </li>
             <li class="nav-item">
-                <a class="button">Login</a>
+                <a class="button" href="#featured-section">Recommended</a>
             </li>
+          
          
         </ul>
     </nav>
@@ -55,17 +56,15 @@
     <p class="about-text">Explore a wide range of lighting and electrical products crafted to bring comfort, brightness, and modern design into your life. At ElectroLight, we combine quality, innovation, and affordability to power your everyday needs. </p>
 </section>
 @* Categroies Section *@
-<section class="categories-section" id="categroies">
+<section class="categories-section heading-primary" id="categroies">
     <div class="container ">
         <span class="tag">Categories</span>
-        <div class="grid-col-6">
+        <div class="grid-col-4 grid">
             @foreach (var category in Model.categoriesList)
             {
                 <a class="show-card button" asp-controller="product" asp-action="ProductsShow" asp-route-categoryId="@category.Id">
                     <img class="show-image " src="@category.ImageUrl" alt="@category.Description" onerror="this.onerror=null;this.src='/img/placeholder.jpg';" />
-                    <div class="show-card-body align-content-center text-center">
-                        <p class="category-name">@category.Name</p>
-                    </div>
+                    <span class="category-label">@category.Name</span>
                 </a>
             }
         </div>
@@ -73,14 +72,14 @@
 
 </section>
 @* Newest Section *@
-<section class="newest-products-section" >
+<section class="newest-products-section" id="newest-section">
     <div class="container justify-content-center">
         <span class="tag">Newest</span>
-        <div class="grid-col-6">
+        <div class="grid-col-6 grid">
             @foreach (var product in Model.newestProductsList)
             {
                 <div class="show-card button">
-                    <img class="show-image" src="@product.ImageUrl" alt="@product.Description" onerror="this.onerror=null;this.src='/img/placeholder.jpg';" />
+                    <img class="show-image" loading="lazy" src="@product.ImageUrl" alt="@product.Description" onerror="this.onerror=null;this.src='/img/placeholder.jpg';" />
                     <div class="show-card-body align-content-center ">
                         <p class="show-card-description">@product.Description</p>
                         <p class="product-name text-center">@product.Name</p>
@@ -98,14 +97,14 @@
 </section>
 
 @* Featured Section *@
-<section class="featuerd-products-section">
+<section class="featuerd-products-section" id="featured-section">
     <div class="container justify-content-center">
         <span class="tag">Recommend<i class="bi bi-fire text-danger"></i></span>
-        <div class="grid-col-6">
+        <div class="grid-col-6 grid">
             @foreach (var product in Model.featuredProductsList)
             {
                 <div class="show-card button">
-                    <img class="show-image" src="@product.ImageUrl" alt="@product.Description" onerror="this.onerror=null;this.src='/img/placeholder.jpg';" />
+                    <img class="show-image" loading="lazy" src="@product.ImageUrl" alt="@product.Description" onerror="this.onerror=null;this.src='/img/placeholder.jpg';" />
                     <div class="show-card-body align-content-center ">
                         <p class="show-card-description">@product.Description</p>
                         <p class="product-name text-center">@product.Name</p>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.Processing;
 using System;
 using System.IO;
@@ -30,7 +31,13 @@ namespace ElectroLight.Infrastructure.Services
         /// <param name="width">Width of output image (default 600)</param>
         /// <param name="height">Height of output image (default 600)</param>
         /// <returns>Relative path to saved image</returns>
-        public async Task<string> UploadAndNormalizeImageAsync(IFormFile imageFile, string oldImageUrl, string imagesFolderName, int width = 600, int height = 600)
+        /// 
+        public async Task<string> UploadAndNormalizeImageAsync(
+        IFormFile imageFile,
+        string oldImageUrl,
+        string imagesFolderName,
+        int width = 600,
+        int height = 600)
         {
             if (imageFile == null)
                 throw new ArgumentNullException(nameof(imageFile));
@@ -39,35 +46,73 @@ namespace ElectroLight.Infrastructure.Services
             if (!allowedExtensions.Contains(ext))
                 throw new ArgumentException("Only image files are allowed.");
 
-            // Delete old image if exists
             DeleteImage(oldImageUrl);
 
-            // Ensure folder exists
             string folderPath = Path.Combine(_webHostEnvironment.WebRootPath, "img", imagesFolderName);
             if (!Directory.Exists(folderPath))
-            {
                 Directory.CreateDirectory(folderPath);
-            }
 
-            string fileName = $"{Guid.NewGuid():N}{ext}";
+
+            string fileName = $"{Guid.NewGuid():N}.webp";
             string fullPath = Path.Combine(folderPath, fileName);
 
-            // Load image and normalize
             using var image = await Image.LoadAsync(imageFile.OpenReadStream());
 
-            // Crop or pad image to fixed size for uniform slider display
             image.Mutate(x => x.Resize(new ResizeOptions
             {
                 Size = new Size(width, height),
-                Mode = ResizeMode.Crop, // Use Crop to fill the container
+                Mode = ResizeMode.Crop,
                 Position = AnchorPositionMode.Center
             }));
 
-            // Save as JPEG (quality 90)
-            await image.SaveAsJpegAsync(fullPath, new JpegEncoder { Quality = 100 });
+            await image.SaveAsWebpAsync(fullPath, new WebpEncoder
+            {
+                Quality = 85
+            });
 
             return $"/img/{imagesFolderName}/{fileName}";
         }
+
+
+
+        //public async Task<string> UploadAndNormalizeImageAsync(IFormFile imageFile, string oldImageUrl, string imagesFolderName, int width = 600, int height = 600)
+        //{
+        //    if (imageFile == null)
+        //        throw new ArgumentNullException(nameof(imageFile));
+
+        //    var ext = Path.GetExtension(imageFile.FileName).ToLower();
+        //    if (!allowedExtensions.Contains(ext))
+        //        throw new ArgumentException("Only image files are allowed.");
+
+        //    // Delete old image if exists
+        //    DeleteImage(oldImageUrl);
+
+        //    // Ensure folder exists
+        //    string folderPath = Path.Combine(_webHostEnvironment.WebRootPath, "img", imagesFolderName);
+        //    if (!Directory.Exists(folderPath))
+        //    {
+        //        Directory.CreateDirectory(folderPath);
+        //    }
+
+        //    string fileName = $"{Guid.NewGuid():N}{ext}";
+        //    string fullPath = Path.Combine(folderPath, fileName);
+
+        //    // Load image and normalize
+        //    using var image = await Image.LoadAsync(imageFile.OpenReadStream());
+
+        //    // Crop or pad image to fixed size for uniform slider display
+        //    image.Mutate(x => x.Resize(new ResizeOptions
+        //    {
+        //        Size = new Size(width, height),
+        //        Mode = ResizeMode.Crop, // Use Crop to fill the container
+        //        Position = AnchorPositionMode.Center
+        //    }));
+
+
+        //    await image.SaveAsJpegAsync(fullPath, new JpegEncoder { Quality = 100 });
+
+        //    return $"/img/{imagesFolderName}/{fileName}";
+        //}
 
         //public async Task<string> UploadImageAsync(IFormFile Image, string OldImgaeUrl,string ImagesFolderName)
         //{

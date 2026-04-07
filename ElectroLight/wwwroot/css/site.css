@@ -326,6 +326,24 @@ body {
     font-size: 1.8rem;
     color: #333;
 }
+.category-label {
+    color: #fff;
+    font-weight: 600;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    border-radius:12px;
+    text-align: center;
+    font-size: 2.2rem;
+    padding: 0.6rem 1.2rem;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(2px);
+}
+/*News and featuered sections*/
+.newest-products-section, featuerd-products-section {
+    padding: 9.6rem 0;
+}
+
 .product-name{
     font-size:1.4rem;
     margin-bottom:1.8rem;
@@ -342,6 +360,3 @@ body {
     align-items: center;
 }
 
-.newest-products-section, featuerd-products-section {
-    padding: 9.6rem 0;
-}
