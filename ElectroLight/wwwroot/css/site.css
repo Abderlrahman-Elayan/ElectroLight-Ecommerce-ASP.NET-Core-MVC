@@ -290,10 +290,6 @@ body {
     border-radius: 8px 8px 0 0;
 }
 
-.show-image {
-    width: 100%;
-    object-fit: cover;
-}
 
 
 .category-name {
@@ -317,6 +313,7 @@ body {
     display:flex;
     gap:1.2rem;
     margin-bottom:3.6rem;   
+
 }
 
 .category-tag {
@@ -340,8 +337,11 @@ body {
     backdrop-filter: blur(2px);
 }
 /*News and featuered sections*/
-.newest-products-section, featuerd-products-section {
+.newest-products-section, .featuerd-products-section {
     padding: 9.6rem 0;
+}
+.newest-products-section, {
+    background: #effbfd;
 }
 
 .product-name{
@@ -351,12 +351,80 @@ body {
 }
 .product-price {
     color: #4a92fe;
-    font-size:1.2rem;
+    font-weight: 600;
 }
 
-.flex-price{
+.flex-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.8rem;
+    padding: 0 1.2rem 1.2rem 1.2rem;
+    background: #fff;
+}
+
+/*Details View*/
+
+
+.details-image-wrapper {
+    padding: 2.4rem;
+    padding-top: 0;
+    overflow: hidden;
+}
+
+.details-image {
+    border-radius: 8px;
+}
+
+.details-name{
+    font-size:3.2rem;
+    font-weight:600;
+    padding:1.2rem;
+    color:#111;
+}
+
+.details-description {
+    color: #aaa;
+    font-size: 4.8rem;
+    margin-bottom: 1.8rem;
+    line-height: 1.1;
+    word-spacing: 0.04rem;
+    letter-spacing: 1.2px;
+    margin-bottom: 4.8rem;
+    padding-top:1.8rem;
+}
+
+.details-price {
+    font-size: 4.8rem;
+    color: #4a92fe;
+    font-weight: 600;
+    margin-bottom:6.6rem;
+}
+
+.product-name-container{
     display:flex;
     justify-content:space-between;
-    align-items: center;
+    margin-bottom:4.8rem;
 }
 
+
+.add-to-cart, .add-to-cart:link, .add-to-cart:visited {
+    font-size: 3.2rem;
+    margin: 0 auto;
+    padding: 1.6rem 3.2rem;
+    color: #fff;
+    font-weight: 600;
+    background-color: #4a92fe;
+    border-radius: 12px;
+}
+    .add-to-cart:hover, .add-to-cart:active {
+        transform: scale(1.04);
+    }
+
+.category-products{
+    padding:2.2rem;
+}
+
+.product-listof-category{
+   padding: 9.6rem 0;
+}

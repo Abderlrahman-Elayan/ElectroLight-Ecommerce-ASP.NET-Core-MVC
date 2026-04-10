@@ -60,6 +60,7 @@ namespace ElectroLight.Application.Services.Implementation
 
         public async Task<IEnumerable<Product>> GetFeaturedProductsAsync(int? count= null)
         {
+            
             var featuredProducts = await _uow.Products.GetAllAsync(p => p.isFeatured == true);
             if(count.HasValue)
             {

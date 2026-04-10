@@ -15,5 +15,8 @@ namespace ElectroLight.ViewsModels
 
         [ValidateNever]
         public IEnumerable<Product> ProductsList { get; set; } = null!;
+        
+        [ValidateNever]
+        public Product Product { get; set; }
     }
 }

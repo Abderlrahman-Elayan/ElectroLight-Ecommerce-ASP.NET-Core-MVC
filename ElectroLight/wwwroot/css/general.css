@@ -27,6 +27,16 @@ p {
     display: grid;
     gap: 1.6rem;
 }
+
+.grid-col-2 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.grid-col-1x5-2{
+    grid-template-columns: 1.5fr 2fr;
+}
+
+
 .grid-col-4 {
     grid-template-columns: 1fr 1fr 1fr 1fr;
 }
@@ -37,11 +47,6 @@ p {
 
 
 
-.grid-col-6 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 1.6rem;
-}
 
 
 .tag {
@@ -62,6 +67,7 @@ p {
     text-decoration: none;
     transition: all 0.3s ease;
     cursor: pointer;
+
 }
 
     .button:hover, button:active {
@@ -84,7 +90,7 @@ p {
     }
 
 .show-card-body {
-    padding: 1.2rem;
+    padding: 1.2rem 1.2rem 0rem 1.2rem;
     font-size: 1.8rem;
     color: #000;
     font-weight: 600;
@@ -102,6 +108,12 @@ p {
     height: 1.8rem;
 }
 
+
+.show-image {
+    width: 100%;
+    object-fit: cover;
+}
+
 .scroll-x {
     overflow-x: auto;
     scrollbar-width: thin;
@@ -116,4 +128,8 @@ p {
 
 .form-check {
     display: inline-block;
+}
+
+.container-fluid{
+    padding:0 2.4rem;
 }

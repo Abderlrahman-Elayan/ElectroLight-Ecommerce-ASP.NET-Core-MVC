@@ -108,6 +108,20 @@ namespace ElectroLight.Controllers
             return View(productVM);
         }
 
+        public async Task<IActionResult> ProductDetails(int productId)
+        {
+            var productFromDb = await _productService.GetAsync(p => p.Id == productId);
+            ProductShowVM productvm = new()
+            {
+                Product = productFromDb??new(),
+                CategoriesList = await _categoryService.GetAllAsync(),
+                CategoryName = (await _categoryService.GetAsync(c => c.Id == productFromDb.Category.Id))?.Name,
+                ProductsList = await _productService.GetAllAsync(p => p.CategoryId == productFromDb.CategoryId)
+            };
+
+            return View(productvm);
+        }
+
         #region API CALLS
 
         [HttpGet]

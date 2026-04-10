@@ -1,0 +1,66 @@
+﻿@model ProductShowVM
+
+<header class="categroies-header">
+<div class="text-url-history-span text-url-history">
+    <a class="text-url-history" asp-controller="Home" asp-action="Index">Home</a>
+    @if (Model.CategoryName != null)
+    {
+        <i class="bi bi-chevron-right"></i>
+        @Model.CategoryName
+    }
+</div>
+<div class="container-fluid">
+    <div class="scroll-x category-tag-container ">
+        @foreach (var category in Model.CategoriesList)
+        {
+            <a class="category-tag button" asp-action="ProductsShow" asp-route-categoryId="@category.Id">@category.Name</a>
+            <a class="category-tag button" asp-action="ProductsShow" asp-route-categoryId="@category.Id">@category.Name</a>
+            <a class="category-tag button" asp-action="ProductsShow" asp-route-categoryId="@category.Id">@category.Name</a>
+        }
+    </div>
+</div>
+</header>
+
+
+<section class="details-product-section">
+<div class="container-fluid grid grid-col-1x5-2 ">
+    <div class="details-image-wrapper">
+        <img class="show-image details-image" src="@Model.Product.ImageUrl" alt="@Model.Product.Description" onerror="this.onerror=null;this.src='/img/placeholder.jpg';" />
+    </div>
+    <div class="product-details-box">
+        <p class="details-description ">@Model.Product.Description</p>
+        <div class=" product-name-container">
+        <p class="text-center details-name">@Model.Product.Name</p>
+        <p class="details-price">@Model.Product.Price.ToString("c")</p>
+            </div>
+        <div class="text-center">
+         <a class="add-to-cart button">Add To Cart</a>
+        </div>
+    </div>
+</div>
+</section>
+
+<section class="product-listof-category">
+<div class="container-fluid ">
+    <div class="category-products grid grid-col-4">
+        @foreach (var product in Model.ProductsList.OrderBy(p => Guid.NewGuid()))
+{
+    <div class="show-card button">
+        <a style="text-decoration:none" asp-controller="product" asp-action="ProductDetails" asp-route-productId="@product.Id">
+            <img class="show-image" src="@product.ImageUrl" loading="lazy" alt="@product.Description" onerror="this.onerror=null;this.src='/img/placeholder.jpg';" />
+            <div class="show-card-body align-content-center ">
+                <p class="show-card-description">@product.Description</p>
+                <p class="product-name text-center">@product.Name</p>
+            </div>
+              
+        </a>
+        <div class="flex-price">
+            <a href="#" class="cart"><i class="bi bi-cart-plus"></i></a>
+            <p class="product-price">@product.Price.ToString("c")</p>
+
+        </div>
+    </div>
+}
+    </div>
+</div>
+</section>
