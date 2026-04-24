@@ -1,0 +1,51 @@
+﻿@using ElectroLight.Application.Utilies
+@model RegisterVM
+<section class="account-section">
+    <div class="content-account-container">
+        <a class="back-btn btn" href="@(Model.ReturnUrl ?? "/")"><i class="bi bi-arrow-left-circle-fill"></i></a>
+        <div class="grid grid-col-2 grid-gap-lg">
+            <div class="account-form-box">
+                <h1 class="account-form-title">Create Account</h1>
+                <form method="post" asp-action="Register">
+                <div asp-validation-summary="All" class="text-danger" "></div>
+                    <input asp-for="ReturnUrl" hidden />
+                    <div class="form-group account-group">
+                        <label asp-for="Name" class="account-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group account-group">
+                        <label asp-for="Email" class="account-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group account-group">
+                        <label asp-for="Password" class="account-label"></label>
+                        <input asp-for="Password" class="form-control" type="password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group account-group">
+                        <label asp-for="ConfirmPassword" class="account-label"></label>
+                        <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <div class="form-group account-group">
+                        <label asp-for="PhoneNumber" class="account-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" type="text" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                            <div class="form-group account-group">
+                                <select asp-for="Role" asp-items="Model.Roles" class="form-control"> 
+                                    <option disabled selected>-Select Role-</option>
+                                </select>
+                            </div>
+                        <input type="submit" value="Register" class="account-submit-button" />
+                </form>
+            </div>
+            <div class="account-img-box">
+                <img src="~/img/Register1.jpg" alt="Man working on laptop with headphones" />
+            </div>
+        </div>
+    </div>
+</section>
+

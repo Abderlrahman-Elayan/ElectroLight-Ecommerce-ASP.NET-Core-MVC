@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Luxurious+Roman&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&family=Luxurious+Roman&display=swap" rel="stylesheet">
     <link href="//cdn.datatables.net/2.3.7/css/dataTables.dataTables.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 </head>
@@ -53,16 +54,26 @@
     
     @if (ViewData["PageType"] as string == "admin-page")
     {
-        <a class="home-link ps-4" asp-controller="home" asp-action="index" >
+        <nav style="display:flex;justify-content:space-between">
+        <a class="home-link ps-4" asp-controller="home" asp-action="index">
           
             <img src="~/img/logo.png" class="logo" alt="RlectroLight logo" />
         </a>
-
+        <li class="dropdown nav-item" style="display:block">
+            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Content Mangement
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" asp-controller="category" asp-action="index">Categories</a></li>
+                <li><a class="dropdown-item" asp-controller="product" asp-action="index">Products</a></li>
+            </ul>
+        </li>
         <button id="themeToggle"
                 class="btn btn-outline-secondary"
-                style="position:fixed; top:20px; right:20px; z-index:999;">
+                style="position:fixed; top:45px; right:0; z-index:999;">
             <i class="bi bi-moon-fill"></i>
         </button>
+        </nav>
     }
     
     <div>

@@ -1,10 +1,12 @@
 ﻿    using ElectroLight.Application.Interfaces;
 using ElectroLight.Application.Services.Implementation;
 using ElectroLight.Application.Services.IServices;
+using ElectroLight.Application.Utilies;
 using ElectroLight.Domain.Entities;
 using ElectroLight.Infrastructure.Data;
 using ElectroLight.Infrastructure.Services;
 using ElectroLight.ViewsModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElectroLight.Controllers
@@ -19,7 +21,7 @@ namespace ElectroLight.Controllers
             _CategoryService = service;
             _imageService = imageService;
         }
-
+        [Authorize(Roles = SD.Role_Admin)]
         public async Task<IActionResult> Index()
         {
             //var categories = await _service.GetAllAsync();
@@ -27,6 +29,7 @@ namespace ElectroLight.Controllers
             return View();
         }
 
+        [Authorize(Roles = SD.Role_Admin)]
         public async Task<IActionResult> Upsert(int? id)
         {
 
@@ -41,7 +44,7 @@ namespace ElectroLight.Controllers
 
             return View(category);
         }
-
+        [Authorize(Roles = SD.Role_Admin)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(Category category)
@@ -92,6 +95,8 @@ namespace ElectroLight.Controllers
         #region API CALLS
 
         [HttpGet]
+        [Authorize(Roles = SD.Role_Admin)]
+
         public async Task<IActionResult> GetAll()
         {
             List<Category> CategoryList = (await _CategoryService.GetAllAsync()).ToList();
@@ -100,6 +105,7 @@ namespace ElectroLight.Controllers
 
 
         [HttpDelete]
+        [Authorize(Roles = SD.Role_Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
             var Category = await _CategoryService.GetAsync(c => c.Id == id);

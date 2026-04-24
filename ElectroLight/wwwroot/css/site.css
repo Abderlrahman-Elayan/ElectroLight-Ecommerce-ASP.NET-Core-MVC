@@ -1,7 +1,8 @@
 html {
     font-size: 62.5%;
-/*            overflow-x: hidden;*/
+    /*            overflow-x: hidden;*/
     scroll-behavior: smooth;
+    height: 100%;
 }
 
 * {
@@ -19,6 +20,7 @@ body {
     font-style: normal;
     letter-spacing: 0.02rem;
     line-height: 1;
+    height: 100%;
 }
 
 .title-card-header {
@@ -164,11 +166,45 @@ body {
 .nav-item {
     list-style: none;
 }
-/*Hero Section*/
-.hero-section {
-    background-color: #effbfd;
-    padding: 4.8rem 0 9.6rem 0;
+
+.regester-button{
+    color: #fff !important;
+    padding: 1.2rem 3.2rem;
+    font-weight: 600;
+    background-color: #4a92fe;
+    border-top-left-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
+
+    .regester-button:hover, .regester-button:active {
+        background-color: #257dfd;
+        transform: scale(1.1);
+    }
+
+.hello-user {
+    font-weight: 600;
+    position: absolute;
+    top: 8rem;
+    right: 4.8rem;
+    font-size: 1.8rem;
+    color: #569afe;
+}
+    .hello-user span {
+        font-weight: 800;
+        color: #555;
+        font-family: "Lobster Two", sans-serif;
+        font-weight: 700;
+        font-style: italic;
+        text-transform: capitalize;
+        font-size: 2.4rem;
+    }
+
+
+    /*Hero Section*/
+    .hero-section {
+        background-color: #effbfd;
+        padding: 4.8rem 0 9.6rem 0;
+    }
 
 .hero {
     display: grid;
@@ -210,7 +246,7 @@ body {
     color: #fff;
 }
 
-    .button-primary:hover, .button-primary:active {
+    .button-primary:hover, .button-primary:active{
         background-color: #257dfd;
         transform: scale(1.1);
     }
@@ -222,6 +258,11 @@ body {
     border-radius: 12px;
     color: #444;
     background-color: #fff;
+    transition: all 0.3s ease;
+}
+.button-hero-login:hover, .button-hero-login:active {
+    scale: 1.1;
+    color: #569afe;
 }
 
 .nav-item *, .dropdown {
@@ -340,7 +381,7 @@ body {
 .newest-products-section, .featuerd-products-section {
     padding: 9.6rem 0;
 }
-.newest-products-section, {
+.newest-products-section{
     background: #effbfd;
 }
 
@@ -428,3 +469,118 @@ body {
 .product-listof-category{
    padding: 9.6rem 0;
 }
+
+/*Login & Register*/
+.account-section {
+    height: 125vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ffffff, #e6e6e6, #4a90e2);
+}
+.content-account-container {
+    margin: 0 auto;
+    max-width: 100rem;
+    border-radius: 12px;
+    box-shadow: 0px 2px 6px 4px rgba(0, 0, 0, 0.2);
+    overflow:hidden;
+    background-color: white;
+    position:relative;
+}
+
+.account-form-box {
+    padding: 3.8rem 2rem 3.6rem 6.8rem;
+    position:relative;
+}
+.account-form-title{
+    text-align:center;
+    font-weight:600;
+    color:#222;
+    margin-bottom:4.8rem;
+    font-size:4.2rem;
+}
+
+.account-group{
+    margin-bottom:2.4rem;
+}
+
+    .account-group input, .account-group select {
+        padding: 1rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+        background: #effbfd;
+    }
+
+.account-label {
+    font-weight: 600;
+    color: #444;
+    font-size: 1.2rem;
+    margin-bottom: 0.6rem;
+}
+.remember-me-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: #444;
+    font-size: 1.2rem;
+    margin-bottom:3.6rem;
+}
+
+.account-submit-button {
+    display:block;
+    margin: 0 auto;
+    padding: 1.2rem 3.2rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.8rem;
+    background-color: #2cb9f4;
+    color:#fff;
+    font-weight:800;
+    margin:0 auto;
+    transition: all 0.44s ease
+}
+    .account-submit-button:hover {
+        scale: 1.02;
+        background: #004bb0;
+    }
+
+.account-img-box{
+    height : 100%;
+}
+.account-img-box img{
+    height:100%;
+    width:100%;
+    object-fit:cover;
+}
+
+.dont-have-account:link, .dont-have-account:visited{
+    text-decoration: none;
+    font-size: 1.2rem;
+    display: inline-block;
+    position: absolute;
+    bottom: 3.6rem;
+    transition: all 0.3s ;
+}
+
+.dont-have-account:hover, .dont-have-account:active{
+    scale:1.1;
+}
+
+.back-btn, .back-btn:link, .back-btn:visited {
+    color: #2cb9f4;
+    font-size: 4.2rem;
+    position: absolute;
+    z-index: 999;
+    top: 1.2rem;
+    left: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    line-height: 0;
+    padding: 0;
+    border-radius: 66%;
+}
+
+    .back-btn:hover, .back-btn:active {
+        color: #004bb0;
+    }

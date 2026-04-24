@@ -1,7 +1,9 @@
 ﻿using ElectroLight.Application.Services.Implementation;
 using ElectroLight.Application.Services.IServices;
+using ElectroLight.Application.Utilies;
 using ElectroLight.Domain.Entities;
 using ElectroLight.ViewsModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 namespace ElectroLight.Controllers
@@ -21,12 +23,15 @@ namespace ElectroLight.Controllers
             _imageService = imageService;
         }
 
+
+        [Authorize(Roles = SD.Role_Admin)]
         public async Task<IActionResult> Index()
         {
             //var products = await _productService.GetAllAsync(includes: p=>p.Category);
             //return View(products);
             return View();
         }
+        [Authorize(Roles = SD.Role_Admin)]
 
         public async Task<IActionResult> Upsert(int? id)
         {
@@ -48,6 +53,7 @@ namespace ElectroLight.Controllers
             return View(productVM);
         }
 
+        [Authorize(Roles = SD.Role_Admin)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(ProductVM productvm)
@@ -123,7 +129,7 @@ namespace ElectroLight.Controllers
         }
 
         #region API CALLS
-
+        [Authorize(Roles = SD.Role_Admin)]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -133,6 +139,7 @@ namespace ElectroLight.Controllers
 
 
         [HttpDelete]
+        [Authorize(Roles = SD.Role_Admin)]
         public async Task<IActionResult> Delete(int? id)
         {
             var Product = await _productService.GetAsync(c => c.Id == id);

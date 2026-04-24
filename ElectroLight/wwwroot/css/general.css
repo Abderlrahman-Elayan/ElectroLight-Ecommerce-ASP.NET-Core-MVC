@@ -23,6 +23,9 @@ p {
     .nav-item a:hover {
         color: #4a92fe;
     }
+.dropdown-menu a:hover {
+    color: #fff;
+}
 .grid {
     display: grid;
     gap: 1.6rem;
@@ -45,7 +48,9 @@ p {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
-
+.grid-gap-lg{
+    gap:4.8rem;
+}
 
 
 
@@ -132,4 +137,9 @@ p {
 
 .container-fluid{
     padding:0 2.4rem;
+}
+
+.flex{
+    display:flex;
+    justify-content:space-between;
 }

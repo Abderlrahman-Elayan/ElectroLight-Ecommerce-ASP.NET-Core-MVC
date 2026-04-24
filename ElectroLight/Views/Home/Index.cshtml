@@ -1,19 +1,33 @@
-﻿@model HomeVM
+﻿@using ElectroLight.Application.Utilies
+@using Microsoft.AspNetCore.Identity;
+
+@inject UserManager<ApplicationUser> userManager;
+@inject SignInManager<ApplicationUser> signInManager;
+@{
+    var user = await userManager.GetUserAsync(User);
+}
+
+@model HomeVM
 <header class="header">
     <a class="home-link" asp-controller="home" asp-action="index">
         <img src="~/img/logo.png" class="logo" alt="RlectroLight logo" />
     </a>
     <nav>
         <ul class="nav-list">
-            <li class="dropdown nav-item">
-                <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Content Mangement
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" asp-controller="category" asp-action="index">Categories</a></li>
-                    <li><a class="dropdown-item" asp-controller="product" asp-action="index">Products</a></li>
-                </ul>
-            </li>
+            @if (User.IsInRole(SD.Role_Admin))
+            {
+                <li class="dropdown nav-item">
+                    <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Content Mangement
+                    </button>
+
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" asp-controller="category" asp-action="index">Categories</a></li>
+                        <li><a class="dropdown-item" asp-controller="product" asp-action="index">Products</a></li>
+                    </ul>
+                </li>
+            }
+            
             <li class="nav-item">
                 <a href="#categroies" class="button">Categroies</a>
             </li>
@@ -23,10 +37,32 @@
             <li class="nav-item">
                 <a class="button" href="#featured-section">Recommended</a>
             </li>
+            @if (!signInManager.IsSignedIn(User))
+            {
+                <li class="nav-item">
+                    <a class="button regester-button" asp-controller="Account" asp-action="Register">Register</a>
+                </li>
+   
+            }
+            else
+            {
+                <li class="nav-item button-hero-login">
+                    <a class="button " asp-controller="Account" asp-action="Logout">Logout</a>
+                </li>
+
+            }
           
-         
         </ul>
+
     </nav>
+    @if (signInManager.IsSignedIn(User))
+    {
+    <span class="hello-user">
+        Welecome, <span>@user?.FullName</span>
+    </span>
+        
+    }
+   
 </header>
 
 @* Hero Section *@
@@ -41,8 +77,12 @@
                 <p class="hero-description">
                     Discover high-quality, stylish, and innovative devices designed to make your everyday life easier, smarter, and more efficient.
                 </p>
-                <a class="button button-primary me-4">Upgrade Your Home</a>
-                <a class="button button-hero-login">Login</a>
+                <a class="button button-primary me-4" href="#featured-section">Upgrade Your Home</a>
+                @if (!signInManager.IsSignedIn(User))
+                {
+                    <a class="button button-hero-login" asp-controller="Account" asp-action="Login">Login</a>
+                }
+                   
             </div>
             <div class="hero-img-box">
                 <img src="~/img/hero.png" class="hero-img" />
@@ -104,7 +144,7 @@
     <div class="container justify-content-center">
         <span class="tag">Recommend<i class="bi bi-fire text-danger"></i></span>
         <div class="grid-col-6 grid">
-            @foreach (var product in Model.featuredProductsList )
+            @foreach (var product in Model.featuredProductsList)
             {
                 <div class="show-card button">
                     <a style="text-decoration:none" asp-controller="product" asp-action="ProductDetails" asp-route-productId="@product.Id">
@@ -118,7 +158,6 @@
                     <div class="flex-price">
                         <a href="#" class="cart"><i class="bi bi-cart-plus"></i></a>
                         <p class="product-price">@product.Price.ToString("c")</p>
-
                     </div>
                 </div>
             }
