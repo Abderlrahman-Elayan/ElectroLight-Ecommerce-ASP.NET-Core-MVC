@@ -25,6 +25,7 @@ namespace ElectroLight.Domain.Entities
         [Range(0.01, 100000)]
         public decimal Price { get; set; }
 
+
         [Range(0, 10000)]
         public int StockQuantity { get; set; }
 

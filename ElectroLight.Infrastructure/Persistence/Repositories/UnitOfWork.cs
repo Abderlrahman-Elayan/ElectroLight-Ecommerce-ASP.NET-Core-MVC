@@ -12,6 +12,8 @@ namespace ElectroLight.Infrastructure.Repository
     {
         public IRepository<Category> Categories { get; private set; }
         public IRepository<Product> Products{ get; private set; }
+        public IRepository<ShoppingCart> ShoppingCarts { get; private set; }
+        public IRepository<CartItem> CartItems { get; private set; }
 
         private ApplicationDbContext _db;
         public UnitOfWork(ApplicationDbContext db)
@@ -20,6 +22,11 @@ namespace ElectroLight.Infrastructure.Repository
             Categories = new Repository<Category>(_db);
 
             Products = new Repository<Product>(_db);
+
+            ShoppingCarts = new Repository<ShoppingCart>(_db);
+
+            CartItems = new Repository<CartItem>(_db);
+
         }
 
         public void Dispose()

@@ -7,18 +7,18 @@
         @Model.CategoryName
     }
 </div>
-<div class="container-fluid">
+<div class="container-fluid categories-nav">
     <div class="scroll-x category-tag-container ">
         @foreach (var category in Model.CategoriesList)
         {
             <a class="category-tag button" asp-action="ProductsShow" asp-route-categoryId="@category.Id">@category.Name</a>
-            <a class="category-tag button" asp-action="ProductsShow" asp-route-categoryId="@category.Id">@category.Name</a>
-            <a class="category-tag button" asp-action="ProductsShow" asp-route-categoryId="@category.Id">@category.Name</a>
         }
     </div>
 </div>
-<div class="justify-content-center container-fluid">
-    <div class="grid-col-6 grid  ">
+<hr class="m-0 mb-4" />
+
+<div class="justify-content-center container-fluid card-contianer">
+    <div class="grid-col-6 grid">
         @foreach (var product in Model.ProductsList)
         {
             <div class="show-card button" >

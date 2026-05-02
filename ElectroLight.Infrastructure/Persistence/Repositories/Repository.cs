@@ -30,7 +30,7 @@ namespace ElectroLight.Infrastructure.Repository
         {
             IQueryable<T> query = _dbSet;
 
-            if(!AsTracking)
+            if (!AsTracking)
             {
                 query = query.AsNoTracking();
             }
@@ -73,6 +73,11 @@ namespace ElectroLight.Infrastructure.Repository
             _dbSet.Remove(entity);
         }
 
+        public void RemoveRange(IEnumerable<T> entities)
+        {
+            _dbSet.RemoveRange(entities);
+        }
+
         //public async Task SaveChangesAsync()
         //{
         //    await _db.SaveChangesAsync();
@@ -82,5 +87,86 @@ namespace ElectroLight.Infrastructure.Repository
         {
             _dbSet.Update(entity);
         }
+
+
+
+        public async Task<T?> GetBetterVersionAsync(
+            Expression<Func<T, bool>> Filter,
+            bool AsTracking = true,
+            Func<IQueryable<T>, IQueryable<T>>? include = null)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (!AsTracking)
+                query = query.AsNoTracking();
+
+            if (include != null)
+                query = include(query);
+
+            return await query.FirstOrDefaultAsync(Filter);
+        }
+
+        public async Task<IEnumerable<T>> GetAllBetterVersionAsync(
+         Expression<Func<T, bool>>? Filter = null,
+         bool AsTracking = true,
+         Func<IQueryable<T>, IQueryable<T>>? include = null)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (!AsTracking)
+                query = query.AsNoTracking();
+
+            if (include != null)
+                query = include(query);
+
+            if (Filter != null)
+                query = query.Where(Filter);
+
+            return await query.ToListAsync();
+        }
+
+
+        //////////////////////////////////////
+        ////////For Future improvements/////
+        //////////////////////////////////////
+
+        //public async Task<T?> GetAsync(
+        //    Expression<Func<T, bool>> Filter,
+        //    bool AsTracking = true,
+        //    Func<IQueryable<T>, IQueryable<T>>? include = null)
+        //{
+        //    IQueryable<T> query = _dbSet;
+
+        //    if (!AsTracking)
+        //        query = query.AsNoTracking();
+
+        //    if (include != null)
+        //        query = include(query);
+
+        //    return await query.FirstOrDefaultAsync(Filter);
+        //}
+
+
+        //public async Task<IEnumerable<T>> GetAllAsync(
+        // Expression<Func<T, bool>>? Filter = null,
+        // bool AsTracking = true,
+        // Func<IQueryable<T>, IQueryable<T>>? include = null)
+        //{
+        //    IQueryable<T> query = _dbSet;
+
+        //    if (!AsTracking)
+        //        query = query.AsNoTracking();
+
+        //    if (include != null)
+        //        query = include(query);
+
+        //    if (Filter != null)
+        //        query = query.Where(Filter);
+
+        //    return await query.ToListAsync();
+        //}
+
+
+
     }
 }

@@ -1,0 +1,136 @@
+﻿@model ShoppingCart
+
+<header class="flex">
+    <div class="text-url-history-span text-url-history">
+        <a class="text-url-history" asp-controller="Home" asp-action="Index">Home</a>
+        <i class="bi bi-chevron-right "></i>
+        Cart
+    </div>
+    <form class="delete-all-form" asp-controller="ShoppingCart" asp-action="DeleteAllCartItems">
+        <input name="ShoppingCartId" value="@Model.Id" hidden />
+        @if (Model.cartItems.Count > 0)
+        {
+            <button class="remove-all-cart-items">Clear All <i class="bi bi-trash3-fill"></i></button>
+        }
+        else
+        {
+            <button class="remove-all-cart-items " disabled>Clear All <i class="bi bi-trash3-fill"></i></button>
+        }
+    </form>
+</header>
+<hr class="m-0 mb-4" />
+<div class="container-fluid">
+    <div class="grid grid-col-3-1 grid-gap-lg ">
+        <div class="shopping-carts-box">
+            @foreach (var cart in Model.cartItems)
+            {
+                <div class="cart-item-box grid grid-col-auto-1 ">
+                    <div class="cart-image-wraper">
+                        <img src="@cart.Product.ImageUrl" />
+                    </div>
+                    <div class="cart-content">
+                        <form class="delete-item-form"
+                              asp-controller="ShoppingCart"
+                              asp-action="DeleteCartItem"
+                              method="post">
+
+                            @Html.AntiForgeryToken()
+
+                            <input name="cartItemId" value="@cart.Id" hidden />
+
+                            <button type="submit" class="trash-cart button">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                        <p class="cart-description">@cart.Product.Description</p>
+                        <p class="cart-name">@cart.Product.Name</p>
+
+                        <p class="price">@cart.Product.Price.ToString("c")</p>
+                        <div class="quantity-cart">
+                            <span>Quantity:</span>
+                            <select>
+                                @for (int i = 1; i <= 100; i++)
+                                {
+                                    <option value="@i" selected="@(cart.Quantity == i)">@i</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="order-box"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            // =========================
+            // DELETE SINGLE CART ITEM
+            // =========================
+                  $(document).on("submit", ".delete-item-form", function (e) {
+            e.preventDefault();
+
+            var form = $(this);
+            var token = form.find('input[name="__RequestVerificationToken"]').val();
+
+            $.ajax({
+                url: form.attr("action"),
+                type: "POST",
+                data: form.serialize(),
+                headers: {
+                    "RequestVerificationToken": token
+                },
+                success: function (response) {
+                    if (response.success) {
+                        form.closest(".cart-item-box").remove();
+                        console.log("Item deleted successfully");
+                    }
+                },
+                error: function () {
+                    alert("Something went wrong while deleting item");
+                }
+            });
+        });
+
+            // =========================
+            // DELETE ALL CART ITEMS
+            // =========================
+            $(".delete-all-form").submit(function (e) {
+                e.preventDefault();
+
+                var form = $(this);
+
+                if (!confirm("Are you sure you want to clear all cart items?")) {
+                    return;
+                }
+
+                $.ajax({
+                    url: form.attr("action"),
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (response) {
+
+                        if (response.success) {
+
+                            // remove all items from UI
+                            $(".shopping-carts-box").empty();
+
+                            // disable clear button
+                            $(".remove-all-cart-items").prop("disabled", true);
+
+                            console.log("Cart cleared successfully");
+                        }
+                    },
+                    error: function () {
+                        alert("Something went wrong while clearing cart");
+                    }
+                });
+            });
+
+        });
+    </script>
+}
+

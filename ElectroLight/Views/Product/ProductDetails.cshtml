@@ -1,66 +1,170 @@
 ﻿@model ProductShowVM
 
-<header class="categroies-header">
-<div class="text-url-history-span text-url-history">
-    <a class="text-url-history" asp-controller="Home" asp-action="Index">Home</a>
-    @if (Model.CategoryName != null)
-    {
-        <i class="bi bi-chevron-right"></i>
-        @Model.CategoryName
-    }
-</div>
-<div class="container-fluid">
-    <div class="scroll-x category-tag-container ">
-        @foreach (var category in Model.CategoriesList)
+<header class="categroies-header ">
+    <div class="text-url-history-span text-url-history">
+        <a class="text-url-history" asp-controller="Home" asp-action="Index">Home</a>
+        @if (Model.CategoryName != null)
         {
-            <a class="category-tag button" asp-action="ProductsShow" asp-route-categoryId="@category.Id">@category.Name</a>
-            <a class="category-tag button" asp-action="ProductsShow" asp-route-categoryId="@category.Id">@category.Name</a>
-            <a class="category-tag button" asp-action="ProductsShow" asp-route-categoryId="@category.Id">@category.Name</a>
+            <i class="bi bi-chevron-right"></i>
+            @Model.CategoryName
         }
     </div>
-</div>
+
+    <div class="container-fluid categories-nav">
+        <div class="scroll-x category-tag-container ">
+            @foreach (var category in Model.CategoriesList)
+            {
+                <a class="category-tag button"
+                       asp-action="ProductsShow"
+                       asp-route-categoryId="@category.Id">
+                    @category.Name
+                </a>
+            }
+        </div>
+    </div>
 </header>
 
+<section class="details-product-section add-to-cart-container">
+    <div class="container-fluid grid grid-col-auto-1 ">
 
-<section class="details-product-section">
-<div class="container-fluid grid grid-col-1x5-2 ">
-    <div class="details-image-wrapper">
-        <img class="show-image details-image" src="@Model.Product.ImageUrl" alt="@Model.Product.Description" onerror="this.onerror=null;this.src='/img/placeholder.jpg';" />
-    </div>
-    <div class="product-details-box">
-        <p class="details-description ">@Model.Product.Description</p>
-        <div class=" product-name-container">
-        <p class="text-center details-name">@Model.Product.Name</p>
-        <p class="details-price">@Model.Product.Price.ToString("c")</p>
+        <div class="details-image-wrapper">
+            <img class="show-image details-image"
+                 src="@Model.Product.ImageUrl"
+                 alt="@Model.Product.Description"
+                 onerror="this.onerror=null;this.src='/img/placeholder.jpg';" />
+        </div>
+
+        <div class="product-details-box">
+            <p class="details-description">@Model.Product.Description</p>
+            <p class="details-name">@Model.Product.Name</p>
+
+            <div class="flex product-detials-price-quantity">
+                <div class="quantity-detials">
+                    <span>Quantity:</span>
+
+                    <select id="qty">
+                        @for (int i = 1; i <= 100; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+
+                <p class="details-price">@Model.Product.Price.ToString("c")</p>
             </div>
-        <div class="text-center">
-         <a class="add-to-cart button">Add To Cart</a>
+
+            <div class="text-center">
+                <form id="addToCartForm"
+                      asp-controller="ShoppingCart"
+                      asp-action="AddOrUpdateItem">
+
+                    <input type="hidden" name="productId" value="@Model.Product.Id" />
+
+                    <input type="hidden" name="quantity" id="hiddenQty" value="1" />
+
+                    <button class="button add-to-cart" type="submit">
+                        Add To Cart
+                    </button>
+                </form>
+            </div>
+
+            <a class="go-to-cart button"
+                   asp-controller="shoppingcart"
+                   asp-action="index">
+                Go To Cart <i class="bi bi-arrow-right"></i>
+            </a>
         </div>
     </div>
-</div>
 </section>
+
+<hr />
 
 <section class="product-listof-category">
-<div class="container-fluid ">
-    <div class="category-products grid grid-col-4">
-        @foreach (var product in Model.ProductsList.OrderBy(p => Guid.NewGuid()))
-{
-    <div class="show-card button">
-        <a style="text-decoration:none" asp-controller="product" asp-action="ProductDetails" asp-route-productId="@product.Id">
-            <img class="show-image" src="@product.ImageUrl" loading="lazy" alt="@product.Description" onerror="this.onerror=null;this.src='/img/placeholder.jpg';" />
-            <div class="show-card-body align-content-center ">
-                <p class="show-card-description">@product.Description</p>
-                <p class="product-name text-center">@product.Name</p>
-            </div>
-              
-        </a>
-        <div class="flex-price">
-            <a href="#" class="cart"><i class="bi bi-cart-plus"></i></a>
-            <p class="product-price">@product.Price.ToString("c")</p>
+    <div class="container-fluid ">
+        <div class="category-products grid grid-col-4">
+
+            @foreach (var product in Model.ProductsList.OrderBy(p => Guid.NewGuid()))
+            {
+                <div class="show-card button">
+
+                    <a style="text-decoration:none"
+                           asp-controller="product"
+                           asp-action="ProductDetails"
+                           asp-route-productId="@product.Id">
+
+                        <img class="show-image"
+                             src="@product.ImageUrl"
+                             loading="lazy"
+                             alt="@product.Description"
+                             onerror="this.onerror=null;this.src='/img/placeholder.jpg';" />
+
+                        <div class="show-card-body align-content-center ">
+                            <p class="show-card-description">@product.Description</p>
+                            <p class="product-name text-center">@product.Name</p>
+                        </div>
+                    </a>
+
+                    <div class="flex-price">
+                        <a href="#" class="cart">
+                            <i class="bi bi-cart-plus"></i>
+                        </a>
+                        <p class="product-price">@product.Price.ToString("c")</p>
+                    </div>
+                </div>
+            }
 
         </div>
     </div>
-}
-    </div>
-</div>
 </section>
+
+@section Scripts {
+    <script>
+        $(function () {
+
+            // ✅ set initial quantity
+            $("#hiddenQty").val($("#qty").val());
+
+            // ✅ update hidden input when user changes select
+            $("#qty").on("change", function () {
+                $("#hiddenQty").val($(this).val());
+            });
+
+            // ✅ AJAX submit (NO PAGE RELOAD)
+            $("#addToCartForm").on("submit", function (e) {
+
+                e.preventDefault(); // 🚨 VERY IMPORTANT
+
+                $.ajax({
+                    url: this.action,
+                    type: "POST",
+                    data: $(this).serialize(),
+
+                    success: function (res) {
+
+                        if (res.success) {
+
+                            // update cart badge
+                            $("#cart-count").text(res.count);
+
+                            // nice UX feedback
+                            $(".add-to-cart")
+                                .text("Added ✔")
+                                .prop("disabled", true);
+
+                            setTimeout(() => {
+                                $(".add-to-cart")
+                                    .text("Add To Cart")
+                                    .prop("disabled", false);
+                            }, 1500);
+                        }
+                    },
+
+                    error: function () {
+                        console.log("error");
+                    }
+                });
+            });
+
+        });
+    </script>
+}
