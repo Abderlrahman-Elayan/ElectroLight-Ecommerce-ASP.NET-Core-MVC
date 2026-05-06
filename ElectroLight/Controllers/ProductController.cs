@@ -31,8 +31,8 @@ namespace ElectroLight.Controllers
             //return View(products);
             return View();
         }
-        [Authorize(Roles = SD.Role_Admin)]
 
+        [Authorize(Roles = SD.Role_Admin)]
         public async Task<IActionResult> Upsert(int? id)
         {
             Product product = await _productService.GetAsync(p => p.Id == id, AsTracking: false, includes: p => p.Category) ?? new();
@@ -102,7 +102,6 @@ namespace ElectroLight.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
         public async Task<IActionResult> ProductsShow(int? categoryId)
         {
             ProductShowVM productVM = new()
@@ -114,6 +113,7 @@ namespace ElectroLight.Controllers
             return View(productVM);
         }
 
+        [Authorize]
         public async Task<IActionResult> ProductDetails(int productId)
         {
             var productFromDb = await _productService.GetAsync(p => p.Id == productId);

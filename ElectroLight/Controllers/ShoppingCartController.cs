@@ -71,6 +71,23 @@ namespace ElectroLight.Controllers
             return Ok(new { success = true, count = countItems});
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateQuantity(int cartItemId, int quantity)
+        {
+            var item = await _unitOfWork.CartItems.GetAsync(c => c.Id == cartItemId);
+
+            if (item == null)
+                return NotFound();
+
+            item.Quantity = quantity;
+
+            _unitOfWork.CartItems.Update(item);
+            await _unitOfWork.SaveChangesAsync();
+
+            return Ok(new { success = true });
+        }
+
+
         [HttpGet]
         public async Task<IActionResult> GetCartCount()
         {
@@ -93,6 +110,7 @@ namespace ElectroLight.Controllers
 
             _unitOfWork.CartItems.Remove(cartItem);
             await _unitOfWork.SaveChangesAsync();
+
 
             return Json(new { success = true });
         }

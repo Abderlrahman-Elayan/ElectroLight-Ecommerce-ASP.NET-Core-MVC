@@ -1,0 +1,49 @@
+﻿@model CheckoutVM
+<div class="checkout-container">
+
+    <form asp-action="PlaceOrder" method="post" class="checkout-form">
+        @Html.AntiForgeryToken()
+        <div class="checkout-left">
+
+            <h2>Checkout</h2>
+
+            <div class="form-group">
+                <label>Address</label>
+                <input asp-for="Address" required />
+            </div>
+
+            <div class="form-group">
+                <label>Phone</label>
+                <input asp-for="PhoneNumber" required />
+            </div>
+
+        </div>
+
+        <div class="checkout-right">
+
+            <h3>Order Summary</h3>
+
+            @foreach (var item in Model.Cart.cartItems)
+            {
+                <div class="order-item">
+                    <span>@item.Product.Name</span>
+                    <span>@item.Quantity x @item.Price</span>
+                </div>
+            }
+
+            <div class="order-total">
+                Total:
+                <span>
+                    @Model.Cart.cartItems.Sum(x => x.Quantity * x.Price)
+                </span>
+            </div>
+
+            <button type="submit" class="place-order-btn">
+                Place Order
+            </button>
+
+        </div>
+
+    </form>
+
+</div>

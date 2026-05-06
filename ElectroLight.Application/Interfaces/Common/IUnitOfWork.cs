@@ -12,7 +12,9 @@ namespace ElectroLight.Application.Interfaces.Common
         IRepository<Product> Products { get; }
         IRepository<ShoppingCart> ShoppingCarts { get; }
         IRepository<CartItem> CartItems { get; }
-        
+        IRepository<Order> Orders { get; }
+        IRepository<OrderItem> OrderItems { get; }
+
         Task SaveChangesAsync();
 
     }

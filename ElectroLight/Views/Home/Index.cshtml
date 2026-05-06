@@ -97,6 +97,7 @@
     <h2 class="about-title">ElectroLight: Illuminate Your World with Style </h2>
     <p class="about-text">Explore a wide range of lighting and electrical products crafted to bring comfort, brightness, and modern design into your life. At ElectroLight, we combine quality, innovation, and affordability to power your everyday needs. </p>
 </section>
+
 @* Categroies Section *@
 <section class="categories-section heading-primary" id="categroies">
     <div class="container ">
@@ -113,6 +114,8 @@
     </div>
 
 </section>
+
+
 @* Newest Section *@
 <section class="newest-products-section" id="newest-section">
     <div class="container justify-content-center">
@@ -130,12 +133,13 @@
               
                     </a>
                     <div class="flex-price">
-                        
-                        <button class="add-to-cart-btn btn btn-link p-0"
-                                data-product-id="@product.Id">
-                            <i class="bi bi-cart-plus fs-4"></i>
-                        </button>
-
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <button class="add-to-cart-btn btn btn-link p-0"
+                                    data-product-id="@product.Id">
+                                <i class="bi bi-cart-plus fs-4"></i>
+                            </button>
+                        }
                         <p class="product-price">@product.Price.ToString("c")</p>
 
                     </div>
@@ -160,22 +164,22 @@
                             <p class="show-card-description">@product.Description</p>
                             <p class="product-name text-center">@product.Name</p>
                         </div>
-              
                     </a>
                     <div class="flex-price">
+                        @if (signInManager.IsSignedIn(User))
+                        {
                         <button class="add-to-cart-btn btn btn-link p-0"
                                 data-product-id="@product.Id">
                             <i class="bi bi-cart-plus fs-4"></i>
                         </button>
+                        }
                         <p class="product-price">@product.Price.ToString("c")</p>
                     </div>
                 </div>
             }
         </div>
     </div>
-
 </section>
-
 
 @section Scripts {
     <script>
@@ -262,5 +266,4 @@
             }, 2000);
         }
     </script>
-}
 }

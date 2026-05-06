@@ -20,8 +20,8 @@ namespace ElectroLight.Domain.Entities
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; } 
 
-            [ForeignKey("ShoppingCartId")]
-            public ShoppingCart ShoppingCart { get; set; } = null!;
+        [ForeignKey("ShoppingCartId")]
+        public ShoppingCart ShoppingCart { get; set; } = null!;
 
         [ForeignKey("ProductId")]
         public Product Product { get; set; } = null!;

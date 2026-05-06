@@ -1,13 +1,19 @@
 ﻿@model ShoppingCart
 
+@{
+    var total = Model.cartItems.Sum(x => x.Price * x.Quantity);
+}
+
 <header class="flex">
     <div class="text-url-history-span text-url-history">
         <a class="text-url-history" asp-controller="Home" asp-action="Index">Home</a>
         <i class="bi bi-chevron-right "></i>
         Cart
     </div>
+
     <form class="delete-all-form" asp-controller="ShoppingCart" asp-action="DeleteAllCartItems">
         <input name="ShoppingCartId" value="@Model.Id" hidden />
+
         @if (Model.cartItems.Count > 0)
         {
             <button class="remove-all-cart-items">Clear All <i class="bi bi-trash3-fill"></i></button>
@@ -18,17 +24,24 @@
         }
     </form>
 </header>
+
 <hr class="m-0 mb-4" />
+
 <div class="container-fluid">
     <div class="grid grid-col-3-1 grid-gap-lg ">
+
         <div class="shopping-carts-box">
+
             @foreach (var cart in Model.cartItems)
             {
                 <div class="cart-item-box grid grid-col-auto-1 ">
+
                     <div class="cart-image-wraper">
                         <img src="@cart.Product.ImageUrl" />
                     </div>
+
                     <div class="cart-content">
+
                         <form class="delete-item-form"
                               asp-controller="ShoppingCart"
                               asp-action="DeleteCartItem"
@@ -42,90 +55,160 @@
                                 <i class="bi bi-trash"></i>
                             </button>
                         </form>
+
                         <p class="cart-description">@cart.Product.Description</p>
                         <p class="cart-name">@cart.Product.Name</p>
 
-                        <p class="price">@cart.Product.Price.ToString("c")</p>
+                        <p class="price" data-price="@cart.Product.Price">
+                            @cart.Product.Price.ToString("c")
+                        </p>
+
                         <div class="quantity-cart">
                             <span>Quantity:</span>
-                            <select>
+
+                            <select class="quantity-select" data-cart-id="@cart.Id">
                                 @for (int i = 1; i <= 100; i++)
                                 {
                                     <option value="@i" selected="@(cart.Quantity == i)">@i</option>
                                 }
                             </select>
+
                         </div>
+
                     </div>
                 </div>
             }
+
         </div>
-        <div class="order-box"></div>
+
+        <div class="order-box">
+
+            <h2 class="order-summary">Order Summary</h2>
+
+            <h3 class="total-price">
+                Total: <span class="cart-total" id="cart-total">@total.ToString("c")</span>
+            </h3>
+
+            <p class="order-note">
+                You're almost there! Review your items and make sure everything looks good before proceeding to checkout.
+            </p>
+
+            <ul class="order-info">
+                <li>✔ Secure checkout</li>
+                <li>✔ Fast processing</li>
+                <li>✔ Easy returns</li>
+            </ul>
+
+           <a asp-controller="Checkout" asp-action="Index"  class="checkout-btn">
+                Proceed to Checkout
+            </a>
+
+        </div>
+
     </div>
 </div>
-
 @section Scripts {
     <script>
         $(document).ready(function () {
 
             // =========================
-            // DELETE SINGLE CART ITEM
+            // TOTAL CALCULATION
             // =========================
-                  $(document).on("submit", ".delete-item-form", function (e) {
-            e.preventDefault();
+            function updateTotal() {
+                let total = 0;
 
-            var form = $(this);
-            var token = form.find('input[name="__RequestVerificationToken"]').val();
+                $(".cart-item-box").each(function () {
+                    let price = parseFloat($(this).find(".price").data("price"));
+                    let qty = parseInt($(this).find(".quantity-select").val());
 
-            $.ajax({
-                url: form.attr("action"),
-                type: "POST",
-                data: form.serialize(),
-                headers: {
-                    "RequestVerificationToken": token
-                },
-                success: function (response) {
-                    if (response.success) {
-                        form.closest(".cart-item-box").remove();
-                        console.log("Item deleted successfully");
-                    }
-                },
-                error: function () {
-                    alert("Something went wrong while deleting item");
-                }
-            });
-        });
+                    total += price * qty;
+                });
+
+                $("#cart-total").text(total.toFixed(2));
+            }
 
             // =========================
-            // DELETE ALL CART ITEMS
+            // DELETE SINGLE ITEM
             // =========================
-            $(".delete-all-form").submit(function (e) {
+            $(document).on("submit", ".delete-item-form", function (e) {
                 e.preventDefault();
 
-                var form = $(this);
-
-                if (!confirm("Are you sure you want to clear all cart items?")) {
-                    return;
-                }
+                let form = $(this);
+                let token = form.find('input[name="__RequestVerificationToken"]').val();
 
                 $.ajax({
                     url: form.attr("action"),
                     type: "POST",
                     data: form.serialize(),
-                    success: function (response) {
-
-                        if (response.success) {
-
-                            // remove all items from UI
-                            $(".shopping-carts-box").empty();
-
-                            // disable clear button
-                            $(".remove-all-cart-items").prop("disabled", true);
-
-                            console.log("Cart cleared successfully");
+                    headers: {
+                        "RequestVerificationToken": token
+                    },
+                    success: function (res) {
+                        if (res.success) {
+                            form.closest(".cart-item-box").remove();
+                            updateTotal();
                         }
                     },
                     error: function () {
-                        alert("Something went wrong while clearing cart");
+                        alert("Delete failed");
+                    }
+                });
+            });
+
+            // =========================
+            // DELETE ALL ITEMS
+            // =========================
+            $(".delete-all-form").submit(function (e) {
+                e.preventDefault();
+
+                let form = $(this);
+
+                if (!confirm("Clear all cart items?")) return;
+
+                $.ajax({
+                    url: form.attr("action"),
+                    type: "POST",
+                    data: form.serialize(),
+                    success: function (res) {
+                        if (res.success) {
+                            $(".shopping-carts-box").empty();
+                            $(".remove-all-cart-items").prop("disabled", true);
+                            updateTotal();
+                        }
+                    },
+                    error: function () {
+                        alert("Clear failed");
+                    }
+                });
+            });
+
+            // =========================
+            // UPDATE QUANTITY (🔥 MAIN PART)
+            // =========================
+            $(document).on("change", ".quantity-select", function () {
+
+                let select = $(this);
+                let quantity = parseInt(select.val());
+                let cartItemId = select.data("cart-id");
+
+                // 🔥 Update UI instantly
+                updateTotal();
+
+                // 🔥 Send to backend
+                $.ajax({
+                    url: '/ShoppingCart/UpdateQuantity',
+                    type: 'POST',
+                    data: {
+                        cartItemId: cartItemId,
+                        quantity: quantity
+                    },
+                    success: function (res) {
+                        if (!res.success) {
+                            alert("Update failed");
+                        }
+                    },
+                    error: function () {
+                        alert("Error updating quantity");
                     }
                 });
             });
@@ -133,4 +216,3 @@
         });
     </script>
 }
-

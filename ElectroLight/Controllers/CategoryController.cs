@@ -21,6 +21,7 @@ namespace ElectroLight.Controllers
             _CategoryService = service;
             _imageService = imageService;
         }
+
         [Authorize(Roles = SD.Role_Admin)]
         public async Task<IActionResult> Index()
         {
@@ -44,6 +45,7 @@ namespace ElectroLight.Controllers
 
             return View(category);
         }
+
         [Authorize(Roles = SD.Role_Admin)]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -93,7 +95,6 @@ namespace ElectroLight.Controllers
        
 
         #region API CALLS
-
         [HttpGet]
         [Authorize(Roles = SD.Role_Admin)]
 
@@ -123,7 +124,6 @@ namespace ElectroLight.Controllers
 
             return Json(new { success = true, message = "Category has been Deleted Successfuly" });
         }
-
         #endregion
 
 
