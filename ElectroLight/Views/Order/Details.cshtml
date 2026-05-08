@@ -1,0 +1,98 @@
+﻿@model Order
+
+<div class="admin-order-details-container">
+    <div class="admin-back-btn-container">
+        <a asp-action="Index" class="admin-back-btn">
+            ← Back to Orders
+        </a>
+    </div>
+    <div class="admin-details-header">
+
+        <div>
+            <h2>Order #@Model.Id</h2>
+            <p>@Model.CreatedAt.ToString("dd MMM yyyy - hh:mm tt")</p>
+        </div>
+
+        <div class="admin-status-badge">
+            <p>
+            @Model.Status
+            </p>
+        </div>
+
+    </div>
+
+    <!-- CUSTOMER INFO -->
+    <div class="admin-info-grid">
+
+        <div class="admin-info-card">
+            <span>Phone</span>
+            <strong>@Model.PhoneNumber</strong>
+        </div>
+
+        <div class="admin-info-card">
+            <span>Total</span>
+            <strong>@Model.TotalPrice.ToString("c")</strong>
+        </div>
+
+    </div>
+
+    <!-- ADDRESS -->
+    <div class="admin-address">
+        <h3>Address</h3>
+        <p>@Model.Address</p>
+    </div>
+
+    <!-- STATUS UPDATE -->
+    <form asp-action="UpdateStatus" method="post" class="admin-status-form">
+
+        <input type="hidden" name="id" value="@Model.Id" />
+
+        <select name="status">
+            @foreach (var status in Enum.GetValues(typeof(OrderStatus)))
+            {
+                <option value="@status">@status</option>
+            }
+        </select>
+
+        <button type="submit">
+            Update Status
+        </button>
+
+    </form>
+
+    <!-- PRODUCTS -->
+    <div class="admin-products">
+
+        <h3>Products</h3>
+
+        @foreach (var item in Model.OrderItems)
+        {
+            <div class="admin-product-row">
+
+                <div class="admin-product-left">
+
+                    <img src="@item.Product.ImageUrl" />
+
+                    <div>
+                        <h4>@item.Product.Name</h4>
+                        <span>Qty: @item.Quantity</span>
+                    </div>
+
+                </div>
+
+                <div class="admin-product-price">
+                    @((item.Price * item.Quantity).ToString("c"))
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+    <!-- TOTAL -->
+    <div class="admin-total">
+        <span>Total</span>
+        <strong>@Model.TotalPrice.ToString("c")</strong>
+    </div>
+
+</div>

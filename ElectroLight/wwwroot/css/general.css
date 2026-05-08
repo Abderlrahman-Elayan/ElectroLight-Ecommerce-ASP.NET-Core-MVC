@@ -18,11 +18,15 @@ p {
 
 .nav-item {
     font-weight: 600;
-}
 
-.nav-item a:hover {
-    color: #4a92fe;
 }
+    .nav-item a{
+        text-decoration:none;
+    }
+
+    .nav-item a:hover {
+        color: #4a92fe;
+    }
 
 .nav-item a:link * {
     transition: 0.3s all ease;

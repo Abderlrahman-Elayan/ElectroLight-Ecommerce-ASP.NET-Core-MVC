@@ -24,6 +24,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" asp-controller="category" asp-action="index">Categories</a></li>
                         <li><a class="dropdown-item" asp-controller="product" asp-action="index">Products</a></li>
+                        <li><a class="dropdown-item" asp-controller="Order" asp-action="index">Orders</a></li>
                     </ul>
                 </li>
             }
@@ -31,6 +32,12 @@
                 <a class="button" asp-controller="shoppingcart" asp-action="index">
                     <i class="bi bi-cart4"></i>
                     <span id="cart-count" class="cart-badge">0</span>
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a asp-controller="Checkout" asp-action="MyOrders">
+                    View My Orders
                 </a>
             </li>
             <li class="nav-item">
@@ -135,7 +142,7 @@
                     <div class="flex-price">
                         @if (signInManager.IsSignedIn(User))
                         {
-                            <button class="add-to-cart-btn btn btn-link p-0"
+                            <button class="add-to-cart-btn  btn-link p-0"
                                     data-product-id="@product.Id">
                                 <i class="bi bi-cart-plus fs-4"></i>
                             </button>
@@ -168,7 +175,7 @@
                     <div class="flex-price">
                         @if (signInManager.IsSignedIn(User))
                         {
-                        <button class="add-to-cart-btn btn btn-link p-0"
+                        <button class="add-to-cart-btn  btn-link p-0"
                                 data-product-id="@product.Id">
                             <i class="bi bi-cart-plus fs-4"></i>
                         </button>

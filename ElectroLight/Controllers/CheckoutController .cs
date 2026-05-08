@@ -1,5 +1,6 @@
 ﻿using ElectroLight.Application.Interfaces.Common;
 using ElectroLight.Domain.Entities;
+using ElectroLight.Domain.Enums;
 using ElectroLight.ViewsModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -69,18 +70,18 @@ namespace ElectroLight.Controllers
                 return View("Index", model);
             }
 
-     
+
             var order = new Order
             {
                 UserId = user.Id,
                 Address = model.Address,
                 PhoneNumber = model.PhoneNumber,
-                Status = "Pending",
+                Status = OrderStatus.Pending,
                 CreatedAt = DateTime.Now,
                 OrderItems = new List<OrderItem>()
             };
 
-         
+
             foreach (var item in cart.cartItems)
             {
                 order.OrderItems.Add(new OrderItem
@@ -94,19 +95,19 @@ namespace ElectroLight.Controllers
             order.TotalPrice = order.OrderItems
                 .Sum(x => x.Price * x.Quantity);
 
-        
+
             await _unitOfWork.Orders.AddAsync(order);
 
-   
+
             _unitOfWork.CartItems.RemoveRange(cart.cartItems);
 
             await _unitOfWork.SaveChangesAsync();
 
-  
+
             return RedirectToAction(nameof(Confirmation), new { id = order.Id });
         }
 
-     
+
         public async Task<IActionResult> Confirmation(int id)
         {
             var order = await _unitOfWork.Orders.GetBetterVersionAsync(
@@ -120,5 +121,34 @@ namespace ElectroLight.Controllers
 
             return View(order);
         }
+        public async Task<IActionResult> MyOrders()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var orders = await _unitOfWork.Orders.GetAllBetterVersionAsync(
+                o => o.UserId == user.Id,
+                include: q => q.Include(o => o.OrderItems)
+            );
+
+            return View(orders);
+        }
+
+        public async Task<IActionResult> OrderDetails(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var order = await _unitOfWork.Orders.GetBetterVersionAsync(
+                o => o.Id == id && o.UserId == user.Id,
+                include: q => q
+                    .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+            );
+
+            if (order == null)
+                return NotFound();
+
+            return View(order);
+        }
+
     }
 }

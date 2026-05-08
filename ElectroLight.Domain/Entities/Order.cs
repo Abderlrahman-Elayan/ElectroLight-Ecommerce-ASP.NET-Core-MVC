@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ElectroLight.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,7 +15,7 @@ namespace ElectroLight.Domain.Entities
 
         public decimal TotalPrice { get; set; }
 
-        public string Status { get; set; } = "Pending";
+        public OrderStatus Status { get; set; } = OrderStatus.Pending;
 
         public string Address { get; set; } = string.Empty;
 

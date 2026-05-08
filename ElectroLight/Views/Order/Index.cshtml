@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Order>
+
+<div class="admin-orders-container">
+    <div class="admin-back-home-container">
+        <a asp-controller="Home" asp-action="Index" class="admin-back-home-btn">
+            ← Back to Home
+        </a>
+    </div>
+    <div class="admin-orders-header">
+        <h2>Orders Management</h2>
+        <p>Control all customer orders</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-admin-orders">
+            <h3>No Orders Found</h3>
+            <p>There are no orders in the system yet.</p>
+        </div>
+    }
+    else
+    {
+        <div class="admin-orders-list">
+
+            @foreach (var order in Model.OrderByDescending(o => o.CreatedAt))
+            {
+                <div class="admin-order-card">
+
+                    <div class="admin-order-top">
+
+                        <div>
+                            <h3>Order #@order.Id</h3>
+                            <span class="admin-order-date">
+                                @order.CreatedAt.ToString("dd MMM yyyy")
+                            </span>
+                        </div>
+
+                        <div class="admin-status">
+                            @order.Status
+                        </div>
+
+                    </div>
+
+                    <div class="admin-order-info">
+
+                        <div>
+                            <span>Total</span>
+                            <strong>@order.TotalPrice.ToString("c")</strong>
+                        </div>
+
+                        <div>
+                            <span>Items</span>
+                            <strong>@order.OrderItems.Count</strong>
+                        </div>
+
+                    </div>
+
+                    <div class="admin-order-actions">
+
+                        <a asp-action="Details"
+                           asp-route-id="@order.Id"
+                           class="admin-details-btn">
+                            View Details
+                        </a>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>

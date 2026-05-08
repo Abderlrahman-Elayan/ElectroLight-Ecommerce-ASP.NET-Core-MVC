@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Order>
+
+<div class="orders-container">
+    <div class="text-end">
+        @if (Model.Any()) { 
+        <a asp-controller="Home" asp-action="Index" class="btn btn-home continue-btn">Continue Shopping</a>
+        }
+    </div>
+    <div class="orders-header">
+        <h2>My Orders</h2>
+        <p>View all your previous orders</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-orders">
+            <h3>No Orders Yet</h3>
+            <p>You haven't placed any orders yet.</p>
+
+            <a asp-controller="Home"
+                   asp-action="Index"
+                   class="shop-btn">
+                Start Shopping
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="orders-list">
+
+            @foreach (var order in Model.OrderByDescending(o => o.CreatedAt))
+            {
+                <div class="order-card">
+
+                    <div class="order-top">
+
+                        <div>
+                            <h3>Order #@order.Id</h3>
+                            <span class="order-date">
+                                @order.CreatedAt.ToString("dd MMM yyyy")
+                            </span>
+                        </div>
+
+                        <div class="status-box">
+                            @order.Status
+                        </div>
+
+                    </div>
+
+                    <div class="order-middle">
+
+                        <div class="info-box">
+                            <span>Total</span>
+                            <strong>@order.TotalPrice.ToString("c")</strong>
+                        </div>
+
+                        <div class="info-box">
+                            <span>Items</span>
+                            <strong>@order.OrderItems.Count</strong>
+                        </div>
+
+                    </div>
+
+                    <div class="order-products">
+
+                        @foreach (var item in order.OrderItems.Take(3))
+                        {
+                            <div class="product-row">
+                                <span>@item.Product?.Name</span>
+                                <span>
+                                    @item.Quantity x @item.Price.ToString("c")
+                                </span>
+                            </div>
+                        }
+
+                        @if (order.OrderItems.Count > 3)
+                        {
+                            <div class="more-items">
+                                +@(order.OrderItems.Count - 3) more items
+                            </div>
+                        }
+
+                    </div>
+
+                    <div class="order-actions">
+
+                        <a asp-controller="Checkout"
+                               asp-action="OrderDetails"
+                               asp-route-id="@order.Id"
+                               class="details-btn">
+                            View Details
+                        </a>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>

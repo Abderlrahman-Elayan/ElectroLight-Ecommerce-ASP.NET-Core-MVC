@@ -1,0 +1,108 @@
+﻿@model Order
+
+<div class="order-details-container">
+
+    <div class="order-details-card">
+
+        <div class="details-header">
+
+            <div>
+                <h2>Order #@Model.Id</h2>
+
+                <p class="details-date">
+                    Placed on @Model.CreatedAt.ToString("dd MMM yyyy - hh:mm tt")
+                </p>
+            </div>
+
+            <div class="details-status">
+                @Model.Status
+            </div>
+
+        </div>
+
+        <div class="details-info-grid">
+
+            <div class="info-card">
+                <span>Phone Number</span>
+                <strong>@Model.PhoneNumber</strong>
+            </div>
+
+            <div class="info-card">
+                <span>Total Price</span>
+                <strong>@Model.TotalPrice.ToString("c")</strong>
+            </div>
+
+        </div>
+
+        <div class="address-box">
+
+            <h3>Shipping Address</h3>
+
+            <p>
+                @Model.Address
+            </p>
+
+        </div>
+
+        <div class="products-section">
+
+            <h3>Products</h3>
+
+            @foreach (var item in Model.OrderItems)
+            {
+                <div class="details-product-row">
+
+                    <div class="product-left">
+
+                        <div class="details-image-wrapper">
+
+                            <img src="@item.Product.ImageUrl"
+                                 alt="@item.Product.Description" />
+                        </div>
+
+                        <div>
+
+                            <h4>@item.Product.Name</h4>
+
+                            <span>
+                                Quantity: @item.Quantity
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="product-price">
+                        @((item.Price * item.Quantity).ToString("c"))
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+        <div class="final-total">
+
+            <span>Total</span>
+
+            <strong>
+                @Model.TotalPrice.ToString("c")
+            </strong>
+
+        </div>
+
+        <div class="details-actions">
+
+            <a asp-action="MyOrders"
+                   asp-controller="Checkout"
+                   class="back-orders-btn">
+
+                Back To Orders
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
