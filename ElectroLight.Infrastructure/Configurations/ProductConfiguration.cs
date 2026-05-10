@@ -13,8 +13,8 @@ namespace ElectroLight.Infrastructure.Configurations
         {
             builder.HasOne(p => p.Category)
                    .WithMany(c => c.Products)
-                   .HasForeignKey(p => p.CategoryId);
-            //.OnDelete(DeleteBehavior.Restrict);
+                   .HasForeignKey(p => p.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
 
             builder.Property(p => p.Price).HasPrecision(18, 2);
 

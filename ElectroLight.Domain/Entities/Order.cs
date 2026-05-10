@@ -21,6 +21,8 @@ namespace ElectroLight.Domain.Entities
 
         public string PhoneNumber { get; set; } = string.Empty;
 
+        //public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Pending;
+
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }

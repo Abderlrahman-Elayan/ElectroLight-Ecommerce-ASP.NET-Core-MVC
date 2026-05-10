@@ -76,6 +76,7 @@ namespace ElectroLight.Controllers
                 UserId = user.Id,
                 Address = model.Address,
                 PhoneNumber = model.PhoneNumber,
+                //PaymentStatus = PaymentStatus.Pending,
                 Status = OrderStatus.Pending,
                 CreatedAt = DateTime.Now,
                 OrderItems = new List<OrderItem>()

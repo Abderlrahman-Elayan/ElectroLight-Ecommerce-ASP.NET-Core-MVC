@@ -14,12 +14,14 @@ namespace ElectroLight.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryService _CategoryService;
+        private readonly IProductService _ProductService;
         private readonly IImageService _imageService;
 
-        public CategoryController(ICategoryService service, IImageService imageService)
+        public CategoryController(ICategoryService service, IImageService imageService, IProductService productService)
         {
             _CategoryService = service;
             _imageService = imageService;
+            _ProductService = productService;
         }
 
         [Authorize(Roles = SD.Role_Admin)]
@@ -110,11 +112,25 @@ namespace ElectroLight.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             var Category = await _CategoryService.GetAsync(c => c.Id == id);
+
+          
+
             if (Category == null)
             {
                 TempData["error"] = "cant delete Category";
                 return Json(new { success = false, message = "Error while deleting" });
 
+            }
+
+            var product = await _ProductService.GetAsync(p => p.CategoryId == id);
+
+            if (product != null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Cannot delete this category because it contains products."
+                });
             }
 
             _imageService.DeleteImage(Category.ImageUrl);

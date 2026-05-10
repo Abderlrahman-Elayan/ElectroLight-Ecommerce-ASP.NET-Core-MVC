@@ -25,7 +25,6 @@ function loadDataTable() {
         ]
     });
 }
-
 function Delete(url) {
     Swal.fire({
         title: 'Are you sure?',
@@ -36,13 +35,32 @@ function Delete(url) {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
+
         if (result.isConfirmed) {
+
             $.ajax({
                 url: url,
                 type: 'DELETE',
+
                 success: function (data) {
-                    dataTable.ajax.reload();
-                    toastr.success(data.message);
+
+                    if (data.success) {
+
+                        dataTable.ajax.reload();
+
+                        toastr.success(data.message);
+
+                    } else {
+
+                        toastr.error(data.message);
+
+                    }
+                },
+
+                error: function () {
+
+                    toastr.error("Something went wrong");
+
                 }
             })
         }
