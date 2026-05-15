@@ -76,7 +76,7 @@ namespace ElectroLight.Controllers
                 UserId = user.Id,
                 Address = model.Address,
                 PhoneNumber = model.PhoneNumber,
-                //PaymentStatus = PaymentStatus.Pending,
+                PaymentStatus = PaymentStatus.Pending,
                 Status = OrderStatus.Pending,
                 CreatedAt = DateTime.Now,
                 OrderItems = new List<OrderItem>()
@@ -100,12 +100,13 @@ namespace ElectroLight.Controllers
             await _unitOfWork.Orders.AddAsync(order);
 
 
-            _unitOfWork.CartItems.RemoveRange(cart.cartItems);
+            //_unitOfWork.CartItems.RemoveRange(cart.cartItems);
 
             await _unitOfWork.SaveChangesAsync();
 
-
-            return RedirectToAction(nameof(Confirmation), new { id = order.Id });
+            return RedirectToAction("Pay","Payment",new { orderId = order.Id });
+            
+            //return RedirectToAction(nameof(Confirmation), new { id = order.Id });
         }
 
 
@@ -144,7 +145,7 @@ namespace ElectroLight.Controllers
                     .Include(o => o.OrderItems)
                     .ThenInclude(oi => oi.Product)
             );
-
+           
             if (order == null)
                 return NotFound();
 

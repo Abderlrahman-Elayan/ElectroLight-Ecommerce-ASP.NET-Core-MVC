@@ -13,10 +13,18 @@
             <p>@Model.CreatedAt.ToString("dd MMM yyyy - hh:mm tt")</p>
         </div>
 
-        <div class="admin-status-badge">
-            <p>
-            @Model.Status
-            </p>
+        <div class="admin-info-grid">
+
+            <div class="admin-info-card">
+                <span>Order Status</span>
+                <strong>@Model.Status</strong>
+            </div>
+
+            <div class="admin-info-card">
+                <span>Payment Status</span>
+                <strong>@Model.PaymentStatus</strong>
+            </div>
+
         </div>
 
     </div>

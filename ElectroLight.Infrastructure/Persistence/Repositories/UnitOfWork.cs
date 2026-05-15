@@ -17,6 +17,7 @@ namespace ElectroLight.Infrastructure.Repository
 
         public IRepository<Order> Orders{ get; private set; }
         public IRepository<OrderItem> OrderItems { get; private set; }
+        public IRepository<Payment> Payments { get; private set; }
 
 
         private ApplicationDbContext _db;
@@ -34,6 +35,8 @@ namespace ElectroLight.Infrastructure.Repository
             Orders = new Repository<Order>(_db);
 
             OrderItems = new Repository<OrderItem>(_db);
+
+            Payments = new Repository<Payment>(_db);
 
         }
 

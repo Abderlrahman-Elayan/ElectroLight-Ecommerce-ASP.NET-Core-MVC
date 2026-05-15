@@ -14,6 +14,7 @@ namespace ElectroLight.Application.Interfaces.Common
         IRepository<CartItem> CartItems { get; }
         IRepository<Order> Orders { get; }
         IRepository<OrderItem> OrderItems { get; }
+        IRepository<Payment> Payments { get; }
 
         Task SaveChangesAsync();
 

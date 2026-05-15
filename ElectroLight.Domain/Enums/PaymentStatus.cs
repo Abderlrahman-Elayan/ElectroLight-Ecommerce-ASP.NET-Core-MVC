@@ -8,7 +8,7 @@ namespace ElectroLight.Domain.Enums
     {
         Pending,
         Paid,
-        Failed
+        Failed,
     }
 
 }

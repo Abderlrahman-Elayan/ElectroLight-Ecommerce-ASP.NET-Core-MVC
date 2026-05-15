@@ -11,18 +11,28 @@ namespace ElectroLight.Domain.Entities
 
         public string UserId { get; set; } = string.Empty;
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public decimal TotalPrice { get; set; }
 
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
 
+        public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Pending;
+
         public string Address { get; set; } = string.Empty;
 
         public string PhoneNumber { get; set; } = string.Empty;
 
-        //public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Pending;
+        // PayPal checkout order id (created before payment)
+        public string? PayPalOrderId { get; set; }
 
-        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        // When payment is successfully completed
+        public DateTime? PaymentDate { get; set; }
+
+        public ICollection<OrderItem> OrderItems { get; set; }
+            = new List<OrderItem>();
+
+        public ICollection<Payment> Payments { get; set; }
+            = new List<Payment>();
     }
 }
