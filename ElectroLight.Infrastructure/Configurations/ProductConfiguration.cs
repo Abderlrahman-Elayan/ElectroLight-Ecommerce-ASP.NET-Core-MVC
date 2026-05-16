@@ -21,6 +21,8 @@ namespace ElectroLight.Infrastructure.Configurations
             builder.Property(p => p.CreatedAt)
             .HasDefaultValueSql("GETUTCDATE()");
 
+            builder.HasIndex(p => p.Name).IsUnique();
+
             builder.HasData(
                new Product
                {

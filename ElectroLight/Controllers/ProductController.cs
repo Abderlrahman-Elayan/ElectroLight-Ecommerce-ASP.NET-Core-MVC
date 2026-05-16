@@ -61,6 +61,11 @@ namespace ElectroLight.Controllers
             if (productvm.Product.Name == productvm.Product.Description)
                 ModelState.AddModelError("description", "The description cannot exactly match the Name.");
 
+            var isNameExist = await _productService.GetAsync(p => p.Name == productvm.Product.Name,AsTracking:false);
+
+            if (isNameExist != null)
+            ModelState.AddModelError("name", "The name is already existing");
+
             productvm.CategoriesList = await getCategoriesListItemsAsync();
 
 

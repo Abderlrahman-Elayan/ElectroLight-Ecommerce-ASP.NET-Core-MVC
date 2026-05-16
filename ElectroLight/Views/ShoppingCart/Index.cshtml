@@ -69,7 +69,10 @@
                             <select class="quantity-select" data-cart-id="@cart.Id">
                                 @for (int i = 1; i <= 100; i++)
                                 {
-                                    <option value="@i" selected="@(cart.Quantity == i)">@i</option>
+                                    <option value="@i"
+                                            selected="@(i == Math.Min(cart.Quantity, 100) ? "selected" : null)">
+                                        @i
+                                    </option>
                                 }
                             </select>
 
@@ -107,19 +110,30 @@
 
     </div>
 </div>
+
+
+
 @section Scripts {
     <script>
         $(document).ready(function () {
 
-            // =========================
-            // TOTAL CALCULATION
-            // =========================
+            // =========================================
+            // ✅ TOTAL CALCULATION
+            // =========================================
+
             function updateTotal() {
+
                 let total = 0;
 
                 $(".cart-item-box").each(function () {
-                    let price = parseFloat($(this).find(".price").data("price"));
-                    let qty = parseInt($(this).find(".quantity-select").val());
+
+                    let price = parseFloat(
+                        $(this).find(".price").data("price")
+                    );
+
+                    let qty = parseInt(
+                        $(this).find(".quantity-select").val()
+                    );
 
                     total += price * qty;
                 });
@@ -127,90 +141,222 @@
                 $("#cart-total").text(total.toFixed(2));
             }
 
-            // =========================
-            // DELETE SINGLE ITEM
-            // =========================
+            // =========================================
+            // ✅ UPDATE CART BADGE
+            // =========================================
+
+            function updateCartBadge(count) {
+
+                if (count <= 0) {
+
+                    $("#cart-count").hide();
+
+                } else {
+
+                    $("#cart-count")
+                        .show()
+                        .text(count);
+                }
+            }
+
+            // =========================================
+            // ✅ DELETE SINGLE ITEM
+            // =========================================
+
             $(document).on("submit", ".delete-item-form", function (e) {
+
                 e.preventDefault();
 
                 let form = $(this);
-                let token = form.find('input[name="__RequestVerificationToken"]').val();
+
+                let token = form.find(
+                    'input[name="__RequestVerificationToken"]'
+                ).val();
 
                 $.ajax({
                     url: form.attr("action"),
                     type: "POST",
                     data: form.serialize(),
+
                     headers: {
                         "RequestVerificationToken": token
                     },
+
                     success: function (res) {
+
                         if (res.success) {
+
                             form.closest(".cart-item-box").remove();
+
                             updateTotal();
+
+                            // ✅ update badge
+                            updateCartBadge(res.count);
+
+                            toastr.success("Item removed successfully");
+
+                            // ✅ disable clear all if empty
+                            if ($(".cart-item-box").length === 0) {
+
+                                $(".remove-all-cart-items")
+                                    .prop("disabled", true);
+                            }
                         }
                     },
-                    error: function () {
-                        alert("Delete failed");
+
+                    error: function (xhr) {
+
+                        let message = "Delete failed";
+
+                        if (xhr.responseJSON &&
+                            xhr.responseJSON.message) {
+
+                            message = xhr.responseJSON.message;
+                        }
+
+                        toastr.error(message);
                     }
                 });
+
             });
 
-            // =========================
-            // DELETE ALL ITEMS
-            // =========================
+            // =========================================
+            // ✅ DELETE ALL ITEMS
+            // =========================================
+
             $(".delete-all-form").submit(function (e) {
+
                 e.preventDefault();
 
                 let form = $(this);
 
-                if (!confirm("Clear all cart items?")) return;
+                if (!confirm("Clear all cart items?"))
+                    return;
 
                 $.ajax({
                     url: form.attr("action"),
                     type: "POST",
                     data: form.serialize(),
+
                     success: function (res) {
+
                         if (res.success) {
+
                             $(".shopping-carts-box").empty();
-                            $(".remove-all-cart-items").prop("disabled", true);
+
+                            $(".remove-all-cart-items")
+                                .prop("disabled", true);
+
                             updateTotal();
+
+                            // ✅ update badge
+                            updateCartBadge(0);
+
+                            toastr.success("Cart cleared successfully");
                         }
                     },
-                    error: function () {
-                        alert("Clear failed");
+
+                    error: function (xhr) {
+
+                        let message = "Clear failed";
+
+                        if (xhr.responseJSON &&
+                            xhr.responseJSON.message) {
+
+                            message = xhr.responseJSON.message;
+                        }
+
+                        toastr.error(message);
                     }
                 });
+
             });
 
-            // =========================
-            // UPDATE QUANTITY (🔥 MAIN PART)
-            // =========================
+            // =========================================
+            // ✅ UPDATE QUANTITY
+            // =========================================
+
             $(document).on("change", ".quantity-select", function () {
 
                 let select = $(this);
+
                 let quantity = parseInt(select.val());
+
                 let cartItemId = select.data("cart-id");
 
-                // 🔥 Update UI instantly
+                // ✅ store previous quantity
+                let oldQuantity = select.data("old-value") || 1;
+
+                // ✅ instant UI update
                 updateTotal();
 
-                // 🔥 Send to backend
                 $.ajax({
                     url: '/ShoppingCart/UpdateQuantity',
                     type: 'POST',
+
                     data: {
                         cartItemId: cartItemId,
                         quantity: quantity
                     },
+
                     success: function (res) {
-                        if (!res.success) {
-                            alert("Update failed");
+
+                        if (res.success) {
+
+                            // ✅ save latest valid quantity
+                            select.data("old-value", quantity);
+
+                            // ✅ update badge
+                            if (res.count !== undefined) {
+                                updateCartBadge(res.count);
+                            }
+
+                            toastr.success("Quantity updated");
+                        }
+                        else {
+
+                            // ✅ restore old value
+                            select.val(oldQuantity);
+
+                            updateTotal();
+
+                            toastr.error(
+                                res.message || "Update failed"
+                            );
                         }
                     },
-                    error: function () {
-                        alert("Error updating quantity");
+
+                    error: function (xhr) {
+
+                        let message = "Error updating quantity";
+
+                        if (xhr.responseJSON &&
+                            xhr.responseJSON.message) {
+
+                            message = xhr.responseJSON.message;
+                        }
+
+                        // ✅ restore old quantity
+                        select.val(oldQuantity);
+
+                        updateTotal();
+
+                        toastr.error(message);
                     }
                 });
+
+            });
+
+            // =========================================
+            // ✅ STORE INITIAL QUANTITY VALUES
+            // =========================================
+
+            $(".quantity-select").each(function () {
+
+                $(this).data(
+                    "old-value",
+                    parseInt($(this).val())
+                );
             });
 
         });

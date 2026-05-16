@@ -27,7 +27,7 @@
 <section class="details-product-section add-to-cart-container">
     <div class="container-fluid grid grid-col-auto-1 ">
 
-        <div class="details-image-wrapper">
+        <div class="details-product-image-wrapper">
             <img class="show-image details-image"
                  src="@Model.Product.ImageUrl"
                  alt="@Model.Product.Description"
@@ -105,9 +105,10 @@
                     </a>
 
                     <div class="flex-price">
-                        <a href="#" class="cart">
-                            <i class="bi bi-cart-plus"></i>
-                        </a>
+                        <button class="add-to-cart-btn  btn-link p-0"
+                                data-product-id="@product.Id">
+                            <i class="bi bi-cart-plus fs-4"></i>
+                        </button>
                         <p class="product-price">@product.Price.ToString("c")</p>
                     </div>
                 </div>
@@ -121,50 +122,170 @@
     <script>
         $(function () {
 
-            // ✅ set initial quantity
+            // ================================
+            // ✅ INITIAL QUANTITY
+            // ================================
+
             $("#hiddenQty").val($("#qty").val());
 
-            // ✅ update hidden input when user changes select
+            // ================================
+            // ✅ UPDATE SELECTED QUANTITY
+            // ================================
+
             $("#qty").on("change", function () {
+
                 $("#hiddenQty").val($(this).val());
             });
 
-            // ✅ AJAX submit (NO PAGE RELOAD)
-            $("#addToCartForm").on("submit", function (e) { 
+            // ================================
+            // ✅ MAIN PRODUCT ADD TO CART
+            // ================================
 
-                e.preventDefault(); // 🚨 VERY IMPORTANT
+            $("#addToCartForm").on("submit", function (e) {
+
+                e.preventDefault();
+
+                var form = $(this);
+
+                var button = $(".add-to-cart");
+
+                // ✅ prevent spam click
+                button.prop("disabled", true);
 
                 $.ajax({
-                    url: this.action,
+                    url: form.attr("action"),
                     type: "POST",
-                    data: $(this).serialize(),
+                    data: form.serialize(),
 
                     success: function (res) {
 
                         if (res.success) {
 
-                            // update cart badge
-                            $("#cart-count").text(res.count);
+                            // ✅ update cart badge
+                            updateCartBadge(res.count);
 
-                            // nice UX feedback
-                            $(".add-to-cart")
+                            // ✅ button feedback
+                            button
                                 .text("Added ✔")
-                                .prop("disabled", true);
+                                .addClass("added");
+
+                            toastr.success("Added to cart successfully");
 
                             setTimeout(() => {
-                                $(".add-to-cart")
+
+                                button
                                     .text("Add To Cart")
+                                    .removeClass("added")
                                     .prop("disabled", false);
+
                             }, 1500);
                         }
                     },
 
-                    error: function () {
-                        console.log("error");
+                    error: function (xhr) {
+
+                        let message = "Error adding to cart";
+
+                        // ✅ backend message
+                        if (xhr.responseJSON &&
+                            xhr.responseJSON.message) {
+
+                            message = xhr.responseJSON.message;
+                        }
+
+                        toastr.error(message);
+
+                        // ✅ enable button again
+                        button.prop("disabled", false);
                     }
                 });
+
+            });
+
+            // ================================
+            // ✅ PRODUCT CARD ADD TO CART
+            // ================================
+
+            $(".add-to-cart-btn").on("click", function () {
+
+                var button = $(this);
+
+                var icon = button.find("i");
+
+                var productId = button.data("product-id");
+
+                // ✅ prevent spam click
+                button.prop("disabled", true);
+
+                $.ajax({
+                    url: '/ShoppingCart/AddOrUpdateItem',
+                    type: 'POST',
+
+                    data: {
+                        productId: productId,
+                        quantity: 1
+                    },
+
+                    success: function (res) {
+
+                        // ✅ icon animation
+                        icon.removeClass("bi-cart-plus")
+                            .addClass("bi-check text-success");
+
+                        // ✅ update cart badge
+                        updateCartBadge(res.count);
+
+                        toastr.success("Added to cart successfully");
+
+                        setTimeout(function () {
+
+                            icon.removeClass("bi-check text-success")
+                                .addClass("bi-cart-plus");
+
+                            button.prop("disabled", false);
+
+                        }, 1500);
+                    },
+
+                    error: function (xhr) {
+
+                        let message = "Error adding to cart";
+
+                        // ✅ backend message
+                        if (xhr.responseJSON &&
+                            xhr.responseJSON.message) {
+
+                            message = xhr.responseJSON.message;
+                        }
+
+                        toastr.error(message);
+
+                        // ✅ enable again
+                        button.prop("disabled", false);
+                    }
+                });
+
             });
 
         });
+
+        // ================================
+        // ✅ CART BADGE HANDLER
+        // ================================
+
+        function updateCartBadge(count) {
+
+            if (count <= 0) {
+
+                $("#cart-count").hide();
+
+            } else {
+
+                $("#cart-count")
+                    .show()
+                    .text(count);
+            }
+        }
+
     </script>
 }

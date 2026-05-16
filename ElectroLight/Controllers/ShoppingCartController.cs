@@ -15,7 +15,7 @@ namespace ElectroLight.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IProductService _productService;
-
+        private const int MAX_CART_QUANTITY = 100;
         public ShoppingCartController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager, IProductService productService)
         {
             this._unitOfWork = unitOfWork;
@@ -34,11 +34,29 @@ namespace ElectroLight.Controllers
         public async Task<IActionResult> AddOrUpdateItem(int productId, int quantity = 1)
         {
             if (quantity <= 0)
-                return BadRequest();
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Quantity must be greater than 0."
+                });
 
             var product = await _productService.GetAsync(p => p.Id == productId);
             if (product == null)
-                return NotFound();
+                return NotFound(new
+                {
+                    success = false,
+                    message = "Product not found."
+                });
+
+            if (quantity <= 0 || quantity > MAX_CART_QUANTITY)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = $"Quantity must be between 1 and {MAX_CART_QUANTITY}."
+                });
+            }
+
 
             var shoppingCart = await GetShoppingCartAsync();
 
@@ -48,6 +66,9 @@ namespace ElectroLight.Controllers
 
             if (cartItem == null)
             {
+                if (product.StockQuantity < quantity)
+                    return BadRequest(new { success = false, message = $"Not enough stock available. Reminds: {product.StockQuantity}" });
+
                 cartItem = new CartItem
                 {
                     ProductId = productId,
@@ -59,11 +80,18 @@ namespace ElectroLight.Controllers
             }
             else
             {
-                cartItem.Quantity += quantity;
-                _unitOfWork.CartItems.Update(cartItem);
-            }
+                var newQuantity = cartItem.Quantity + quantity;
 
-            await _unitOfWork.SaveChangesAsync();
+                if (product.StockQuantity < newQuantity)
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = $"Not enough stock available. Reminds: {product.StockQuantity}"
+                    });
+
+                cartItem.Quantity = newQuantity;
+            }
+           await _unitOfWork.SaveChangesAsync();
 
             var countItems = (await _unitOfWork.CartItems.GetAllAsync(c => c.ShoppingCartId == shoppingCart.Id)).Count();
 
@@ -74,19 +102,57 @@ namespace ElectroLight.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateQuantity(int cartItemId, int quantity)
         {
-            var item = await _unitOfWork.CartItems.GetAsync(c => c.Id == cartItemId);
+            if (quantity <= 0 || quantity > MAX_CART_QUANTITY)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = $"Quantity must be between 1 and {MAX_CART_QUANTITY}."
+                });
+            }
+
+            var item = await _unitOfWork.CartItems.GetAsync(
+                c => c.Id == cartItemId,
+                Includes: [c => c.Product]
+            );
 
             if (item == null)
-                return NotFound();
+            {
+                return NotFound(new
+                {
+                    success = false,
+                    message = "Cart item not found."
+                });
+            }
+
+            if (quantity > item.Product.StockQuantity)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = $"Only {item.Product.StockQuantity} items available."
+                });
+            }
 
             item.Quantity = quantity;
 
             _unitOfWork.CartItems.Update(item);
+
             await _unitOfWork.SaveChangesAsync();
 
-            return Ok(new { success = true });
-        }
+            var shoppingCartId = item.ShoppingCartId;
 
+            var countItems = (
+                await _unitOfWork.CartItems
+                    .GetAllAsync(c => c.ShoppingCartId == shoppingCartId)
+            ).Sum(c => c.Quantity);
+
+            return Ok(new
+            {
+                success = true,
+                count = countItems
+            });
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetCartCount()

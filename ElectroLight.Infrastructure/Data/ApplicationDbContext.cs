@@ -27,6 +27,7 @@ namespace ElectroLight.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
+
         }
 
     }

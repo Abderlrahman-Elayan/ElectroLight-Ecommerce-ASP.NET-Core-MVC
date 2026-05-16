@@ -127,7 +127,7 @@
 <section class="newest-products-section" id="newest-section">
     <div class="container justify-content-center">
         <span class="tag">Newest</span>
-        <div class="grid-col-6 grid">
+        <div class="grid-col-5 grid">
             @foreach (var product in Model.newestProductsList)
             {
                 <div class="show-card button">
@@ -161,7 +161,7 @@
 <section class="featuerd-products-section" id="featured-section">
     <div class="container justify-content-center">
         <span class="tag">Recommend<i class="bi bi-fire text-danger"></i></span>
-        <div class="grid-col-6 grid">
+        <div class="grid-col-5 grid">
             @foreach (var product in Model.featuredProductsList)
             {
                 <div class="show-card button">
@@ -188,6 +188,7 @@
     </div>
 </section>
 
+
 @section Scripts {
     <script>
         $(function () {
@@ -204,7 +205,7 @@
                 var icon = button.find("i");
                 var productId = button.data("product-id");
 
-                // prevent spam clicking
+                // ✅ prevent spam clicking
                 button.prop("disabled", true);
 
                 $.ajax({
@@ -217,7 +218,7 @@
 
                     success: function (res) {
 
-                        // icon animation
+                        // ✅ icon animation
                         icon.removeClass("bi-cart-plus")
                             .addClass("bi-check text-success");
 
@@ -226,17 +227,31 @@
                                 .addClass("bi-cart-plus");
                         }, 1500);
 
-                        // ✅ update REAL count
+                        // ✅ update real cart count
                         updateCartBadge(res.count);
 
-                        showToast("Added to cart ✅");
+                        // ✅ toastr success
+                        toastr.success("Added to cart successfully");
                     },
 
-                    error: function () {
-                        showToast("Error adding to cart ❌");
+                    error: function (xhr) {
+
+                        let message = "Error adding to cart";
+
+                        // ✅ read backend error message
+                        if (xhr.responseJSON &&
+                            xhr.responseJSON.message) {
+
+                            message = xhr.responseJSON.message;
+                        }
+
+                        // ✅ toastr error
+                        toastr.error(message);
                     },
 
                     complete: function () {
+
+                        // ✅ enable button again
                         button.prop("disabled", false);
                     }
                 });
@@ -245,32 +260,19 @@
 
         });
 
-        // ✅ badge handler (clean UX)
+        // ✅ cart badge handler
         function updateCartBadge(count) {
+
             if (count <= 0) {
+
                 $("#cart-count").hide();
+
             } else {
-                $("#cart-count").show().text(count);
+
+                $("#cart-count")
+                    .show()
+                    .text(count);
             }
-        }
-
-        // ✅ toast
-        function showToast(message) {
-
-            var toast = $(`
-                <div class="custom-toast">
-                    ${message}
-                </div>
-            `);
-
-            $("body").append(toast);
-
-            setTimeout(() => toast.addClass("show"), 100);
-
-            setTimeout(() => {
-                toast.removeClass("show");
-                setTimeout(() => toast.remove(), 300);
-            }, 2000);
         }
     </script>
 }

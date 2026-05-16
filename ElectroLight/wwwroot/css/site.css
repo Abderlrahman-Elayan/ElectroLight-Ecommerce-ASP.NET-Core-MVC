@@ -430,8 +430,8 @@ body {
 
 /*Details View*/
 
-.product-details-box{
-    padding:0.6rem;
+.product-details-box {
+    padding: 0.6rem;
 }
 
 .add-to-cart-container {
@@ -442,6 +442,16 @@ body {
 .details-image-wrapper {
     overflow: hidden;
     width: 46rem;
+}
+
+.details-product-image-wrapper {
+    width: 46rem;
+    height: 46rem;
+    overflow: hidden;
+}
+
+.show-image details-image{
+    
 }
 
 .details-image {
@@ -750,7 +760,6 @@ body {
 
 
     .remove-all-cart-items:hover, .remove-all-cart-items:active {
-        background-color: #;
         border: none;
         box-shadow: inset 0px -1px 5px 2px rgba(178, 0, 21, 0.3);
         transform:scale(1.1);
