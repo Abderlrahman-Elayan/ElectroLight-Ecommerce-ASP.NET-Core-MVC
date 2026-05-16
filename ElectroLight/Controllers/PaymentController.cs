@@ -1,4 +1,5 @@
 ﻿using ElectroLight.Application.Interfaces.Common;
+using ElectroLight.Application.Services.IServices;
 using ElectroLight.Domain.Entities;
 using ElectroLight.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -17,15 +18,18 @@ namespace ElectroLight.Controllers
         private readonly IConfiguration _configuration;
         private readonly IUnitOfWork _uow;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IProductService _productService;
 
         public PaymentController(
             IConfiguration configuration,
             IUnitOfWork uow,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IProductService productService)
         {
             _configuration = configuration;
             _uow = uow;
             _userManager = userManager;
+            this._productService = productService;
         }
 
         // =====================================================
@@ -230,7 +234,7 @@ namespace ElectroLight.Controllers
             order.Status = OrderStatus.Processing;
             order.PaymentStatus = PaymentStatus.Paid;
             order.PaymentDate = DateTime.UtcNow;
-
+            
             // =========================
             // 5. CLEAR CART
             // =========================
@@ -238,6 +242,19 @@ namespace ElectroLight.Controllers
                 c => c.UserId == user.Id,
                 include: q => q.Include(c => c.cartItems)
             );
+
+            // =========================
+            // 6. Updae Stock Quantities
+            // =========================
+            foreach (var item in cart.cartItems)
+            {
+                var product = await _productService.GetAsync(p => p.Id == item.ProductId);
+                if (product != null)
+                {
+                    product.StockQuantity -= item.Quantity;
+                    await _productService.UpdateAsync(product);
+                }
+            }
 
             _uow.CartItems.RemoveRange(cart.cartItems);
 
