@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> signInManager
+
+@model IEnumerable<Product>
+
+@foreach (var product in Model)
+{
+    <div class="show-card button">
+
+        <a style="text-decoration:none"
+               asp-controller="Product"
+               asp-action="ProductDetails"
+               asp-route-productId="@product.Id">
+
+            <img class="show-image"
+                 src="@product.ImageUrl"
+                 loading="lazy"
+                 alt="@product.Description"
+                 onerror="this.onerror=null;this.src='/img/placeholder.jpg';" />
+
+            <div class="show-card-body align-content-center">
+                <p class="show-card-description">
+                    @product.Description
+                </p>
+
+                <p class="product-name text-center">
+                    @product.Name
+                </p>
+            </div>
+
+        </a>
+
+        <div class="flex-price">
+
+            @if (signInManager.IsSignedIn(User))
+            {
+                <button class="add-to-cart-btn btn-link p-0"
+                        data-product-id="@product.Id">
+
+                    <i class="bi bi-cart-plus fs-4"></i>
+
+                </button>
+            }
+
+            <p class="product-price">
+                @product.Price.ToString("c")
+            </p>
+
+        </div>
+
+    </div>
+}

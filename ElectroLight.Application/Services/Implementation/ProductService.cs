@@ -58,13 +58,13 @@ namespace ElectroLight.Application.Services.Implementation
         }
 
 
-        public async Task<IEnumerable<Product>> GetFeaturedProductsAsync(int? count= null)
+        public async Task<IEnumerable<Product>> GetFeaturedProductsAsync(int? skip = null,int? take= null)
         {
             
             var featuredProducts = await _uow.Products.GetAllAsync(p => p.isFeatured == true);
-            if(count.HasValue)
+            if(take.HasValue && skip.HasValue)
             {
-                return featuredProducts.Take(count.Value);
+                return featuredProducts.Skip(skip.Value).Take(take.Value);
             }
             else
             {
@@ -72,9 +72,17 @@ namespace ElectroLight.Application.Services.Implementation
             }
         }
 
-        public async Task<IEnumerable<Product>> GetNewestProductsAsync(int count)
+        public async Task<IEnumerable<Product>> GetNewestProductsAsync(int? skip = null,int? take = null)
         {
-            return  (await _uow.Products.GetAllAsync()).OrderByDescending(p => p.CreatedAt).Take(count);
+            var newestProducts = (await _uow.Products.GetAllAsync()).OrderByDescending(p => p.CreatedAt);
+            if (take.HasValue && skip.HasValue)
+            {
+                return newestProducts.Skip(skip.Value).Take(take.Value);
+            }
+            else
+            {
+                return newestProducts;
+            }
         }
 
     }

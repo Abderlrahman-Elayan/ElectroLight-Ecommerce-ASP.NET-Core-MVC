@@ -11,7 +11,7 @@ namespace ElectroLight.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-
+            builder.HasIndex(c => c.Name).IsUnique();
 
             builder.HasData(
                 new Category { Id = 1, Name = "Electronics", Description = "Electronic devices and gadgets" },

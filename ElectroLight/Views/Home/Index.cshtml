@@ -127,7 +127,7 @@
 <section class="newest-products-section" id="newest-section">
     <div class="container justify-content-center">
         <span class="tag">Newest</span>
-        <div class="grid-col-5 grid">
+        <div id="newest-products-container" class="grid-col-5 grid">
             @foreach (var product in Model.newestProductsList)
             {
                 <div class="show-card button">
@@ -153,6 +153,12 @@
                 </div>
             }
         </div>
+        <div class="text-center mt-4">
+            <button id="load-more-newest"
+                    class="button load-more">
+                Load More
+            </button>
+        </div>
     </div>
 
 </section>
@@ -161,7 +167,7 @@
 <section class="featuerd-products-section" id="featured-section">
     <div class="container justify-content-center">
         <span class="tag">Recommend<i class="bi bi-fire text-danger"></i></span>
-        <div class="grid-col-5 grid">
+        <div id="featured-products-container" class="grid-col-5 grid">
             @foreach (var product in Model.featuredProductsList)
             {
                 <div class="show-card button">
@@ -184,6 +190,12 @@
                     </div>
                 </div>
             }
+        </div>
+        <div class="text-center mt-4">
+            <button id="load-more-featured"
+                    class="button load-more">
+                Load More
+            </button>
         </div>
     </div>
 </section>
@@ -274,5 +286,67 @@
                     .text(count);
             }
         }
+    </script>
+    <script>
+
+        let featuredSkip = 11;
+        let newestSkip = 11;
+
+        const take = 5;
+
+        // ==========================
+        // Featured Load More
+        // ==========================
+
+        $("#load-more-featured").on("click", async function () {
+
+            const button = $(this);
+
+            const response = await fetch(
+                `/Home/LoadMoreFeaturedProducts?skip=${featuredSkip}&take=${take}`
+            );
+
+            const html = await response.text();
+
+            // no more products
+            if (html.trim() === "") {
+
+                button.hide();
+                return;
+            }
+
+            $("#featured-products-container")
+                .append(html);
+
+            featuredSkip += take;
+        });
+
+        // ==========================
+        // Newest Load More
+        // ==========================
+
+        $("#load-more-newest").on("click", async function () {
+
+            const button = $(this);
+
+            const response = await fetch(
+                `/Home/LoadMoreNewestProducts?skip=${newestSkip}&take=${take}`
+            );
+
+            const html = await response.text();
+
+            // no more products
+            if (html.trim() === "") {
+
+                button.hide();
+                return;
+            }
+
+            $("#newest-products-container")
+                .append(html);
+
+            newestSkip += take;
+        });
+
     </script>
 }

@@ -21,11 +21,29 @@ namespace ElectroLight.Controllers
             HomeVM homeVM = new()
             {
                 categoriesList = await categoryService.GetAllAsync(),
-                newestProductsList = (await productService.GetNewestProductsAsync(18)),
-                featuredProductsList = (await productService.GetFeaturedProductsAsync())
+                newestProductsList = (await productService.GetNewestProductsAsync(0,11)),
+                featuredProductsList = (await productService.GetFeaturedProductsAsync(0,11))
 
             };
             return View(homeVM);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LoadMoreFeaturedProducts(int skip, int take = 5)
+        {
+            var products = await productService
+                .GetFeaturedProductsAsync(skip, take);
+
+            return PartialView("_ProductCardsPartial", products);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LoadMoreNewestProducts(int skip, int take = 5)
+        {
+            var products = await productService
+                .GetNewestProductsAsync(skip, take);
+
+            return PartialView("_ProductCardsPartial", products);
         }
 
         public IActionResult Privacy()
