@@ -31,3 +31,37 @@
     }
 
 });
+
+    async function handleEmailClick(event) {
+
+        event.preventDefault();
+
+    const email = "abdelrahmanelayanformal@gmail.com";
+
+    window.location.href = `mailto:${email}`;
+
+        // Fallback: copy email after short delay
+        setTimeout(async () => {
+
+        try {
+
+        await navigator.clipboard.writeText(email);
+
+    const message = document.getElementById("copy-message");
+
+    message.classList.add("show");
+
+        setTimeout(() => {
+        message.classList.remove("show");
+        }, 2500);
+
+        }
+    catch (err) {
+
+        console.error("Clipboard copy failed");
+
+        }
+
+        }, 800);
+        }
+

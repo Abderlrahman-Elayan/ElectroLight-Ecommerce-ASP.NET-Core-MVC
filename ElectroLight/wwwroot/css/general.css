@@ -200,3 +200,168 @@ hr{
         border-radius: 8px;
         transition: 0.2s;
     }
+
+
+.custom-footer {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    padding: 4rem 2rem;
+    margin-top: 6rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+}
+
+.footer-text {
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    letter-spacing: 1px;
+}
+
+.footer-socials {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.social-link {
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 2.2rem;
+    color: white;
+    position: relative;
+    transition: all 0.35s ease;
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255,255,255,0.1);
+}
+
+    .social-link:hover {
+        transform: translateY(-8px) scale(1.08);
+    }
+
+    .social-link::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .social-link:hover::before {
+        opacity: 1;
+    }
+
+.linkedin:hover {
+    box-shadow: 0 0 20px rgba(10,102,194,0.6), 0 0 40px rgba(10,102,194,0.4);
+}
+
+.github:hover {
+    box-shadow: 0 0 20px rgba(255,255,255,0.35), 0 0 40px rgba(255,255,255,0.15);
+}
+
+.email:hover {
+    box-shadow: 0 0 20px rgba(255,59,48,0.5), 0 0 40px rgba(255,59,48,0.25);
+}
+
+.footer-copy {
+    color: rgba(255,255,255,0.7);
+    font-size: 1.4rem;
+    margin-top: 1rem;
+    letter-spacing: 0.5px;
+}
+
+#copy-message {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: #0f172a;
+    color: white;
+    padding: 1rem 1.6rem;
+    border-radius: 12px;
+    font-size: 1.4rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+    #copy-message.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+.whatsapp:hover {
+    box-shadow: 0 0 20px rgba(37,211,102,0.6), 0 0 40px rgba(37,211,102,0.3);
+}
+
+.pro-name {
+    position: relative;
+    display: inline-block;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background: linear-gradient( 90deg, #ffffff 0%, #7dd3fc 20%, #38bdf8 40%, #a78bfa 60%, #f472b6 80%, #ffffff 100% );
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: auroraMove 5s linear infinite;
+    text-shadow: 0 0 10px rgba(125, 211, 252, 0.15);
+}
+
+    .pro-name::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -3px;
+        width: 100%;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, transparent, #38bdf8, #a78bfa, #f472b6, transparent);
+        background-size: 200% 100%;
+        opacity: 0.8;
+        animation: lineGlow 3s linear infinite;
+    }
+
+    .pro-name:hover {
+        text-shadow: 0 0 8px rgba(56, 189, 248, 0.35), 0 0 18px rgba(167, 139, 250, 0.25);
+        transform: translateY(-1px);
+        transition: 0.3s ease;
+    }
+
+@keyframes auroraMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 300% 50%;
+    }
+}
+
+@keyframes lineGlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 200% 50%;
+    }
+}

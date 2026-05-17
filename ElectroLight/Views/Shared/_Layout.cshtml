@@ -10,12 +10,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/ElectroLight.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/general.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/responsive.css" asp-append-version="true" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Luxurious+Roman&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&family=Luxurious+Roman&display=swap" rel="stylesheet">
     <link href="//cdn.datatables.net/2.3.7/css/dataTables.dataTables.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body class="@(ViewData["PageType"])">
     @* <header>
@@ -55,24 +58,24 @@
     @if (ViewData["PageType"] as string == "admin-page")
     {
         <nav style="display:flex;justify-content:space-between">
-        <a class="home-link ps-4" asp-controller="home" asp-action="index">
+            <a class="home-link ps-4" asp-controller="home" asp-action="index">
           
-            <img src="~/img/logo.png" class="logo" alt="RlectroLight logo" />
-        </a>
-        <li class="dropdown nav-item" style="display:block">
-            <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Content Mangement
+                <img src="~/img/logo.png" class="logo" alt="RlectroLight logo" />
+            </a>
+            <li class="dropdown nav-item" style="display:block">
+                <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Content Mangement
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" asp-controller="category" asp-action="index">Categories</a></li>
+                    <li><a class="dropdown-item" asp-controller="product" asp-action="index">Products</a></li>
+                </ul>
+            </li>
+            <button id="themeToggle"
+                    class="btn btn-outline-secondary"
+                    style="position:fixed; top:45px; right:0; z-index:999;">
+                <i class="bi bi-moon-fill"></i>
             </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" asp-controller="category" asp-action="index">Categories</a></li>
-                <li><a class="dropdown-item" asp-controller="product" asp-action="index">Products</a></li>
-            </ul>
-        </li>
-        <button id="themeToggle"
-                class="btn btn-outline-secondary"
-                style="position:fixed; top:45px; right:0; z-index:999;">
-            <i class="bi bi-moon-fill"></i>
-        </button>
         </nav>
     }
     
@@ -84,11 +87,53 @@
         </main>
     </div>
 
-    @* <footer class="border-top footer text-muted">
-        <div class="container">
-            Oh Shit!
+    <footer class="custom-footer">
+
+        <div class="footer-content">
+
+            <p class="footer-text">
+                Designed & Developed by <span class="pro-name">Abdelrahman Elayan</span>
+            </p>
+
+            <div class="footer-socials">
+
+                <a href="https://www.linkedin.com/in/abdelrahman-elayan-software"
+                       target="_blank"
+                       class="social-link linkedin">
+
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+
+                <a href="https://github.com/Abderlrahman-Elayan"
+                       target="_blank"
+                       class="social-link github">
+
+                    <i class="fa-brands fa-github"></i>
+                </a>
+
+                <a href="#"
+                       class="social-link email"
+                       onclick="handleEmailClick(event)">
+
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+                <span id="copy-message">Email copied to clipboard!</span>
+            
+                <a href="https://wa.me/962790615904"
+                       target="_blank"
+                       class="social-link whatsapp">
+
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+            </div>
+
+            <p class="footer-copy">
+                © 2026 ElectroLight
+            </p>
+
         </div>
-    </footer> *@
+
+    </footer>
     @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="//cdn.datatables.net/2.3.7/js/dataTables.min.js"></script>
@@ -98,5 +143,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
+   
 </body>
 </html>
+
+
+    
