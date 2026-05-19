@@ -28,13 +28,17 @@
                         <p class="show-card-description">@product.Description</p>
                         <p class="product-name text-center">@product.Name</p>
                     </div>
-              
                 </a>
                 <div class="flex-price">
-                    <a href="#" class="cart"><i class="bi bi-cart-plus"></i></a>
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <button class="add-to-cart-btn  btn-link p-0"
+                                data-product-id="@product.Id">
+                            <i class="bi bi-cart-plus fs-4"></i>
+                        </button>
+                    }
                     <p class="product-price">@product.Price.ToString("c")</p>
 
-                </div>
             </div>
         }
     </div>

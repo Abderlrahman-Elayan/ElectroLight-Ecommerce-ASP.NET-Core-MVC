@@ -1,18 +1,31 @@
 html {
     font-size: 62.5%;
-    /*            overflow-x: hidden;*/
+    overflow-x: hidden;
     scroll-behavior: smooth;
     height: 100%;
+ 
 }
 
-* {
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+footer{
+    margin:0 !important;
+}
 
+main {
+    flex: 1 !important;
+}
 
 body {
+    min-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 0 !important;
+
+
     margin-bottom: 60px;
     font-family: "Rubik", sans-serif;
     font-weight: 400;
@@ -20,7 +33,46 @@ body {
     font-style: normal;
     letter-spacing: 0.02rem;
     line-height: 1;
-    height: 100%;
+}
+
+    body > div > main {
+        flex: 1 !important; 
+    }
+
+html, body {
+    height: auto !important;
+}
+
+body {
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+    body > div {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+        body > div > main {
+            flex: 1 !important;
+        }
+
+footer {
+    flex-shrink: 0 !important;
+    margin-top: auto !important;
+}
+
+body > div[b-vlf1mgk4n1] {
+    flex: 1 !important;
+}
+.main-wrapper {
+    flex: 1 !important;
+}
+.quick-apply-extension-root {
+    flex: 1 !important;
+    height:0;
 }
 
 .title-card-header {

@@ -1,25 +1,21 @@
 ﻿@{
     ViewData["PageType"] = "admin-page";
 }
-@model IEnumerable<ApplicationUser>
+@model IEnumerable<Product>
 <div class="container custom-view mt-3">
 <div class="card shadow-lg">
     <div class="card-header bg-primary  bg-gradient text-center p-2">
-            <h2 class="text-dark fw-bold title-card-header">Products</h2>
+            <h2 class="text-dark fw-bold title-card-header">Users</h2>
     </div>
     <div class="card-body">
         <div class="row p-3">
-            <a asp-controller="product" asp-action="Upsert"
-                   class="btn btn-warning mb-3 ms-auto col-3 p-2 text-dark fw-bold">
-                <i class="bi bi-plus-circle"></i> Add New product
-            </a>
             <table id="tbldata" class="table border table-striped table-bordered w-100">
                 <thead>
                     <tr class="bg-black">
-                        <th class="text-center" text-light>Full Name</th>
+                        <th class="text-center" text-light>Name</th>
                         <th class="text-center" text-light>Email</th>
-                        <th class="text-center" text-light>Role</th>
                         <th class="text-center" text-light>Phone Number</th>
+                        <th class="text-center" text-light>Role</th>
                         <th class="text-center" text-light></th>
                     </tr>
                 </thead>
@@ -31,5 +27,5 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/product.js"></script>
+    <script src="~/js/user.js"></script>
 }
