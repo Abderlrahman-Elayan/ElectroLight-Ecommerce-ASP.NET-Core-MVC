@@ -77,9 +77,10 @@
     .account-img-box {
         display: none;
     }
-
+    .back-btn {
+        display: none;
+    }
     /* ─── CART FIXES ─── */
-
     /* Remove fixed height so content is never clipped */
     .shopping-carts-box,
     .order-box {
@@ -505,8 +506,7 @@ html {
 /* All images responsive by default */
 img,
 .hero-img,
-.details-image,
-.account-img-box img {
+.details-image{
     max-width: 100%;
     height: auto;
 }

@@ -30,17 +30,186 @@
                     </div>
                 </a>
                 <div class="flex-price">
-                    @if (signInManager.IsSignedIn(User))
-                    {
-                        <button class="add-to-cart-btn  btn-link p-0"
-                                data-product-id="@product.Id">
-                            <i class="bi bi-cart-plus fs-4"></i>
-                        </button>
-                    }
+                    <button class="add-to-cart-btn  btn-link p-0"
+                            type="button"
+                            data-product-id="@product.Id">
+                        <i class="bi bi-cart-plus fs-4"></i>
+                    </button>
                     <p class="product-price">@product.Price.ToString("c")</p>
-
+                </div>
             </div>
         }
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        $(function () {
+
+            // ================================
+            // ✅ INITIAL QUANTITY
+            // ================================
+
+            $("#hiddenQty").val($("#qty").val());
+
+            // ================================
+            // ✅ UPDATE SELECTED QUANTITY
+            // ================================
+
+            $("#qty").on("change", function () {
+
+                $("#hiddenQty").val($(this).val());
+            });
+
+            // ================================
+            // ✅ MAIN PRODUCT ADD TO CART
+            // ================================
+
+            $("#addToCartForm").on("submit", function (e) {
+
+                e.preventDefault();
+
+                var form = $(this);
+
+                var button = $(".add-to-cart");
+
+                // ✅ prevent spam click
+                button.prop("disabled", true);
+
+                $.ajax({
+                    url: form.attr("action"),
+                    type: "POST",
+                    data: form.serialize(),
+
+                    success: function (res) {
+
+                        if (res.success) {
+
+                            // ✅ update cart badge
+                            updateCartBadge(res.count);
+
+                            // ✅ button feedback
+                            button
+                                .text("Added ✔")
+                                .addClass("added");
+
+                            toastr.success("Added to cart successfully");
+
+                            setTimeout(() => {
+
+                                button
+                                    .text("Add To Cart")
+                                    .removeClass("added")
+                                    .prop("disabled", false);
+
+                            }, 1500);
+                        }
+                    },
+
+                    error: function (xhr) {
+
+                        let message = "Error adding to cart";
+
+                        // ✅ backend message
+                        if (xhr.responseJSON &&
+                            xhr.responseJSON.message) {
+
+                            message = xhr.responseJSON.message;
+                        }
+
+                        toastr.error(message);
+
+                        // ✅ enable button again
+                        button.prop("disabled", false);
+                    }
+                });
+
+            });
+
+            // ================================
+            // ✅ PRODUCT CARD ADD TO CART
+            // ================================
+
+            $(".add-to-cart-btn").on("click", function () {
+
+                var button = $(this);
+
+                var icon = button.find("i");
+
+                var productId = button.data("product-id");
+
+                // ✅ prevent spam click
+                button.prop("disabled", true);
+
+                $.ajax({
+                    url: '/ShoppingCart/AddOrUpdateItem',
+                    type: 'POST',
+
+                    data: {
+                        productId: productId,
+                        quantity: 1
+                    },
+
+                    success: function (res) {
+
+                        // ✅ icon animation
+                        icon.removeClass("bi-cart-plus")
+                            .addClass("bi-check text-success");
+
+                        // ✅ update cart badge
+                        updateCartBadge(res.count);
+
+                        toastr.success("Added to cart successfully");
+
+                        setTimeout(function () {
+
+                            icon.removeClass("bi-check text-success")
+                                .addClass("bi-cart-plus");
+
+                            button.prop("disabled", false);
+
+                        }, 1500);
+                    },
+
+                    error: function (xhr) {
+
+                        let message = "Error adding to cart";
+
+                        // ✅ backend message
+                        if (xhr.responseJSON &&
+                            xhr.responseJSON.message) {
+
+                            message = xhr.responseJSON.message;
+                        }
+
+                        toastr.error(message);
+
+                        // ✅ enable again
+                        button.prop("disabled", false);
+                    }
+                });
+
+            });
+
+        });
+
+        // ================================
+        // ✅ CART BADGE HANDLER
+        // ================================
+
+        function updateCartBadge(count) {
+
+            if (count <= 0) {
+
+                $("#cart-count").hide();
+
+            } else {
+
+                $("#cart-count")
+                    .show()
+                    .text(count);
+            }
+        }
+
+    </script>
+}
