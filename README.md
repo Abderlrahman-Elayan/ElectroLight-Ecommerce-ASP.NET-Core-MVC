@@ -67,4 +67,4 @@ The project follows a **layered architecture**:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/ElectroLight-Ecommerce-ASP.NET-Core-MVC.git
+git clone https://github.com/Abderlrahman-Elayan/ElectroLight-Ecommerce-ASP.NET-Core-MVC.git
