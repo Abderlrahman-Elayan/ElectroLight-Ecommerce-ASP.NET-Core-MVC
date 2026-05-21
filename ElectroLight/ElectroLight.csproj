@@ -23,4 +23,9 @@
     <ProjectReference Include="..\ElectroLight.Infrastructure\ElectroLight.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\CategoryImages\" />
+    <Folder Include="wwwroot\img\ProductImages\" />
+  </ItemGroup>
+
 </Project>

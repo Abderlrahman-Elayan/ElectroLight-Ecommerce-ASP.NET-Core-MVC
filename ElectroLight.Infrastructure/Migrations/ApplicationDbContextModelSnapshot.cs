@@ -149,29 +149,32 @@ namespace ElectroLight.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Categories");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Description = "Electronic devices and gadgets",
+                            Description = "High-quality audio devices including gaming and wireless headsets.",
                             ImageUrl = "/img/placeholder.jpg",
-                            Name = "Electronics"
+                            Name = "Headsets"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "some text",
+                            Description = "Portable computers for work, gaming, and everyday use.",
                             ImageUrl = "/img/placeholder.jpg",
                             Name = "Laptops"
                         },
                         new
                         {
                             Id = 3,
-                            Description = "test test test",
+                            Description = "High-resolution displays for gaming, design, and productivity.",
                             ImageUrl = "/img/placeholder.jpg",
-                            Name = "Screens"
+                            Name = "Monitors"
                         });
                 });
 
@@ -188,7 +191,9 @@ namespace ElectroLight.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("PayPalOrderId")
                         .HasColumnType("nvarchar(max)");
@@ -258,6 +263,7 @@ namespace ElectroLight.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -327,6 +333,9 @@ namespace ElectroLight.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Products");
 
                     b.HasData(
@@ -334,36 +343,72 @@ namespace ElectroLight.Infrastructure.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2026, 3, 29, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "A high-end smartphone with a sleek design and powerful features.",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Premium noise-cancelling wireless headphones with industry-leading sound quality and comfort.",
                             ImageUrl = "/img/placeholder.jpg",
-                            Name = "Smartphone",
-                            Price = 699.99m,
-                            StockQuantity = 50,
+                            Name = "Sony WH-1000XM5 Headphones",
+                            Price = 299.99m,
+                            StockQuantity = 80,
                             isFeatured = false
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2026, 3, 29, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "A lightweight laptop with a long battery life, perfect for work and entertainment.",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Wireless gaming headset with surround sound and low-latency performance.",
                             ImageUrl = "/img/placeholder.jpg",
-                            Name = "Laptop",
-                            Price = 999.99m,
-                            StockQuantity = 30,
+                            Name = "SteelSeries Arctis 7",
+                            Price = 149.99m,
+                            StockQuantity = 60,
                             isFeatured = false
                         },
                         new
                         {
                             Id = 3,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2026, 3, 29, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Noise-cancelling headphones with superior sound quality and comfort.",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "High-performance laptop with Intel i7 processor and stunning OLED display.",
                             ImageUrl = "/img/placeholder.jpg",
-                            Name = "Headphones",
-                            Price = 199.99m,
-                            StockQuantity = 100,
+                            Name = "Dell XPS 15",
+                            Price = 1799.99m,
+                            StockQuantity = 25,
+                            isFeatured = false
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Lightweight and powerful laptop with Apple M2 chip for productivity and development.",
+                            ImageUrl = "/img/placeholder.jpg",
+                            Name = "MacBook Air M2",
+                            Price = 1199.99m,
+                            StockQuantity = 40,
+                            isFeatured = false
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "27-inch gaming monitor with 144Hz refresh rate and 1ms response time.",
+                            ImageUrl = "/img/placeholder.jpg",
+                            Name = "LG UltraGear 27''",
+                            Price = 349.99m,
+                            StockQuantity = 50,
+                            isFeatured = false
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 3,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Curved QHD gaming monitor with ultra-smooth performance and HDR support.",
+                            ImageUrl = "/img/placeholder.jpg",
+                            Name = "Samsung Odyssey G7",
+                            Price = 599.99m,
+                            StockQuantity = 35,
                             isFeatured = false
                         });
                 });
@@ -418,6 +463,22 @@ namespace ElectroLight.Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            ConcurrencyStamp = "1",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "2",
+                            ConcurrencyStamp = "2",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

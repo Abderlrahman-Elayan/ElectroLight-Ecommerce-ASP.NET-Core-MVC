@@ -58,10 +58,10 @@ namespace ElectroLight.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Upsert(ProductVM productvm)
         {
-            if (productvm.Product.Name == productvm.Product.Description)
+            if (productvm.Product.Name == productvm.Product.Description )
                 ModelState.AddModelError("description", "The description cannot exactly match the Name.");
 
-            var isNameExist = await _productService.GetAsync(p => p.Name == productvm.Product.Name,AsTracking:false);
+            var isNameExist = await _productService.GetAsync(p => p.Name == productvm.Product.Name && p.Id != productvm.Product.Id,AsTracking:false);
 
             if (isNameExist != null)
             ModelState.AddModelError("name", "The name is already existing");

@@ -14,6 +14,8 @@ namespace ElectroLight.Infrastructure.Configurations
             builder.Property(u => u.CreatedAt)
                 .HasDefaultValueSql("GETUTCDATE()")
                 .ValueGeneratedOnAdd();
+
+
         }
     }
 }

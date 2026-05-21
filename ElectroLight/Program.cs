@@ -1,6 +1,7 @@
 using ElectroLight.Application.Interfaces.Common;
 using ElectroLight.Application.Services.Implementation;
 using ElectroLight.Application.Services.IServices;
+using ElectroLight.Application.Utilies;
 using ElectroLight.Domain.Entities;
 using ElectroLight.Infrastructure.Data;
 using ElectroLight.Infrastructure.Repository;
@@ -43,7 +44,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -54,6 +55,47 @@ app.MapControllerRoute(
     .WithStaticAssets();
 
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
+    if (!await roleManager.RoleExistsAsync(SD.Role_Admin))
+    {
+        await roleManager.CreateAsync(new IdentityRole(SD.Role_Admin));
+    }
+
+    if (!await roleManager.RoleExistsAsync(SD.Role_Customer))
+    {
+        await roleManager.CreateAsync(new IdentityRole(SD.Role_Customer));
+    }
+
+    var adminEmail = "admin@electrolight.com";
+
+    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+
+    if (adminUser == null)
+    {
+        var user = new ApplicationUser
+        {
+            UserName = adminEmail,
+            Email = adminEmail,
+            EmailConfirmed = true,
+            FullName = "Abdelrahman Elayan"
+        };
+
+        await userManager.CreateAsync(user, "Admin@123");
+
+        await userManager.AddToRoleAsync(user, SD.Role_Admin);
+    }
+}
 
 app.Run();

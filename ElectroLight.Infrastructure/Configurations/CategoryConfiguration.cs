@@ -14,10 +14,25 @@ namespace ElectroLight.Infrastructure.Configurations
             builder.HasIndex(c => c.Name).IsUnique();
 
             builder.HasData(
-                new Category { Id = 1, Name = "Electronics", Description = "Electronic devices and gadgets" },
-                new Category { Id = 2, Name = "Laptops", Description = "some text"},
-                new Category { Id = 3, Name = "Screens", Description = "test test test" }
-        );
+     new Category
+     {
+         Id = 1,
+         Name = "Headsets",
+         Description = "High-quality audio devices including gaming and wireless headsets."
+     },
+     new Category
+     {
+         Id = 2,
+         Name = "Laptops",
+         Description = "Portable computers for work, gaming, and everyday use."
+     },
+     new Category
+     {
+         Id = 3,
+         Name = "Monitors",
+         Description = "High-resolution displays for gaming, design, and productivity."
+     }
+ );
         }
     }
 }

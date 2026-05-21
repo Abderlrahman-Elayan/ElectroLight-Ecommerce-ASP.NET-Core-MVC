@@ -7,13 +7,13 @@ using System.Text;
 
 namespace ElectroLight.Infrastructure.Configurations
 {
-    public class OrderItemsConfiuration : IEntityTypeConfiguration<OrderItem>
+    public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
     {
-        public void Configure(EntityTypeBuilder<OrderItem> builder)
+        public void Configure(EntityTypeBuilder<Payment> builder)
         {
+            builder.Property(p => p.Amount)
+            .HasPrecision(18, 2);
 
-            builder.Property(oi => oi.Price)
-                .HasPrecision(18, 2);
         }
     }
 }

@@ -12,6 +12,9 @@ namespace ElectroLight.Infrastructure.Configurations
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
+            builder.Property(u => u.CreatedAt)
+       .HasDefaultValueSql("GETUTCDATE()")
+       .ValueGeneratedOnAdd();
 
             builder.Property(o => o.TotalPrice)
                .HasPrecision(18, 2);

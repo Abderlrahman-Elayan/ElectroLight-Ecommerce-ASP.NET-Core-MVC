@@ -21,7 +21,7 @@ namespace ElectroLight.Domain.Entities
 
         public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
     }
 
 }
