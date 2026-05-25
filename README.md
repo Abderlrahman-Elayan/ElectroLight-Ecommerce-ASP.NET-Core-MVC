@@ -6,6 +6,7 @@
 
 💼 **Connect:** [linkedin.com/in/abdelrahman-elayan-software](https://www.linkedin.com/in/abdelrahman-elayan-software)
 
+📧 **Email** [abdelrahmanelayanformal@gmail.com)
 ---
 
 ## 🎯 Overview
@@ -85,7 +86,7 @@ From product catalog management to secure payment processing, ElectroLight handl
 | **Authentication** | ASP.NET Core Identity, OAuth2 (PayPal) |
 | **Payment** | PayPal API, JSON payload handling |
 | **Architecture** | Dependency Injection, Repository Pattern, Unit of Work |
-| **Deployment** | Azure App Service (runasp.net) |
+| **Deployment** | MonsterASP App Service (runasp.net) |
 
 ---
 
@@ -243,7 +244,7 @@ git clone https://github.com/Abderlrahman-Elayan/ElectroLight-Ecommerce-ASP.NET-
 cd ElectroLight-Ecommerce-ASP.NET-Core-MVC
 ```
 
-2. **Update connection string**
+2. **Update connection string if need**
    - Open `appsettings.json`
    - Update `DefaultConnection` with your SQL Server instance
 
@@ -256,16 +257,6 @@ dotnet ef database update
 ```bash
 dotnet run
 ```
-
-5. **Access the application**
-   - URL: `https://localhost:7000`
-   - Admin account created automatically with email: `admin@electrolight.com`
-
-### Default Admin Credentials
-- **Email:** admin@electrolight.com
-- **Password:** Admin@123
-
----
 
 ## 📈 Code Quality Highlights
 
@@ -308,7 +299,6 @@ dotnet run
 ## 📱 Responsive Design
 
 The application features a mobile-responsive UI built with Bootstrap 5:
-- Mobile-first approach
 - Adaptive layouts for all screen sizes
 - Touch-friendly interfaces
 - Fast loading times
@@ -328,13 +318,7 @@ I'm passionate about building scalable, user-friendly applications. Let's connec
 - **LinkedIn:** [linkedin.com/in/abdelrahman-elayan-software](https://www.linkedin.com/in/abdelrahman-elayan-software)
 - **GitHub:** [github.com/Abderlrahman-Elayan](https://github.com/Abderlrahman-Elayan)
 - **Live Demo:** [https://electrolight.runasp.net/](https://electrolight.runasp.net/)
-
----
-
-## 📄 License
-
-This project is open source and available under the MIT License.
-
+- **Email** [abdelrahmanelayanformal@gmail.com)
 ---
 
 **Built with passion for clean code and great user experiences.** 🚀
