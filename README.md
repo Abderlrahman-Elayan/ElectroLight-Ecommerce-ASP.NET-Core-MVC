@@ -9,11 +9,36 @@
 📧 **Email** [abdelrahmanelayanformal@gmail.com)
 ---
 
-## 🎯 Overview
+## 🎯 Overview & Screen Shots
 
 ElectroLight is a professional-grade e-commerce platform demonstrating enterprise-level architecture, best practices, and full-stack development expertise. This project showcases my ability to design, build, and deploy scalable web applications using modern technologies and clean code principles.
 
 From product catalog management to secure payment processing, ElectroLight handles all core e-commerce operations with attention to performance, security, and user experience.
+
+**Hero Section**: 
+<img width="1351" height="641" alt="Screenshot 2026-06-04 100635" src="https://github.com/user-attachments/assets/b060ea5c-58ce-49e1-a517-8ff228bcafd8" />
+
+**Register and Login**: 
+<img width="1350" height="635" alt="Screenshot 2026-06-04 100925" src="https://github.com/user-attachments/assets/ea0f7545-643c-48a3-a7c1-5e70b519e4ba" />
+---
+<img width="1352" height="637" alt="Screenshot 2026-06-04 100937" src="https://github.com/user-attachments/assets/6d3a1248-d045-493d-a03c-06ea36b53772" />
+
+**Categories**:
+<img width="1343" height="643" alt="Screenshot 2026-06-04 101003" src="https://github.com/user-attachments/assets/693140c8-1670-4805-9c79-140e8ed89298" />
+
+**Newst Products**:
+<img width="1336" height="643" alt="Screenshot 2026-06-04 101016" src="https://github.com/user-attachments/assets/f71ed6d9-d129-4671-aada-a312f61e7c6c" />
+
+**Shopping Cart**:
+<img width="1353" height="628" alt="Screenshot 2026-06-04 101105" src="https://github.com/user-attachments/assets/a1d311dd-5f41-4d75-a3b8-44fe3f7a09c4" />
+
+**Pay Pal Integration**:
+<img width="1327" height="642" alt="Screenshot 2026-06-04 101142" src="https://github.com/user-attachments/assets/ee5b7d04-fc3f-4aef-946e-2aff6ae7d2bb" />
+
+**Content Management**:
+<img width="1161" height="573" alt="image" src="https://github.com/user-attachments/assets/d254400f-a632-42fa-ac65-6e2b04f0bcd8" />
+---
+<img width="1188" height="552" alt="image" src="https://github.com/user-attachments/assets/19f1118c-d0a3-4dfa-b10f-349037d06020" />
 
 ---
 
